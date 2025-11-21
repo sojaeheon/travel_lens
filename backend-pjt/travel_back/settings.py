@@ -9,11 +9,19 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+import os
 from pathlib import Path
-
+# 환경변수 불러오기 .env
+from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# .env 불러오기
+load_dotenv(os.path.join(BASE_DIR, ".env"))
+
+# 나중에 사용할 지 고려해볼 사항
+# SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+# DEBUG = os.getenv("DJANGO_DEBUG") == "True"
 
 
 # Quick-start development settings - unsuitable for production
@@ -72,12 +80,27 @@ WSGI_APPLICATION = 'travel_back.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# sqllite3
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+# postgreSQL 설정
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv("POSTGRES_DB"),
+        'USER': os.getenv("POSTGRES_USER"),
+        'PASSWORD': os.getenv("POSTGRES_PASSWORD"),
+        'HOST': os.getenv("POSTGRES_HOST"), 
+        'PORT': os.getenv("POSTGRES_PORT"),
     }
 }
+
+
 
 
 # Password validation
