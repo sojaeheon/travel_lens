@@ -1,0 +1,164 @@
+###############################################
+# Global
+###############################################
+*.log
+*.tmp
+*.swp
+*.swo
+*.DS_Store
+*.env
+.env.*
+!.env.example
+.vscode/
+.idea/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+###############################################
+# Node / Vue (Vite)
+###############################################
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+dist-ssr/
+*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor  
+*.sublime*
+*.cache/
+
+# Vite HMR temp
+vite.config.ts.timestamp*
+vite.config.js.timestamp*
+
+###############################################
+# Django
+###############################################
+# Django specific
+*.sqlite3
+db.sqlite3
+*.pot
+*.pyc
+
+# Media / Static
+media/
+staticfiles/
+static/
+
+# Django secret files
+secret_key.txt
+
+# Django migrations (optional: keep __init__.py)
+**/migrations/*
+!**/migrations/__init__.py
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Django local settings
+settings_local.py
+local_settings.py
+
+###############################################
+# Python general
+###############################################
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+pip-wheel-metadata/
+pip-log.txt
+
+###############################################
+# Kafka (local dev)
+###############################################
+# Kafka data directories
+kafka-logs/
+zookeeper/
+zookeeper-data/
+zookeeper-log/
+
+# Confluent local
+confluent/
+confluent-*/  
+schema-registry/logs/
+schema-registry/data/
+
+###############################################
+# Flink
+###############################################
+# Flink checkpoints / savepoints
+checkpoints/
+savepoints/
+
+# Flink local cluster data
+flink-*/  
+flink.log
+*.out
+
+###############################################
+# PostgreSQL
+###############################################
+*.sql
+*.dump
+*.backup
+pgdata/
+postgres-data/
+postgresql/
+postgres/log/
+
+###############################################
+# Docker
+###############################################
+# Docker Compose volumes
+docker-volume/
+docker-data/
+data/
+
+# Misc docker stuff
+*.pid
+*.seed
+*.bak
+
+###############################################
+# Logs
+###############################################
+logs/
+*.log
+log/
+*.err
+*.out
+
+###############################################
+# JetBrains IDE (PyCharm, WebStorm)
+###############################################
+.idea/
+*.iml
+out/
+
+###############################################
+# OS Files
+###############################################
+Thumbs.db
+ehthumbs.db
+Desktop.ini

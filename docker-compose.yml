@@ -1,0 +1,34 @@
+services:
+  ###############################
+  # FRONTEND (Vue)
+  ###############################
+  frontend:
+    build: ./front-pjt/travel-front
+    container_name: travel-frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./front-pjt/travel-front:/app
+      - /app/node_modules
+    networks:
+      - travel-net
+
+  ###############################
+  # BACKEND (Django)
+  ###############################
+  backend:
+    build: ./backend-pjt
+    container_name: travel-backend
+    volumes:
+      - ./backend-pjt:/app
+    # depends_on:
+    #   - postgres
+    #   - kafka
+    ports:
+      - "8000:8000"
+    networks:
+      - travel-net
+
+networks:
+  travel-net:
+    driver: bridge
