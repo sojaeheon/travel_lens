@@ -21,13 +21,53 @@ services:
     container_name: travel-backend
     volumes:
       - ./backend-pjt:/app
-    # depends_on:
-    #   - postgres
-    #   - kafka
+    # backend는 db가 켜진 뒤에 실행해야 하므로 dependencies 선언.
+    # 완전히 기다리지는 않지만 순서 보장됨
+    depends_on:
+      - db
+    # Django가 DB에 접속할 때 필요한 환경 변수들 전달
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB} 
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: ${POSTGRES_HOST} # Backend 컨테이너는 DB 컨테이너에 서비스 이름(db)으로 접속함
+      POSTGRES_PORT: ${POSTGRES_PORT}
     ports:
       - "8000:8000"
     networks:
       - travel-net
+
+  ###############################
+  # DB (postgre)
+  ###############################
+  db:
+    image: postgres:16
+    container_name: travellens-db
+    # 컨테이너가 죽어도 자동 재시작 -> 서버 운영 시 매우 중요
+    restart: unless-stopped
+    environment:
+      # 생성할 기본 데이터 베잉스 이름
+      POSTGRES_DB: ${POSTGRES_DB}
+      # 관리자 계정
+      POSTGRES_USER: ${POSTGRES_USER}
+      # 비밀번호
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      # 타임존 설정(한국 표준시)
+      TZ: Asia/Seoul
+    # Postgres의 실제 데이터 파일은 /var/lib/postgresql/data에 저장
+    # 이를 도커 볼륨(postgres-data)에 연결 -> 컨테이너가 삭제되어도 데이터 유지됨
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    # 호스트 PC 포트 5432 -> 컨테이너 포트 5432 연결
+    # 로컬 툴(DBeaver, PgAdmin 등)로 접속할 때 필요
+    ports:
+      - "5432:5432"
+    networks:
+      - travel-net
+
+
+volumes:
+  postgres-data:
 
 networks:
   travel-net:
