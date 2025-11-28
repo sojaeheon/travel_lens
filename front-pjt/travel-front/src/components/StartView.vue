@@ -5,6 +5,7 @@
     <div class="content">
       <div class="logo-wrap">
         <img src="./image/travel_lens_rogo1.png" alt="logo" class="logo" />
+
       </div>
 
       <button class="start-btn" @click="goMain">
@@ -57,8 +58,8 @@ const goMain = () => {
 }
 
 .logo {
-  width: 900px;
-  margin-right: 1px;
+  width: 90px;
+  margin-right: 12px;
 }
 
 .title {
