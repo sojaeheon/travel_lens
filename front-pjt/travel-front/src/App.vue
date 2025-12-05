@@ -4,7 +4,7 @@ import { RouterLink, RouterView } from 'vue-router'
 
 <template>
   <!-- 모든 페이지는 router-view로 교체 -->
-  <router-view />
+  <RouterView />
 
 </template>
 
