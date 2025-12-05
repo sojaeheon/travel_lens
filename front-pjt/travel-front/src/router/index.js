@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import StartView from '../components/StartView.vue'
+
+import LandingPage from "@/pages/LandingPage.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,7 +8,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'Landing',
-      component: StartView
+      component: LandingPage
     },
     // {
     //   path: '/main',

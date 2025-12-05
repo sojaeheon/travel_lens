@@ -3,16 +3,9 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
-  <header>
-    <div class="wrapper">
-      <nav>
-        <RouterLink to="/"></RouterLink>
-        <RouterLink to="/main"></RouterLink>
-      </nav>
-    </div>
-  </header>
+  <!-- 모든 페이지는 router-view로 교체 -->
+  <router-view />
 
-  <RouterView />
 </template>
 
 <style scoped>
