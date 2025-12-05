@@ -4,8 +4,10 @@ import LandingPage from "@/pages/LandingPage.vue";
 import HomePage from "@/pages/HomePage.vue";
 import LoginPage from "@/pages/LoginPage.vue";
 import RegisterPage from "@/pages/RegisterPage.vue";
+// import CountryDetailPage from "@/pages/CountryDetailPage.vue";
 import ChatPage from "@/pages/ChatPage.vue";
 import AiChatPage from "@/pages/AiChatPage.vue";
+import MyPage from "@/pages/MyPage.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,6 +22,11 @@ const router = createRouter({
       name: 'Home',
       component: HomePage
     },
+    // {
+    //   path: '/country/:code',
+    //   name: 'countryDetail',
+    //   component: CountryDetailPage
+    // },
     {
       path: '/login',
       name: 'ㅣogin',
@@ -39,6 +46,11 @@ const router = createRouter({
       path: '/ai',
       name: 'Ai',
       component: AiChatPage
+    },
+    {
+      path: '/mypage',
+      name: 'MyPage',
+      component: MyPage 
     },
     
   ],
