@@ -13,6 +13,9 @@ import os
 from pathlib import Path
 # 환경변수 불러오기 .env
 from dotenv import load_dotenv
+from datetime import timedelta  # JWT 설정을 위한 라이브러리
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -39,13 +42,43 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # Django 기본
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # 생성한 앱
+    'accounts',
+
+    # 설치한 라이브러리
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'corsheaders',
+
+    
 ]
+
+# jwt 토큰은 simplejwt의 JWTAuthentication으로 인증한다
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+    # 기본 인증
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    ),
+}
+
+AUTH_USER_MODEL = "accounts.User"
+
+# JWT 설정
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -55,6 +88,19 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # 설정한 미들웨어
+    'corsheaders.middleware.CorsMiddleware',
+]
+
+# 프론트 연결
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+]
+
+# 프론트 연결
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
 ]
 
 ROOT_URLCONF = 'travel_back.urls'
