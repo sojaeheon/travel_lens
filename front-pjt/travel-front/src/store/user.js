@@ -1,25 +1,54 @@
 import { defineStore } from "pinia";
-// import axios from "axios";
+import api from "@/api/axios";
 
 export const useUserStore = defineStore("user", {
   state: () => ({
-    token: null,
-    profile: null,
+    token: localStorage.getItem("access") || null, // ⭐ 로그인 유지
+    profile: JSON.parse(localStorage.getItem("user")) || null,
   }),
-  actions: {
-    async login(email, password) {
-      // 실제 연동 시 axios 사용
-      // const res = await axios.post("/api/auth/login", { email, password });
-      // this.token = res.data.token;
-      // this.profile = res.data.user;
 
-      console.log("login called", email, password);
-      this.token = "dummy-token";
-      this.profile = { email, name: "더미 사용자" };
+  getters: {
+    isAuth: (state) => !!state.token,
+  },
+
+  actions: {
+    // ⭐ 실제 로그인 (JWT 연동)
+    async login(email, password) {
+      const res = await api.post("/accounts/login/", {
+        email,
+        password,
+      });
+
+      const access = res.data.access;
+      const refresh = res.data.refresh;
+      const user = res.data.user;
+
+      // 저장
+      localStorage.setItem("access", access);
+      localStorage.setItem("refresh", refresh);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      this.token = access;
+      this.profile = user;
     },
-    async register(payload) {
-      console.log("register called", payload);
-      // await axios.post("/api/auth/register", payload);
+
+    // ⭐ 실제 회원가입
+    async register(email, name, password) {
+      await api.post("/accounts/register/", {
+        email,
+        name,
+        password,
+      });
+    },
+
+    // ⭐ 로그아웃
+    logout() {
+      localStorage.removeItem("access");
+      localStorage.removeItem("refresh");
+      localStorage.removeItem("user");
+
+      this.token = null;
+      this.profile = null;
     },
   },
 });
