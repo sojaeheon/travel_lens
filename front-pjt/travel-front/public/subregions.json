@@ -1,0 +1,88 @@
+{
+  "subregions": [
+    {
+      "name_en": "East Asia",
+      "name_ko": "동아시아",
+      "center": [120.0, 35.0],
+      "zoom": 4
+    },
+    {
+      "name_en": "Southeast Asia",
+      "name_ko": "동남아시아",
+      "center": [105.0, 10.0],
+      "zoom": 4
+    },
+    {
+      "name_en": "South Asia",
+      "name_ko": "남아시아",
+      "center": [80.0, 21.0],
+      "zoom": 4
+    },
+    {
+      "name_en": "Middle East",
+      "name_ko": "중동",
+      "center": [45.0, 30.0],
+      "zoom": 4
+    },
+    {
+      "name_en": "Northern Europe",
+      "name_ko": "북유럽",
+      "center": [15.0, 62.0],
+      "zoom": 4.5
+    },
+    {
+      "name_en": "Southern Europe",
+      "name_ko": "남유럽",
+      "center": [15.0, 41.0],
+      "zoom": 4.3
+    },
+    {
+      "name_en": "Western Europe",
+      "name_ko": "서유럽",
+      "center": [5.0, 50.0],
+      "zoom": 4.3
+    },
+    {
+      "name_en": "Eastern Europe",
+      "name_ko": "동유럽",
+      "center": [25.0, 50.0],
+      "zoom": 4.3
+    },
+    {
+      "name_en": "North America East",
+      "name_ko": "북미 동부",
+      "center": [-75.0, 42.0],
+      "zoom": 4
+    },
+    {
+      "name_en": "North America West",
+      "name_ko": "북미 서부",
+      "center": [-120.0, 40.0],
+      "zoom": 4
+    },
+    {
+      "name_en": "Central America",
+      "name_ko": "중앙아메리카",
+      "center": [-85.0, 15.0],
+      "zoom": 4
+    },
+    {
+      "name_en": "South America North",
+      "name_ko": "남미 북부",
+      "center": [-70.0, 0.0],
+      "zoom": 4
+    },
+    {
+      "name_en": "South America South",
+      "name_ko": "남미 남부",
+      "center": [-65.0, -30.0],
+      "zoom": 4
+    },
+    {
+      "name_en": "Oceania Pacific",
+      "name_ko": "오세아니아 태평양",
+      "center": [160.0, -5.0],
+      "zoom": 4
+    }
+  ]
+}

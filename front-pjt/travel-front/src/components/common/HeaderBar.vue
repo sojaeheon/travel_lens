@@ -68,7 +68,7 @@ const goMyPage = () => {
 const logout = () => {
   userStore.logout();
   dropdownOpen.value = false;
-  router.push("/login");
+  router.push("/home");
 };
 </script>
 
