@@ -1,0 +1,40 @@
+{
+  "continents": [
+    {
+      "name_en": "Africa",
+      "name_ko": "아프리카",
+      "center": [20.0, 1.0],
+      "zoom": 3
+    },
+    {
+      "name_en": "Asia",
+      "name_ko": "아시아",
+      "center": [95.0, 35.0],
+      "zoom": 3
+    },
+    {
+      "name_en": "Europe",
+      "name_ko": "유럽",
+      "center": [15.0, 50.0],
+      "zoom": 3.5
+    },
+    {
+      "name_en": "North America",
+      "name_ko": "북아메리카",
+      "center": [-100.0, 45.0],
+      "zoom": 3
+    },
+    {
+      "name_en": "South America",
+      "name_ko": "남아메리카",
+      "center": [-60.0, -15.0],
+      "zoom": 3
+    },
+    {
+      "name_en": "Oceania",
+      "name_ko": "오세아니아",
+      "center": [135.0, -25.0],
+      "zoom": 3
+    }
+  ]
+}

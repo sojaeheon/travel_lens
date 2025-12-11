@@ -7,9 +7,11 @@
       placeholder="어디로 떠나고 싶으신가요?"
       @input="onInput"
     />
-    <button class="search-btn">🔍</button>
 
-    <!-- 자동완성 영역 (더미 데이터) -->
+    <!-- 검색 아이콘 버튼 -->
+    <button class="search-btn"></button>
+
+    <!-- 자동완성 영역 -->
     <div v-if="showDropdown && suggestions.length" class="dropdown">
       <div
         v-for="item in suggestions"
@@ -62,39 +64,70 @@ const select = (val) => {
 </script>
 
 <style scoped>
+/* =============================== */
+/* 🔍 검색 바 전체 */
+/* =============================== */
 .search-wrap {
   position: relative;
   width: 70%;
   margin: 20px auto 0;
 }
+
+/* =============================== */
+/* 🔍 입력창 스타일 (불투명 + 블러) */
+/* =============================== */
 .search-input {
   width: 100%;
   border-radius: 999px;
   border: none;
   padding: 14px 52px 14px 20px;
   font-size: 14px;
+
+  /* ✔ 반투명 + blur */
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(10px);
+
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
 }
+
+/* =============================== */
+/* 🔍 검색 버튼 (SVG 아이콘 삽입) */
+/* =============================== */
 .search-btn {
   position: absolute;
   right: 16px;
   top: 50%;
   transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
   border: none;
   background: none;
   cursor: pointer;
-  font-size: 18px;
+
+  /* 🔄 PNG 아이콘 사용 */
+  background-image: url("@/assets/search_btn.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
+
+/* =============================== */
+/* 🔽 자동완성 Dropdown */
+/* =============================== */
 .dropdown {
   position: absolute;
   top: 110%;
   left: 0;
   right: 0;
-  background: rgba(255, 255, 255, 0.9);
+
+  /* ✔ 반투명 + blur */
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+
   border-radius: 16px;
   padding: 6px 0;
-  backdrop-filter: blur(10px);
 }
+
 .item {
   padding: 8px 16px;
   cursor: pointer;

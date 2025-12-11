@@ -1,13 +1,53 @@
+<script setup>
+import { ref, computed, watch } from "vue";
+import likeIcon from "@/assets/like_btn.png";
+import unlikeIcon from "@/assets/unlike_btn.png";
+
+const props = defineProps({
+  country: {
+    type: Object,
+    default: () => ({ name_ko: "대한민국", name_en: "KOREA" })
+  }
+});
+
+const tabs = ["뉴스", "블로그", "출입국"];
+const currentTab = ref("뉴스");
+
+// ⭐ 국가별 좋아요 상태 저장용 Map
+const likedMap = ref({});
+
+// ⭐ 현재 패널에 표시할 국가의 좋아요 상태 (computed)
+const isLiked = computed(() => {
+  return likedMap.value[props.country.name_ko] || false;
+});
+
+// ⭐ 좋아요 토글
+const toggleLike = () => {
+  likedMap.value[props.country.name_ko] = !isLiked.value;
+};
+</script>
+
+
 <template>
   <aside class="panel">
     <header class="head">
-      <div>
-        <div class="country">대한민국 ♡</div>
-        <div class="en">KOREA</div>
+      <div class="title-group">
+        <div class="country-row">
+          <div class="country">{{ props.country.name_ko }}</div>
+
+          <!-- 이미지 좋아요 버튼 -->
+          <button class="like-btn" :class="{ liked: isLiked }" @click="toggleLike">
+            <img :src="isLiked ? likeIcon : unlikeIcon" class="like-img" />
+          </button>
+        </div>
+
+        <div class="en">{{ props.country.name_en }}</div>
       </div>
+
       <button class="close-btn" @click="$emit('close')">✕</button>
     </header>
 
+    <!-- 탭 -->
     <nav class="tabs">
       <button
         v-for="tab in tabs"
@@ -19,31 +59,33 @@
       </button>
     </nav>
 
-    <!-- 뉴스 리스트 -->
+    <!-- 뉴스 탭 -->
     <div class="news-list" v-if="currentTab === '뉴스'">
       <div v-for="n in 4" :key="n" class="news-card">
-        <div class="title">[안전] 한국 여행 관련 최신 뉴스 제목 {{ n }}</div>
+        <div class="title">[안전] {{ props.country.name_ko }} 관련 최신 뉴스 {{ n }}</div>
         <div class="meta">2025-12-01 · 한국관광공사</div>
       </div>
+
       <div class="pagination">
         <span v-for="n in 6" :key="n" class="page">{{ n }}</span>
       </div>
     </div>
 
-    <!-- 항공료 / 환율 블록 -->
+    <!-- 항공료 -->
     <section class="block">
       <h4>항공료</h4>
       <div class="line-between">
-        <span>대한민국</span>
+        <span>{{ props.country.name_ko }}</span>
         <span class="price">450,000 원</span>
       </div>
       <div class="change up">+5%</div>
     </section>
 
+    <!-- 환율 -->
     <section class="block">
       <h4>환율</h4>
       <div class="line-between">
-        <span>미국 / KRW</span>
+        <span>USD / KRW</span>
         <span class="price">1,350</span>
       </div>
       <div class="change up">+5%</div>
@@ -51,106 +93,195 @@
   </aside>
 </template>
 
-<script setup>
-import { ref } from "vue";
-
-const tabs = ["뉴스", "블로그", "출입국"];
-const currentTab = ref("뉴스");
-</script>
-
 <style scoped>
+/* 패널 전체 */
 .panel {
   width: 320px;
   background: #ffffff;
-  height: calc(100vh - 72px);
-  box-shadow: -4px 0 16px rgba(0, 0, 0, 0.1);
-  padding: 18px 16px;
+  box-shadow: -2px 0 20px rgba(0, 0, 0, 0.08);
+  padding: 18px 24px 18px 16px;
   display: flex;
   flex-direction: column;
   gap: 16px;
+  border-radius: 20px;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
 }
+
+/* 헤더 */
 .head {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
+.title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.country-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .country {
   font-weight: 700;
+  font-size: 16px;
 }
+
 .en {
   font-size: 12px;
   color: #777;
 }
+
+/* ----------------------------------------------------- */
+/* ❤️ 좋아요 이미지 버튼 (버튼처럼 자연스럽게 표현) */
+/* ----------------------------------------------------- */
+.like-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: #f2f2f7;
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  transition: transform 0.2s, background 0.2s;
+}
+
+.like-btn:hover {
+  transform: scale(1.1);
+}
+
+.like-btn.liked {
+  background: #ffe3e8;
+}
+
+.like-img {
+  width: 18px;
+  height: 18px;
+  pointer-events: none; /* 이미지가 클릭을 막지 않도록 */
+}
+
+/* ----------------------------------------------------- */
+
 .close-btn {
   border: none;
   background: none;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 20px;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background 0.2s;
 }
+.close-btn:hover {
+  background: #f2f2f7;
+}
+
+/* 탭 */
 .tabs {
   display: flex;
   gap: 8px;
 }
+
 .tab {
   flex: 1;
-  padding: 6px 0;
+  padding: 8px 0;
   border-radius: 999px;
   border: none;
   background: #f2f2f7;
   font-size: 13px;
   cursor: pointer;
+  transition: background 0.25s, color 0.25s;
 }
+
 .tab.active {
   background: #333;
   color: #fff;
 }
+
+/* 뉴스 */
 .news-list {
   flex: 1;
   overflow-y: auto;
 }
+
 .news-card {
-  border-radius: 10px;
+  border-radius: 14px;
   background: #f8f8fa;
-  padding: 8px 10px;
-  margin-bottom: 8px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  transition: transform 0.15s;
 }
+.news-card:hover {
+  transform: translateY(-2px);
+}
+
 .news-card .title {
   font-size: 13px;
 }
+
 .meta {
   margin-top: 4px;
   font-size: 11px;
   color: #777;
 }
+
+/* 페이지 버튼 */
 .pagination {
   text-align: center;
   margin-top: 8px;
 }
+
 .page {
   display: inline-block;
   margin: 0 3px;
   font-size: 11px;
+  padding: 3px 6px;
+  border-radius: 6px;
+  transition: background 0.2s;
 }
+.page:hover {
+  background: #eee;
+}
+
+/* 박스 */
 .block {
   background: #f8f8fa;
-  border-radius: 16px;
-  padding: 10px 12px;
+  border-radius: 18px;
+  padding: 12px 14px;
 }
+
 .block h4 {
   margin: 0 0 6px;
+  font-size: 14px;
 }
+
 .line-between {
   display: flex;
   justify-content: space-between;
   font-size: 13px;
 }
+
 .price {
   font-weight: 600;
 }
+
 .change {
   font-size: 12px;
   margin-top: 2px;
 }
+
 .change.up {
   color: #1bbf4b;
 }

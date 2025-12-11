@@ -1,0 +1,3022 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "가나",
+        "name_en": "Ghana",
+        "iso2": "GH",
+        "iso3": "GHA",
+        "airport_name_ko": "코토카 국제공항",
+        "airport_code": "ACC",
+        "currency_unit_ko": "세디",
+        "currency_code": "GHS",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-1.023194, 7.946527] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "가봉",
+        "name_en": "Gabon",
+        "iso2": "GA",
+        "iso3": "GAB",
+        "airport_name_ko": "레온 엠바 국제공항",
+        "airport_code": "LBV",
+        "currency_unit_ko": "중앙아프리카 CFA 프랑",
+        "currency_code": "XAF",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [11.609444, -0.803689] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "가이아나공화국",
+        "name_en": "Guyana",
+        "iso2": "GY",
+        "iso3": "GUY",
+        "airport_name_ko": "체디 자간 국제공항",
+        "airport_code": "GEO",
+        "currency_unit_ko": "가이아나 달러",
+        "currency_code": "GYD",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-58.93018, 4.860416] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "감비아",
+        "name_en": "Gambia",
+        "iso2": "GM",
+        "iso3": "GMB",
+        "airport_name_ko": "반줄 국제공항",
+        "airport_code": "BJL",
+        "currency_unit_ko": "달라시",
+        "currency_code": "GMD",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-15.310139, 13.443182] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "과테말라",
+        "name_en": "Guatemala",
+        "iso2": "GT",
+        "iso3": "GTM",
+        "airport_name_ko": "라 아우로라 국제공항",
+        "airport_code": "GUA",
+        "currency_unit_ko": "케찰",
+        "currency_code": "GTQ",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-90.230759, 15.78347] }
+    },
+
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "그레나다",
+        "name_en": "Grenada",
+        "iso2": "GD",
+        "iso3": "GRD",
+        "airport_name_ko": "모리스 비숍 국제공항",
+        "airport_code": "GND",
+        "currency_unit_ko": "동카리브 달러",
+        "currency_code": "XCD",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-61.679003, 12.262776] }
+    },
+
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "그리스",
+        "name_en": "Greece",
+        "iso2": "GR",
+        "iso3": "GRC",
+        "airport_name_ko": "아테네 국제공항",
+        "airport_code": "ATH",
+        "currency_unit_ko": "유로",
+        "currency_code": "EUR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [21.824312, 39.074208] }
+    },
+
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "기니",
+        "name_en": "Guinea",
+        "iso2": "GN",
+        "iso3": "GIN",
+        "airport_name_ko": "코나크리 국제공항",
+        "airport_code": "CKY",
+        "currency_unit_ko": "기니 프랑",
+        "currency_code": "GNF",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-9.696645, 9.945587] }
+    },
+
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "기니비사우",
+        "name_en": "Guinea-Bissau",
+        "iso2": "GW",
+        "iso3": "GNB",
+        "airport_name_ko": "오스발도 비에이라 국제공항",
+        "airport_code": "OXB",
+        "currency_unit_ko": "서아프리카 CFA 프랑",
+        "currency_code": "XOF",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-15.180413, 11.803749] }
+    },
+
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "나미비아",
+        "name_en": "Namibia",
+        "iso2": "NA",
+        "iso3": "NAM",
+        "airport_name_ko": "호세아 쿠타코 국제공항",
+        "airport_code": "WDH",
+        "currency_unit_ko": "나미비아 달러 (남아공 랜드 통용)",
+        "currency_code": "NAD",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [18.49041, -22.95764] }
+    },
+        {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "나우루",
+        "name_en": "Nauru",
+        "iso2": "NR",
+        "iso3": "NRU",
+        "airport_name_ko": "나우루 국제공항",
+        "airport_code": "INU",
+        "currency_unit_ko": "호주 달러",
+        "currency_code": "AUD",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [166.93257, -0.522778] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "나이지리아",
+        "name_en": "Nigeria",
+        "iso2": "NG",
+        "iso3": "NGA",
+        "airport_name_ko": "무르탈라 모하메드 국제공항 (라고스)",
+        "airport_code": "LOS",
+        "currency_unit_ko": "나이라",
+        "currency_code": "NGN",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [8.675277, 9.081999] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "남수단",
+        "name_en": "South Sudan",
+        "iso2": "SS",
+        "iso3": "SSD",
+        "airport_name_ko": "주바 국제공항",
+        "airport_code": "JUB",
+        "currency_unit_ko": "남수단 파운드",
+        "currency_code": "SSP",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [31.307, 6.877] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "남아프리카공화국",
+        "name_en": "South Africa",
+        "iso2": "ZA",
+        "iso3": "ZAF",
+        "airport_name_ko": "O.R. 탐보 국제공항 (요하네스버그)",
+        "airport_code": "JNB",
+        "currency_unit_ko": "랜드",
+        "currency_code": "ZAR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [22.937506, -30.559482] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "네덜란드",
+        "name_en": "Netherlands",
+        "iso2": "NL",
+        "iso3": "NLD",
+        "airport_name_ko": "암스테르담 스키폴 공항",
+        "airport_code": "AMS",
+        "currency_unit_ko": "유로",
+        "currency_code": "EUR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [5.291266, 52.132633] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "네팔",
+        "name_en": "Nepal",
+        "iso2": "NP",
+        "iso3": "NPL",
+        "airport_name_ko": "트리부반 국제공항",
+        "airport_code": "KTM",
+        "currency_unit_ko": "네팔 루피",
+        "currency_code": "NPR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [84.124008, 28.394857] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "노르웨이",
+        "name_en": "Norway",
+        "iso2": "NO",
+        "iso3": "NOR",
+        "airport_name_ko": "오슬로 가르데르모엔 공항",
+        "airport_code": "OSL",
+        "currency_unit_ko": "노르웨이 크로네",
+        "currency_code": "NOK",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [8.468946, 60.472024] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "뉴질랜드",
+        "name_en": "New Zealand",
+        "iso2": "NZ",
+        "iso3": "NZL",
+        "airport_name_ko": "오클랜드 국제공항",
+        "airport_code": "AKL",
+        "currency_unit_ko": "뉴질랜드 달러",
+        "currency_code": "NZD",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [174.885971, -40.900557] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "니우에",
+        "name_en": "Niue",
+        "iso2": "NU",
+        "iso3": "NIU",
+        "airport_name_ko": "하난 국제공항",
+        "airport_code": "IUE",
+        "currency_unit_ko": "뉴질랜드 달러",
+        "currency_code": "NZD",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [-169.867233, -19.054445] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "니제르",
+        "name_en": "Niger",
+        "iso2": "NE",
+        "iso3": "NER",
+        "airport_name_ko": "디오리 하마니 국제공항",
+        "airport_code": "NIM",
+        "currency_unit_ko": "서아프리카 CFA 프랑",
+        "currency_code": "XOF",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [8.081666, 17.607789] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "니카라과",
+        "name_en": "Nicaragua",
+        "iso2": "NI",
+        "iso3": "NIC",
+        "airport_name_ko": "아우구스토 C. 산디노 국제공항",
+        "airport_code": "MGA",
+        "currency_unit_ko": "코르도바",
+        "currency_code": "NIO",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-85.207229, 12.865416] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "대만",
+        "name_en": "Taiwan",
+        "iso2": "TW",
+        "iso3": "TWN",
+        "airport_name_ko": "타오위안 국제공항",
+        "airport_code": "TPE",
+        "currency_unit_ko": "신 타이완 달러 (대만 달러)",
+        "currency_code": "TWD",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [120.960515, 23.69781] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "덴마크",
+        "name_en": "Denmark",
+        "iso2": "DK",
+        "iso3": "DNK",
+        "airport_name_ko": "코펜하겐 카스트루프 공항",
+        "airport_code": "CPH",
+        "currency_unit_ko": "덴마크 크로네",
+        "currency_code": "DKK",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [9.501785, 56.26392] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "도미니카공화국",
+        "name_en": "Dominican Republic",
+        "iso2": "DO",
+        "iso3": "DOM",
+        "airport_name_ko": "푼타 카나 국제공항 (또는 라스 아메리카스 SDQ)",
+        "airport_code": "PUJ",
+        "currency_unit_ko": "도미니카 페소",
+        "currency_code": "DOP",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-70.162651, 18.735693] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "도미니카연방",
+        "name_en": "Dominica",
+        "iso2": "DM",
+        "iso3": "DMA",
+        "airport_name_ko": "더글라스 찰스 공항",
+        "airport_code": "DOM",
+        "currency_unit_ko": "동카리브 달러",
+        "currency_code": "XCD",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-61.370976, 15.414999] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "독일",
+        "name_en": "Germany",
+        "iso2": "DE",
+        "iso3": "DEU",
+        "airport_name_ko": "프랑크푸르트 암마인 공항",
+        "airport_code": "FRA",
+        "currency_unit_ko": "유로",
+        "currency_code": "EUR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [10.451526, 51.165691] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "동티모르",
+        "name_en": "Timor-Leste",
+        "iso2": "TL",
+        "iso3": "TLS",
+        "airport_name_ko": "프레지덴테 니콜라우 로바토 국제공항",
+        "airport_code": "DIL",
+        "currency_unit_ko": "미국 달러",
+        "currency_code": "USD",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [125.727539, -8.874217] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "라오스",
+        "name_en": "Laos",
+        "iso2": "LA",
+        "iso3": "LAO",
+        "airport_name_ko": "왓따이 국제공항",
+        "airport_code": "VTE",
+        "currency_unit_ko": "킵",
+        "currency_code": "LAK",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [102.495496, 19.85627] }
+    },
+        {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "라이베리아",
+        "name_en": "Liberia",
+        "iso2": "LR",
+        "iso3": "LBR",
+        "airport_name_ko": "로버츠 국제공항",
+        "airport_code": "ROB",
+        "currency_unit_ko": "라이베리아 달러",
+        "currency_code": "LRD",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-9.429499, 6.428055] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "라트비아",
+        "name_en": "Latvia",
+        "iso2": "LV",
+        "iso3": "LVA",
+        "airport_name_ko": "리가 국제공항",
+        "airport_code": "RIX",
+        "currency_unit_ko": "유로",
+        "currency_code": "EUR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [24.603189, 56.879635] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "러시아",
+        "name_en": "Russia",
+        "iso2": "RU",
+        "iso3": "RUS",
+        "airport_name_ko": "셰레메티예보 국제공항",
+        "airport_code": "SVO",
+        "currency_unit_ko": "루블",
+        "currency_code": "RUB",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [105.318756, 61.52401] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "레바논",
+        "name_en": "Lebanon",
+        "iso2": "LB",
+        "iso3": "LBN",
+        "airport_name_ko": "베이루트 라픽 하리리 국제공항",
+        "airport_code": "BEY",
+        "currency_unit_ko": "레바논 파운드",
+        "currency_code": "LBP",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [35.862285, 33.854721] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "레소토",
+        "name_en": "Lesotho",
+        "iso2": "LS",
+        "iso3": "LSO",
+        "airport_name_ko": "모슈슈 1세 국제공항",
+        "airport_code": "MSU",
+        "currency_unit_ko": "로티 (남아공 랜드 고정)",
+        "currency_code": "LSL",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [28.233608, -29.609988] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "루마니아",
+        "name_en": "Romania",
+        "iso2": "RO",
+        "iso3": "ROU",
+        "airport_name_ko": "헨리 코안더 국제공항",
+        "airport_code": "OTP",
+        "currency_unit_ko": "레우",
+        "currency_code": "RON",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [24.96676, 45.943161] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "룩셈부르크",
+        "name_en": "Luxembourg",
+        "iso2": "LU",
+        "iso3": "LUX",
+        "airport_name_ko": "룩셈부르크 핀델 공항",
+        "airport_code": "LUX",
+        "currency_unit_ko": "유로",
+        "currency_code": "EUR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [6.129583, 49.815273] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "르완다",
+        "name_en": "Rwanda",
+        "iso2": "RW",
+        "iso3": "RWA",
+        "airport_name_ko": "키갈리 국제공항",
+        "airport_code": "KGL",
+        "currency_unit_ko": "르완다 프랑",
+        "currency_code": "RWF",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [29.873888, -1.940278] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "리비아",
+        "name_en": "Libya",
+        "iso2": "LY",
+        "iso3": "LBY",
+        "airport_name_ko": "미티가 국제공항 (트리폴리 대체)",
+        "airport_code": "MJI",
+        "currency_unit_ko": "리비아 디나르",
+        "currency_code": "LYD",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [17.228331, 26.3351] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "리투아니아",
+        "name_en": "Lithuania",
+        "iso2": "LT",
+        "iso3": "LTU",
+        "airport_name_ko": "빌뉴스 국제공항",
+        "airport_code": "VNO",
+        "currency_unit_ko": "유로",
+        "currency_code": "EUR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [23.881275, 55.169438] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "리히텐슈타인",
+        "name_en": "Liechtenstein",
+        "iso2": "LI",
+        "iso3": "LIE",
+        "airport_name_ko": "(공항 없음, 스위스 취리히 이용)",
+        "airport_code": "ZRH",
+        "currency_unit_ko": "스위스 프랑",
+        "currency_code": "CHF",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [9.555373, 47.166] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "마다가스카르",
+        "name_en": "Madagascar",
+        "iso2": "MG",
+        "iso3": "MDG",
+        "airport_name_ko": "이바토 공항",
+        "airport_code": "TNR",
+        "currency_unit_ko": "아리아리",
+        "currency_code": "MGA",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [46.869107, -18.766947] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "마셜제도",
+        "name_en": "Marshall Islands",
+        "iso2": "MH",
+        "iso3": "MHL",
+        "airport_name_ko": "아마타 카부아 국제공항",
+        "airport_code": "MAJ",
+        "currency_unit_ko": "미국 달러",
+        "currency_code": "USD",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [171.184478, 7.131474] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "마이크로네시아",
+        "name_en": "Federated States of Micronesia",
+        "iso2": "FM",
+        "iso3": "FSM",
+        "airport_name_ko": "폰페이 국제공항",
+        "airport_code": "PNI",
+        "currency_unit_ko": "미국 달러",
+        "currency_code": "USD",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [150.550812, 7.425554] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "마카오",
+        "name_en": "Macao",
+        "iso2": "MO",
+        "iso3": "MAC",
+        "airport_name_ko": "마카오 국제공항",
+        "airport_code": "MFM",
+        "currency_unit_ko": "파타카",
+        "currency_code": "MOP",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [113.543873, 22.198745] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "말라위",
+        "name_en": "Malawi",
+        "iso2": "MW",
+        "iso3": "MWI",
+        "airport_name_ko": "릴롱궤 국제공항 (카무즈)",
+        "airport_code": "LLW",
+        "currency_unit_ko": "콰차",
+        "currency_code": "MWK",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [34.301525, -13.254308] }
+    },
+        {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "말레이시아",
+        "name_en": "Malaysia",
+        "iso2": "MY",
+        "iso3": "MYS",
+        "airport_name_ko": "쿠알라룸푸르 국제공항",
+        "airport_code": "KUL",
+        "currency_unit_ko": "링깃",
+        "currency_code": "MYR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [101.975766, 4.210484] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "말리",
+        "name_en": "Mali",
+        "iso2": "ML",
+        "iso3": "MLI",
+        "airport_name_ko": "모디보 케이타 국제공항",
+        "airport_code": "BKO",
+        "currency_unit_ko": "서아프리카 CFA 프랑",
+        "currency_code": "XOF",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-3.996166, 17.570692] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "멕시코",
+        "name_en": "Mexico",
+        "iso2": "MX",
+        "iso3": "MEX",
+        "airport_name_ko": "멕시코시티 국제공항 (베니토 후아레스)",
+        "airport_code": "MEX",
+        "currency_unit_ko": "멕시코 페소",
+        "currency_code": "MXN",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [-102.552784, 23.634501] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "모나코",
+        "name_en": "Monaco",
+        "iso2": "MC",
+        "iso3": "MCO",
+        "airport_name_ko": "(공항 없음, 프랑스 니스 이용)",
+        "airport_code": "NCE",
+        "currency_unit_ko": "유로",
+        "currency_code": "EUR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [7.424615, 43.738418] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "모로코",
+        "name_en": "Morocco",
+        "iso2": "MA",
+        "iso3": "MAR",
+        "airport_name_ko": "모하메드 5세 국제공항",
+        "airport_code": "CMN",
+        "currency_unit_ko": "디르함",
+        "currency_code": "MAD",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-7.09262, 31.791702] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "모리셔스",
+        "name_en": "Mauritius",
+        "iso2": "MU",
+        "iso3": "MUS",
+        "airport_name_ko": "시우사구르 람굴람 국제공항",
+        "airport_code": "MRU",
+        "currency_unit_ko": "모리셔스 루피",
+        "currency_code": "MUR",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [57.552152, -20.348404] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "모리타니아",
+        "name_en": "Mauritania",
+        "iso2": "MR",
+        "iso3": "MRT",
+        "airport_name_ko": "누악쇼트 움툰시 국제공항",
+        "airport_code": "NKC",
+        "currency_unit_ko": "우기야",
+        "currency_code": "MRU",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-10.940835, 21.00789] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "모잠비크",
+        "name_en": "Mozambique",
+        "iso2": "MZ",
+        "iso3": "MOZ",
+        "airport_name_ko": "마푸투 국제공항",
+        "airport_code": "MPM",
+        "currency_unit_ko": "메티칼",
+        "currency_code": "MZN",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [35.529562, -18.665695] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "몬테네그로",
+        "name_en": "Montenegro",
+        "iso2": "ME",
+        "iso3": "MNE",
+        "airport_name_ko": "포드고리차 공항",
+        "airport_code": "TGD",
+        "currency_unit_ko": "유로 (공식 통화 아님, 실사용)",
+        "currency_code": "EUR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [19.37439, 42.708678] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "몰도바",
+        "name_en": "Moldova",
+        "iso2": "MD",
+        "iso3": "MDA",
+        "airport_name_ko": "키시너우 국제공항",
+        "airport_code": "RMO",
+        "currency_unit_ko": "레우",
+        "currency_code": "MDL",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [28.369885, 47.411631] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "몰디브",
+        "name_en": "Maldives",
+        "iso2": "MV",
+        "iso3": "MDV",
+        "airport_name_ko": "벨라나 국제공항",
+        "airport_code": "MLE",
+        "currency_unit_ko": "루피야",
+        "currency_code": "MVR",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [73.22068, 3.202778] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "몰타",
+        "name_en": "Malta",
+        "iso2": "MT",
+        "iso3": "MLT",
+        "airport_name_ko": "몰타 국제공항",
+        "airport_code": "MLA",
+        "currency_unit_ko": "유로",
+        "currency_code": "EUR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [14.375416, 35.937496] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "몽골",
+        "name_en": "Mongolia",
+        "iso2": "MN",
+        "iso3": "MNG",
+        "airport_name_ko": "칭기즈 칸 국제공항 (신공항)",
+        "airport_code": "UBN",
+        "currency_unit_ko": "투그릭",
+        "currency_code": "MNT",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [103.846656, 46.862496] }
+    },
+        {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "미국",
+        "name_en": "United States of America",
+        "iso2": "US",
+        "iso3": "USA",
+        "airport_name_ko": "존 F. 케네디 국제공항 (대표 관문)",
+        "airport_code": "JFK",
+        "currency_unit_ko": "미국 달러",
+        "currency_code": "USD",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [-98.5795, 39.8283] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "미얀마",
+        "name_en": "Myanmar",
+        "iso2": "MM",
+        "iso3": "MMR",
+        "airport_name_ko": "양곤 국제공항",
+        "airport_code": "RGN",
+        "currency_unit_ko": "짯",
+        "currency_code": "MMK",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [95.956223, 21.916221] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "바누아투",
+        "name_en": "Vanuatu",
+        "iso2": "VU",
+        "iso3": "VUT",
+        "airport_name_ko": "바우어필드 국제공항",
+        "airport_code": "VLI",
+        "currency_unit_ko": "바투",
+        "currency_code": "VUV",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [166.959158, -15.376706] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "바레인",
+        "name_en": "Bahrain",
+        "iso2": "BH",
+        "iso3": "BHR",
+        "airport_name_ko": "바레인 국제공항",
+        "airport_code": "BAH",
+        "currency_unit_ko": "바레인 디나르",
+        "currency_code": "BHD",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [50.637772, 25.930414] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "바베이도스",
+        "name_en": "Barbados",
+        "iso2": "BB",
+        "iso3": "BRB",
+        "airport_name_ko": "그랜틀리 아담스 국제공항",
+        "airport_code": "BGI",
+        "currency_unit_ko": "바베이도스 달러",
+        "currency_code": "BBD",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-59.543198, 13.193887] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "바하마",
+        "name_en": "Bahamas",
+        "iso2": "BS",
+        "iso3": "BHS",
+        "airport_name_ko": "린든 핀들링 국제공항",
+        "airport_code": "NAS",
+        "currency_unit_ko": "바하마 달러",
+        "currency_code": "BSD",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-77.39628, 25.03428] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "방글라데시",
+        "name_en": "Bangladesh",
+        "iso2": "BD",
+        "iso3": "BGD",
+        "airport_name_ko": "하즈라트 샤잘랄 국제공항",
+        "airport_code": "DAC",
+        "currency_unit_ko": "타카",
+        "currency_code": "BDT",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [90.356331, 23.684994] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "베냉",
+        "name_en": "Benin",
+        "iso2": "BJ",
+        "iso3": "BEN",
+        "airport_name_ko": "코토누 카제houn 공항",
+        "airport_code": "COO",
+        "currency_unit_ko": "서아프리카 CFA 프랑",
+        "currency_code": "XOF",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [2.315834, 9.30769] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "베네수엘라",
+        "name_en": "Venezuela",
+        "iso2": "VE",
+        "iso3": "VEN",
+        "airport_name_ko": "시몬 볼리바르 국제공항",
+        "airport_code": "CCS",
+        "currency_unit_ko": "볼리바르",
+        "currency_code": "VES",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-66.58973, 6.42375] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "베트남",
+        "name_en": "Vietnam",
+        "iso2": "VN",
+        "iso3": "VNM",
+        "airport_name_ko": "떤선녓 국제공항 (호찌민)",
+        "airport_code": "SGN",
+        "currency_unit_ko": "동",
+        "currency_code": "VND",
+        "currency_trunc_unit": 100
+      },
+      "geometry": { "type": "Point", "coordinates": [108.277199, 14.058324] }
+    },
+        {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "벨기에",
+        "name_en": "Belgium",
+        "iso2": "BE",
+        "iso3": "BEL",
+        "airport_name_ko": "브뤼셀 공항",
+        "airport_code": "BRU",
+        "currency_unit_ko": "유로",
+        "currency_code": "EUR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [4.469936, 50.503887] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "벨라루스",
+        "name_en": "Belarus",
+        "iso2": "BY",
+        "iso3": "BLR",
+        "airport_name_ko": "민스크 국제공항",
+        "airport_code": "MSQ",
+        "currency_unit_ko": "벨라루스 루블",
+        "currency_code": "BYN",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [27.953389, 53.709807] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "벨리즈",
+        "name_en": "Belize",
+        "iso2": "BZ",
+        "iso3": "BLZ",
+        "airport_name_ko": "필립 S. W. 골드슨 국제공항",
+        "airport_code": "BZE",
+        "currency_unit_ko": "벨리즈 달러",
+        "currency_code": "BZD",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-88.49765, 17.189877] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "보스니아헤르체고비나",
+        "name_en": "Bosnia-Herzegovina",
+        "iso2": "BA",
+        "iso3": "BIH",
+        "airport_name_ko": "사라예보 국제공항",
+        "airport_code": "SJJ",
+        "currency_unit_ko": "태환 마르카",
+        "currency_code": "BAM",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [17.679076, 43.915886] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "보츠와나",
+        "name_en": "Botswana",
+        "iso2": "BW",
+        "iso3": "BWA",
+        "airport_name_ko": "서 세레체 카마 국제공항",
+        "airport_code": "GBE",
+        "currency_unit_ko": "pula (풀라)",
+        "currency_code": "BWP",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [24.684866, -22.328474] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "볼리비아",
+        "name_en": "Bolivia",
+        "iso2": "BO",
+        "iso3": "BOL",
+        "airport_name_ko": "비루비루 국제공항",
+        "airport_code": "VVI",
+        "currency_unit_ko": "볼리비아노",
+        "currency_code": "BOB",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-63.588653, -16.290154] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "부룬디",
+        "name_en": "Burundi",
+        "iso2": "BI",
+        "iso3": "BDI",
+        "airport_name_ko": "멜키오르 은다다예 국제공항",
+        "airport_code": "BJM",
+        "currency_unit_ko": "부룬디 프랑",
+        "currency_code": "BIF",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [29.918886, -3.373056] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "부르키나파소",
+        "name_en": "Burkina Faso",
+        "iso2": "BF",
+        "iso3": "BFA",
+        "airport_name_ko": "와가두구 공항",
+        "airport_code": "OUA",
+        "currency_unit_ko": "서아프리카 CFA 프랑",
+        "currency_code": "XOF",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-1.561593, 12.238333] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "부탄",
+        "name_en": "Bhutan",
+        "iso2": "BT",
+        "iso3": "BTN",
+        "airport_name_ko": "파로 공항",
+        "airport_code": "PBH",
+        "currency_unit_ko": "눌트럼 (인도 루피 통용)",
+        "currency_code": "BTN",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [90.433601, 27.514162] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "북마케도니아",
+        "name_en": "North Macedonia",
+        "iso2": "MK",
+        "iso3": "MKD",
+        "airport_name_ko": "스코페 국제공항",
+        "airport_code": "SKP",
+        "currency_unit_ko": "데나르",
+        "currency_code": "MKD",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [21.745275, 41.608635] }
+    },
+        {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "불가리아",
+        "name_en": "Bulgaria",
+        "iso2": "BG",
+        "iso3": "BGR",
+        "airport_name_ko": "소피아 공항",
+        "airport_code": "SOF",
+        "currency_unit_ko": "레프",
+        "currency_code": "BGN",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [25.48583, 42.733883] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "브라질",
+        "name_en": "Brazil",
+        "iso2": "BR",
+        "iso3": "BRA",
+        "airport_name_ko": "상파울루 구아룰류스 국제공항",
+        "airport_code": "GRU",
+        "currency_unit_ko": "헤알",
+        "currency_code": "BRL",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [-51.92528, -14.235004] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "브루나이",
+        "name_en": "Brunei",
+        "iso2": "BN",
+        "iso3": "BRN",
+        "airport_name_ko": "브루나이 국제공항",
+        "airport_code": "BWN",
+        "currency_unit_ko": "브루나이 달러 (싱가포르 달러 통용)",
+        "currency_code": "BND",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [114.727669, 4.535277] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "사모아",
+        "name_en": "Samoa",
+        "iso2": "WS",
+        "iso3": "WSM",
+        "airport_name_ko": "팔레올로 국제공항",
+        "airport_code": "APW",
+        "currency_unit_ko": "탈라",
+        "currency_code": "WST",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-172.10463, -13.759029] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "사우디아라비아",
+        "name_en": "Saudi Arabia",
+        "iso2": "SA",
+        "iso3": "SAU",
+        "airport_name_ko": "킹 압둘아지즈 국제공항 (제다)",
+        "airport_code": "JED",
+        "currency_unit_ko": "리얄",
+        "currency_code": "SAR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [45.079162, 23.885942] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "사이프러스",
+        "name_en": "Cyprus",
+        "iso2": "CY",
+        "iso3": "CYP",
+        "airport_name_ko": "라르나카 국제공항",
+        "airport_code": "LCA",
+        "currency_unit_ko": "유로",
+        "currency_code": "EUR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [33.429859, 35.126413] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "산마리노",
+        "name_en": "San Marino",
+        "iso2": "SM",
+        "iso3": "SMR",
+        "airport_name_ko": "(공항 없음, 이탈리아 리미니 이용)",
+        "airport_code": "RMI",
+        "currency_unit_ko": "유로",
+        "currency_code": "EUR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [12.457777, 43.94236] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "상투메프린시페",
+        "name_en": "São Tomé & Principe",
+        "iso2": "ST",
+        "iso3": "STP",
+        "airport_name_ko": "상투메 국제공항",
+        "airport_code": "TMS",
+        "currency_unit_ko": "도브라",
+        "currency_code": "STN",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [6.613081, 0.18636] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "세네갈",
+        "name_en": "Senegal",
+        "iso2": "SN",
+        "iso3": "SEN",
+        "airport_name_ko": "블레즈 디아뉴 국제공항",
+        "airport_code": "DSS",
+        "currency_unit_ko": "서아프리카 CFA 프랑",
+        "currency_code": "XOF",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-14.452362, 14.497401] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "세르비아",
+        "name_en": "Serbia",
+        "iso2": "RS",
+        "iso3": "SRB",
+        "airport_name_ko": "베오그라드 니콜라 테슬라 공항",
+        "airport_code": "BEG",
+        "currency_unit_ko": "디나르",
+        "currency_code": "RSD",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [21.005859, 44.016521] }
+    },
+        {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "세이셸",
+        "name_en": "Seychelles",
+        "iso2": "SC",
+        "iso3": "SYC",
+        "airport_name_ko": "세이셸 국제공항",
+        "airport_code": "SEZ",
+        "currency_unit_ko": "세이셸 루피",
+        "currency_code": "SCR",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [55.491977, -4.679574] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "세인트루시아",
+        "name_en": "St. Lucia",
+        "iso2": "LC",
+        "iso3": "LCA",
+        "airport_name_ko": "헤와노라 국제공항",
+        "airport_code": "UVF",
+        "currency_unit_ko": "동카리브 달러",
+        "currency_code": "XCD",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-60.978893, 13.909444] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "세인트빈센트그레나딘",
+        "name_en": "St. Vincent & the Grenadines",
+        "iso2": "VC",
+        "iso3": "VCT",
+        "airport_name_ko": "아가일 국제공항",
+        "airport_code": "SVD",
+        "currency_unit_ko": "동카리브 달러",
+        "currency_code": "XCD",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-61.196076, 12.984305] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "세인트키츠네비스",
+        "name_en": "St. Kitts-Nevis",
+        "iso2": "KN",
+        "iso3": "KNA",
+        "airport_name_ko": "로버트 L. 브래드쇼 국제공항",
+        "airport_code": "SKB",
+        "currency_unit_ko": "동카리브 달러",
+        "currency_code": "XCD",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-62.782998, 17.357822] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "소말리아",
+        "name_en": "Somalia",
+        "iso2": "SO",
+        "iso3": "SOM",
+        "airport_name_ko": "아덴 아데 국제공항",
+        "airport_code": "MGQ",
+        "currency_unit_ko": "소말리아 실링",
+        "currency_code": "SOS",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [46.199616, 5.152149] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "솔로몬제도",
+        "name_en": "Solomon Islands",
+        "iso2": "SB",
+        "iso3": "SLB",
+        "airport_name_ko": "호니아라 국제공항",
+        "airport_code": "HIR",
+        "currency_unit_ko": "솔로몬제도 달러",
+        "currency_code": "SBD",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [160.156194, -9.64571] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "수단",
+        "name_en": "Sudan",
+        "iso2": "SD",
+        "iso3": "SDN",
+        "airport_name_ko": "카르툼 국제공항",
+        "airport_code": "KRT",
+        "currency_unit_ko": "수단 파운드",
+        "currency_code": "SDG",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [30.217636, 12.862807] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "수리남",
+        "name_en": "Suriname",
+        "iso2": "SR",
+        "iso3": "SUR",
+        "airport_name_ko": "요한 아돌프 펜겔 국제공항",
+        "airport_code": "PBM",
+        "currency_unit_ko": "수리남 달러",
+        "currency_code": "SRD",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-55.973793, 3.919305] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "스리랑카",
+        "name_en": "Sri Lanka",
+        "iso2": "LK",
+        "iso3": "LKA",
+        "airport_name_ko": "반다라나이케 국제공항",
+        "airport_code": "CMB",
+        "currency_unit_ko": "스리랑카 루피",
+        "currency_code": "LKR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [80.771797, 7.873054] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "스웨덴",
+        "name_en": "Sweden",
+        "iso2": "SE",
+        "iso3": "SWE",
+        "airport_name_ko": "스톡홀름 알란다 공항",
+        "airport_code": "ARN",
+        "currency_unit_ko": "스웨덴 크로나",
+        "currency_code": "SEK",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [18.643501, 60.128161] }
+    },
+        {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "스위스",
+        "name_en": "Swiss",
+        "iso2": "CH",
+        "iso3": "CHE",
+        "airport_name_ko": "취리히 공항",
+        "airport_code": "ZRH",
+        "currency_unit_ko": "스위스 프랑",
+        "currency_code": "CHF",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [8.227512, 46.818188] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "스페인",
+        "name_en": "Spain",
+        "iso2": "ES",
+        "iso3": "ESP",
+        "airport_name_ko": "마드리드 바라하스 국제공항",
+        "airport_code": "MAD",
+        "currency_unit_ko": "유로",
+        "currency_code": "EUR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [-3.74922, 40.463667] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "슬로바키아",
+        "name_en": "Slovakia",
+        "iso2": "SK",
+        "iso3": "SVK",
+        "airport_name_ko": "브라티슬라바 공항",
+        "airport_code": "BTS",
+        "currency_unit_ko": "유로",
+        "currency_code": "EUR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [19.699024, 48.669026] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "슬로베니아",
+        "name_en": "Slovenia",
+        "iso2": "SI",
+        "iso3": "SVN",
+        "airport_name_ko": "류블랴나 요제 푸치니크 공항",
+        "airport_code": "LJU",
+        "currency_unit_ko": "유로",
+        "currency_code": "EUR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [14.995463, 46.151241] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "시리아",
+        "name_en": "Syria",
+        "iso2": "SY",
+        "iso3": "SYR",
+        "airport_name_ko": "다마스쿠스 국제공항",
+        "airport_code": "DAM",
+        "currency_unit_ko": "시리아 파운드",
+        "currency_code": "SYP",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [38.996815, 34.802075] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "시에라리온",
+        "name_en": "Sierra Leone",
+        "iso2": "SL",
+        "iso3": "SLE",
+        "airport_name_ko": "룽기 국제공항",
+        "airport_code": "FNA",
+        "currency_unit_ko": "리온",
+        "currency_code": "SLE",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-11.779889, 8.460555] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "싱가포르",
+        "name_en": "Singapore",
+        "iso2": "SG",
+        "iso3": "SGP",
+        "airport_name_ko": "창이 공항",
+        "airport_code": "SIN",
+        "currency_unit_ko": "싱가포르 달러",
+        "currency_code": "SGD",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [103.819836, 1.352083] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "아랍에미리트",
+        "name_en": "United Arab Emirates : UAE",
+        "iso2": "AE",
+        "iso3": "ARE",
+        "airport_name_ko": "두바이 국제공항",
+        "airport_code": "DXB",
+        "currency_unit_ko": "디르함",
+        "currency_code": "AED",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [54.377344, 23.424076] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "아르메니아",
+        "name_en": "Armenia",
+        "iso2": "AM",
+        "iso3": "ARM",
+        "airport_name_ko": "즈바르트노츠 국제공항",
+        "airport_code": "EVN",
+        "currency_unit_ko": "드람",
+        "currency_code": "AMD",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [45.038189, 40.069099] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "아르헨티나",
+        "name_en": "Argentina",
+        "iso2": "AR",
+        "iso3": "ARG",
+        "airport_name_ko": "미니스트로 피스타리니(에세이사) 공항",
+        "airport_code": "EZE",
+        "currency_unit_ko": "아르헨티나 페소",
+        "currency_code": "ARS",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-63.616672, -38.416097] }
+    },
+        {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "아이슬란드",
+        "name_en": "Iceland",
+        "iso2": "IS",
+        "iso3": "ISL",
+        "airport_name_ko": "케플라비크 국제공항",
+        "airport_code": "KEF",
+        "currency_unit_ko": "아이슬란드 크로나",
+        "currency_code": "ISK",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-19.020835, 64.963051] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "아이티",
+        "name_en": "Haiti",
+        "iso2": "HT",
+        "iso3": "HTI",
+        "airport_name_ko": "투생 루베르튀르 국제공항",
+        "airport_code": "PAP",
+        "currency_unit_ko": "구르드",
+        "currency_code": "HTG",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-72.285215, 18.971187] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "아일랜드",
+        "name_en": "Ireland",
+        "iso2": "IE",
+        "iso3": "IRL",
+        "airport_name_ko": "더블린 공항",
+        "airport_code": "DUB",
+        "currency_unit_ko": "유로",
+        "currency_code": "EUR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [-8.24389, 53.41291] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "아제르바이잔",
+        "name_en": "Azerbaijan",
+        "iso2": "AZ",
+        "iso3": "AZE",
+        "airport_name_ko": "헤이다르 알리예프 국제공항",
+        "airport_code": "GYD",
+        "currency_unit_ko": "마나트",
+        "currency_code": "AZN",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [47.576927, 40.143105] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "아프가니스탄",
+        "name_en": "Afghanistan",
+        "iso2": "AF",
+        "iso3": "AFG",
+        "airport_name_ko": "카불 국제공항",
+        "airport_code": "KBL",
+        "currency_unit_ko": "아프가니",
+        "currency_code": "AFN",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [67.709953, 33.93911] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "안도라",
+        "name_en": "Andorra",
+        "iso2": "AD",
+        "iso3": "AND",
+        "airport_name_ko": "(공항 없음, 스페인 바르셀로나 이용)",
+        "airport_code": "BCN",
+        "currency_unit_ko": "유로",
+        "currency_code": "EUR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [1.521801, 42.546245] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "알바니아",
+        "name_en": "Albania",
+        "iso2": "AL",
+        "iso3": "ALB",
+        "airport_name_ko": "티라나 국제공항",
+        "airport_code": "TIA",
+        "currency_unit_ko": "레크",
+        "currency_code": "ALL",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [20.168331, 41.153332] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "알제리",
+        "name_en": "Algeria",
+        "iso2": "DZ",
+        "iso3": "DZA",
+        "airport_name_ko": "우아리 부메디엔 공항",
+        "airport_code": "ALG",
+        "currency_unit_ko": "알제리 디나르",
+        "currency_code": "DZD",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [1.659626, 28.033886] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "앙골라",
+        "name_en": "Angola",
+        "iso2": "AO",
+        "iso3": "AGO",
+        "airport_name_ko": "콰트로 데 페베레이로 공항",
+        "airport_code": "LAD",
+        "currency_unit_ko": "콴자",
+        "currency_code": "AOA",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [17.873887, -11.202692] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "앤티가바부다",
+        "name_en": "Antigua and Barbuda",
+        "iso2": "AG",
+        "iso3": "ATG",
+        "airport_name_ko": "V.C. 버드 국제공항",
+        "airport_code": "ANU",
+        "currency_unit_ko": "동카리브 달러",
+        "currency_code": "XCD",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-61.796428, 17.060816] }
+    },
+        {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "에리트레아",
+        "name_en": "Eritrea",
+        "iso2": "ER",
+        "iso3": "ERI",
+        "airport_name_ko": "아스마라 국제공항",
+        "airport_code": "ASM",
+        "currency_unit_ko": "낙파",
+        "currency_code": "ERN",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [39.782334, 15.179384] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "에스와티니",
+        "name_en": "Eswatini",
+        "iso2": "SZ",
+        "iso3": "SWZ",
+        "airport_name_ko": "킹 음스와티 3세 국제공항",
+        "airport_code": "SHO",
+        "currency_unit_ko": "릴랑게니 (남아공 랜드 통용)",
+        "currency_code": "SZL",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [31.465866, -26.522503] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "에스토니아",
+        "name_en": "Estonia",
+        "iso2": "EE",
+        "iso3": "EST",
+        "airport_name_ko": "탈린 공항",
+        "airport_code": "TLL",
+        "currency_unit_ko": "유로",
+        "currency_code": "EUR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [25.013607, 58.595272] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "에콰도르",
+        "name_en": "Ecuador",
+        "iso2": "EC",
+        "iso3": "ECU",
+        "airport_name_ko": "마리스칼 수크레 국제공항",
+        "airport_code": "UIO",
+        "currency_unit_ko": "미국 달러",
+        "currency_code": "USD",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [-78.183406, -1.831239] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "에티오피아",
+        "name_en": "Ethiopia",
+        "iso2": "ET",
+        "iso3": "ETH",
+        "airport_name_ko": "아디스아바바 볼레 국제공항",
+        "airport_code": "ADD",
+        "currency_unit_ko": "비르",
+        "currency_code": "ETB",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [40.489673, 9.145] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "엘살바도르",
+        "name_en": "El Salvador",
+        "iso2": "SV",
+        "iso3": "SLV",
+        "airport_name_ko": "엘살바도르 국제공항",
+        "airport_code": "SAL",
+        "currency_unit_ko": "미국 달러 (비트코인도 법정화폐)",
+        "currency_code": "USD",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [-88.89653, 13.794185] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "영국",
+        "name_en": "United Kingdom",
+        "iso2": "GB",
+        "iso3": "GBR",
+        "airport_name_ko": "런던 히드로 공항",
+        "airport_code": "LHR",
+        "currency_unit_ko": "파운드 스털링",
+        "currency_code": "GBP",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [-3.435973, 55.378051] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "예멘",
+        "name_en": "Yemen",
+        "iso2": "YE",
+        "iso3": "YEM",
+        "airport_name_ko": "아덴 국제공항",
+        "airport_code": "ADE",
+        "currency_unit_ko": "예멘 리알",
+        "currency_code": "YER",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [48.516388, 15.552727] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "오만",
+        "name_en": "Oman",
+        "iso2": "OM",
+        "iso3": "OMN",
+        "airport_name_ko": "무스카트 국제공항",
+        "airport_code": "MCT",
+        "currency_unit_ko": "오만 리알",
+        "currency_code": "OMR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [55.923255, 21.512583] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "오스트리아",
+        "name_en": "Austria",
+        "iso2": "AT",
+        "iso3": "AUT",
+        "airport_name_ko": "빈 국제공항",
+        "airport_code": "VIE",
+        "currency_unit_ko": "유로",
+        "currency_code": "EUR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [14.550072, 47.516231] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "온두라스",
+        "name_en": "Honduras",
+        "iso2": "HN",
+        "iso3": "HND",
+        "airport_name_ko": "팔메롤라 국제공항",
+        "airport_code": "XPL",
+        "currency_unit_ko": "렘피라",
+        "currency_code": "HNL",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-86.241905, 15.199999] }
+    },
+        {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "요르단",
+        "name_en": "Jordan",
+        "iso2": "JO",
+        "iso3": "JOR",
+        "airport_name_ko": "퀸 알리아 국제공항",
+        "airport_code": "AMM",
+        "currency_unit_ko": "요르단 디나르",
+        "currency_code": "JOD",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [36.238414, 30.585164] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "우간다",
+        "name_en": "Uganda",
+        "iso2": "UG",
+        "iso3": "UGA",
+        "airport_name_ko": "엔테베 국제공항",
+        "airport_code": "EBB",
+        "currency_unit_ko": "우간다 실링",
+        "currency_code": "UGX",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [32.290275, 1.373333] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "우루과이",
+        "name_en": "Uruguay",
+        "iso2": "UY",
+        "iso3": "URY",
+        "airport_name_ko": "카라스코 국제공항",
+        "airport_code": "MVD",
+        "currency_unit_ko": "우루과이 페소",
+        "currency_code": "UYU",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-56.164532, -32.522779] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "우즈베키스탄",
+        "name_en": "Uzbekistan",
+        "iso2": "UZ",
+        "iso3": "UZB",
+        "airport_name_ko": "타슈켄트 국제공항",
+        "airport_code": "TAS",
+        "currency_unit_ko": "숨",
+        "currency_code": "UZS",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [64.585262, 41.377491] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "우크라이나",
+        "name_en": "Ukraine",
+        "iso2": "UA",
+        "iso3": "UKR",
+        "airport_name_ko": "보리스필 국제공항 (전쟁으로 폐쇄)",
+        "airport_code": "KBP",
+        "currency_unit_ko": "흐리우냐",
+        "currency_code": "UAH",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [31.16558, 48.379433] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "이라크",
+        "name_en": "Iraq",
+        "iso2": "IQ",
+        "iso3": "IRQ",
+        "airport_name_ko": "바그다드 국제공항",
+        "airport_code": "BGW",
+        "currency_unit_ko": "이라크 디나르",
+        "currency_code": "IQD",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [43.679291, 33.223191] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "이란",
+        "name_en": "Iran",
+        "iso2": "IR",
+        "iso3": "IRN",
+        "airport_name_ko": "테헤란 이맘 호메이니 국제공항",
+        "airport_code": "IKA",
+        "currency_unit_ko": "리알",
+        "currency_code": "IRR",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [53.688046, 32.427908] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "이스라엘",
+        "name_en": "Israel",
+        "iso2": "IL",
+        "iso3": "ISR",
+        "airport_name_ko": "벤구리온 국제공항",
+        "airport_code": "TLV",
+        "currency_unit_ko": "신 셰켈",
+        "currency_code": "ILS",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [34.851612, 31.046051] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "이집트",
+        "name_en": "Egypt",
+        "iso2": "EG",
+        "iso3": "EGY",
+        "airport_name_ko": "카이로 국제공항",
+        "airport_code": "CAI",
+        "currency_unit_ko": "이집트 파운드",
+        "currency_code": "EGP",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [30.802498, 26.820553] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "이탈리아",
+        "name_en": "Italia",
+        "iso2": "IT",
+        "iso3": "ITA",
+        "airport_name_ko": "로마 피우미치노 공항",
+        "airport_code": "FCO",
+        "currency_unit_ko": "유로",
+        "currency_code": "EUR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [12.56738, 41.87194] }
+    },
+        {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "인도",
+        "name_en": "India",
+        "iso2": "IN",
+        "iso3": "IND",
+        "airport_name_ko": "인디라 간디 국제공항 (델리)",
+        "airport_code": "DEL",
+        "currency_unit_ko": "인도 루피",
+        "currency_code": "INR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [78.96288, 20.593684] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "인도네시아",
+        "name_en": "Indonesia",
+        "iso2": "ID",
+        "iso3": "IDN",
+        "airport_name_ko": "수카르노 하타 국제공항 (자카르타)",
+        "airport_code": "CGK",
+        "currency_unit_ko": "루피아",
+        "currency_code": "IDR",
+        "currency_trunc_unit": 100
+      },
+      "geometry": { "type": "Point", "coordinates": [113.921327, -0.789275] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "일본",
+        "name_en": "Japan",
+        "iso2": "JP",
+        "iso3": "JPN",
+        "airport_name_ko": "도쿄 하네다 공항 (또는 나리타 NRT)",
+        "airport_code": "HND",
+        "currency_unit_ko": "엔",
+        "currency_code": "JPY",
+        "currency_trunc_unit": 100
+      },
+      "geometry": { "type": "Point", "coordinates": [138.252924, 36.204824] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "자메이카",
+        "name_en": "Jamaica",
+        "iso2": "JM",
+        "iso3": "JAM",
+        "airport_name_ko": "샹스터 국제공항",
+        "airport_code": "MBJ",
+        "currency_unit_ko": "자메이카 달러",
+        "currency_code": "JMD",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-77.297508, 18.109581] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "잠비아",
+        "name_en": "Zambia",
+        "iso2": "ZM",
+        "iso3": "ZMB",
+        "airport_name_ko": "케네스 카운다 국제공항",
+        "airport_code": "LUN",
+        "currency_unit_ko": "콰차",
+        "currency_code": "ZMW",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [27.849332, -13.133897] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "적도기니",
+        "name_en": "Equatorial Guinea",
+        "iso2": "GQ",
+        "iso3": "GNQ",
+        "airport_name_ko": "말라보 국제공항",
+        "airport_code": "SSG",
+        "currency_unit_ko": "중앙아프리카 CFA 프랑",
+        "currency_code": "XAF",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [10.267895, 1.650801] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "조지아",
+        "name_en": "Georgia",
+        "iso2": "GE",
+        "iso3": "GEO",
+        "airport_name_ko": "트빌리시 국제공항",
+        "airport_code": "TBS",
+        "currency_unit_ko": "라리",
+        "currency_code": "GEL",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [43.356892, 42.315407] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "중국",
+        "name_en": "China",
+        "iso2": "CN",
+        "iso3": "CHN",
+        "airport_name_ko": "베이징 서우두 국제공항",
+        "airport_code": "PEK",
+        "currency_unit_ko": "위안 (런민비)",
+        "currency_code": "CNY",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [104.195397, 35.86166] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "중앙아프리카공화국",
+        "name_en": "Central African Republic",
+        "iso2": "CF",
+        "iso3": "CAF",
+        "airport_name_ko": "방기 음포코 국제공항",
+        "airport_code": "BGF",
+        "currency_unit_ko": "중앙아프리카 CFA 프랑",
+        "currency_code": "XAF",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [20.939444, 6.611111] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "지부티",
+        "name_en": "Djibouti",
+        "iso2": "DJ",
+        "iso3": "DJI",
+        "airport_name_ko": "지부티 암불리 국제공항",
+        "airport_code": "JIB",
+        "currency_unit_ko": "지부티 프랑",
+        "currency_code": "DJF",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [42.590275, 11.825138] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "짐바브웨",
+        "name_en": "Zimbabwe",
+        "iso2": "ZW",
+        "iso3": "ZWE",
+        "airport_name_ko": "로버트 가브리엘 무가베 국제공항",
+        "airport_code": "HRE",
+        "currency_unit_ko": "짐바브웨 골드 (ZiG) 및 USD",
+        "currency_code": "ZWG",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [29.154857, -19.015438] }
+    },
+        {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "차드",
+        "name_en": "Chad",
+        "iso2": "TD",
+        "iso3": "TCD",
+        "airport_name_ko": "은자메나 국제공항",
+        "airport_code": "NDJ",
+        "currency_unit_ko": "중앙아프리카 CFA 프랑",
+        "currency_code": "XAF",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [18.732207, 15.454166] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "체코",
+        "name_en": "Czech",
+        "iso2": "CZ",
+        "iso3": "CZE",
+        "airport_name_ko": "프라하 바츨라프 하벨 공항",
+        "airport_code": "PRG",
+        "currency_unit_ko": "코루나",
+        "currency_code": "CZK",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [15.472962, 49.817492] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "칠레",
+        "name_en": "Chile",
+        "iso2": "CL",
+        "iso3": "CHL",
+        "airport_name_ko": "아르투로 메리노 베니테스 공항",
+        "airport_code": "SCL",
+        "currency_unit_ko": "칠레 페소",
+        "currency_code": "CLP",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [-71.542969, -35.675147] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "카메룬",
+        "name_en": "Cameroon",
+        "iso2": "CM",
+        "iso3": "CMR",
+        "airport_name_ko": "두알라 국제공항",
+        "airport_code": "DLA",
+        "currency_unit_ko": "중앙아프리카 CFA 프랑",
+        "currency_code": "XAF",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [12.354722, 7.369722] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "카보베르데",
+        "name_en": "Cape Verde",
+        "iso2": "CV",
+        "iso3": "CPV",
+        "airport_name_ko": "아밀카르 카브랄 국제공항",
+        "airport_code": "SID",
+        "currency_unit_ko": "에스쿠도",
+        "currency_code": "CVE",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-23.605172, 16.5388] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "카자흐스탄",
+        "name_en": "Kazakhstan",
+        "iso2": "KZ",
+        "iso3": "KAZ",
+        "airport_name_ko": "알마티 국제공항",
+        "airport_code": "ALA",
+        "currency_unit_ko": "텡게",
+        "currency_code": "KZT",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [66.923684, 48.019573] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "카타르",
+        "name_en": "Qatar",
+        "iso2": "QA",
+        "iso3": "QAT",
+        "airport_name_ko": "하마드 국제공항",
+        "airport_code": "DOH",
+        "currency_unit_ko": "리얄",
+        "currency_code": "QAR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [51.183884, 25.354826] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "캄보디아",
+        "name_en": "Cambodia",
+        "iso2": "KH",
+        "iso3": "KHM",
+        "airport_name_ko": "프놈펜 국제공항",
+        "airport_code": "PNH",
+        "currency_unit_ko": "리엘 (USD 통용)",
+        "currency_code": "KHR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [104.990963, 12.565679] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "캐나다",
+        "name_en": "Canada",
+        "iso2": "CA",
+        "iso3": "CAN",
+        "airport_name_ko": "토론토 피어슨 국제공항",
+        "airport_code": "YYZ",
+        "currency_unit_ko": "캐나다 달러",
+        "currency_code": "CAD",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [-106.346771, 56.130366] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "케냐",
+        "name_en": "Kenya",
+        "iso2": "KE",
+        "iso3": "KEN",
+        "airport_name_ko": "조모 케냐타 국제공항",
+        "airport_code": "NBO",
+        "currency_unit_ko": "케냐 실링",
+        "currency_code": "KES",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [37.906193, -0.023559] }
+    },
+        {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "코모로",
+        "name_en": "Comoros",
+        "iso2": "KM",
+        "iso3": "COM",
+        "airport_name_ko": "프린스 사이드 이브라힘 국제공항",
+        "airport_code": "HAH",
+        "currency_unit_ko": "코모로 프랑",
+        "currency_code": "KMF",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [43.872219, -11.875001] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "코소보",
+        "name_en": "Kosovo",
+        "iso2": "XK",
+        "iso3": "XKX",
+        "airport_name_ko": "프리슈티나 국제공항",
+        "airport_code": "PRN",
+        "currency_unit_ko": "유로",
+        "currency_code": "EUR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [20.902977, 42.602636] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "코스타리카",
+        "name_en": "Costa Rica",
+        "iso2": "CR",
+        "iso3": "CRI",
+        "airport_name_ko": "후안 산타마리아 국제공항",
+        "airport_code": "SJO",
+        "currency_unit_ko": "콜론",
+        "currency_code": "CRC",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-83.753428, 9.748917] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "코트디부아르",
+        "name_en": "Côte D'Ivoire",
+        "iso2": "CI",
+        "iso3": "CIV",
+        "airport_name_ko": "펠릭스 우푸에 부아니 국제공항",
+        "airport_code": "ABJ",
+        "currency_unit_ko": "서아프리카 CFA 프랑",
+        "currency_code": "XOF",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-5.54708, 7.539989] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "콜롬비아",
+        "name_en": "Colombia",
+        "iso2": "CO",
+        "iso3": "COL",
+        "airport_name_ko": "엘도라도 국제공항",
+        "airport_code": "BOG",
+        "currency_unit_ko": "콜롬비아 페소",
+        "currency_code": "COP",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [-74.297333, 4.570868] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "콩고",
+        "name_en": "Congo",
+        "iso2": "CG",
+        "iso3": "COG",
+        "airport_name_ko": "마야마야 공항",
+        "airport_code": "BZV",
+        "currency_unit_ko": "중앙아프리카 CFA 프랑",
+        "currency_code": "XAF",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [15.827659, -0.228021] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "콩고민주공화국",
+        "name_en": "Democratic Republic of Congo",
+        "iso2": "CD",
+        "iso3": "COD",
+        "airport_name_ko": "은질리 국제공항",
+        "airport_code": "FIH",
+        "currency_unit_ko": "콩고 프랑",
+        "currency_code": "CDF",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [21.758664, -4.038333] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "쿠바",
+        "name_en": "Cuba",
+        "iso2": "CU",
+        "iso3": "CUB",
+        "airport_name_ko": "호세 마르티 국제공항",
+        "airport_code": "HAV",
+        "currency_unit_ko": "쿠바 페소",
+        "currency_code": "CUP",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-77.781167, 21.521757] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "쿠웨이트",
+        "name_en": "Kuwait",
+        "iso2": "KW",
+        "iso3": "KWT",
+        "airport_name_ko": "쿠웨이트 국제공항",
+        "airport_code": "KWI",
+        "currency_unit_ko": "쿠웨이트 디나르",
+        "currency_code": "KWD",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [47.481766, 29.31166] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "쿡제도",
+        "name_en": "Cook Islands",
+        "iso2": "CK",
+        "iso3": "COK",
+        "airport_name_ko": "라로통가 국제공항",
+        "airport_code": "RAR",
+        "currency_unit_ko": "뉴질랜드 달러",
+        "currency_code": "NZD",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [-159.777671, -21.236736] }
+    },
+        {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "크로아티아",
+        "name_en": "Croatia",
+        "iso2": "HR",
+        "iso3": "HRV",
+        "airport_name_ko": "자그레브 국제공항",
+        "airport_code": "ZAG",
+        "currency_unit_ko": "유로",
+        "currency_code": "EUR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [15.2, 45.1] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "키르기즈공화국",
+        "name_en": "Kyrgyz Republic",
+        "iso2": "KG",
+        "iso3": "KGZ",
+        "airport_name_ko": "마나스 국제공항",
+        "airport_code": "FRU",
+        "currency_unit_ko": "솜",
+        "currency_code": "KGS",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [74.766098, 41.20438] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "키리바시",
+        "name_en": "Kiribati",
+        "iso2": "KI",
+        "iso3": "KIR",
+        "airport_name_ko": "본리키 국제공항",
+        "airport_code": "TRW",
+        "currency_unit_ko": "호주 달러",
+        "currency_code": "AUD",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [172.979, 1.451] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "타지키스탄",
+        "name_en": "Tajikistan",
+        "iso2": "TJ",
+        "iso3": "TJK",
+        "airport_name_ko": "두샨베 국제공항",
+        "airport_code": "DYU",
+        "currency_unit_ko": "소모니",
+        "currency_code": "TJS",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [71.276093, 38.861034] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "탄자니아",
+        "name_en": "Tanzania",
+        "iso2": "TZ",
+        "iso3": "TZA",
+        "airport_name_ko": "줄리어스 니에레레 국제공항",
+        "airport_code": "DAR",
+        "currency_unit_ko": "탄자니아 실링",
+        "currency_code": "TZS",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [34.888822, -6.369028] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "태국",
+        "name_en": "Thailand",
+        "iso2": "TH",
+        "iso3": "THA",
+        "airport_name_ko": "수완나품 공항",
+        "airport_code": "BKK",
+        "currency_unit_ko": "바트",
+        "currency_code": "THB",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [100.992541, 15.870032] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "토고",
+        "name_en": "Togo",
+        "iso2": "TG",
+        "iso3": "TGO",
+        "airport_name_ko": "로메 공항 (그나싱베 에야데마)",
+        "airport_code": "LFW",
+        "currency_unit_ko": "서아프리카 CFA 프랑",
+        "currency_code": "XOF",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [0.824782, 8.619543] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "통가",
+        "name_en": "Tonga",
+        "iso2": "TO",
+        "iso3": "TON",
+        "airport_name_ko": "푸아모투 국제공항",
+        "airport_code": "TBU",
+        "currency_unit_ko": "파앙가",
+        "currency_code": "TOP",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-175.198242, -21.178986] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "투르크메니스탄",
+        "name_en": "Turkmenistan",
+        "iso2": "TM",
+        "iso3": "TKM",
+        "airport_name_ko": "아슈가바트 국제공항",
+        "airport_code": "ASB",
+        "currency_unit_ko": "마나트",
+        "currency_code": "TMT",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [59.556278, 38.969719] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "투발루",
+        "name_en": "Tuvalu",
+        "iso2": "TV",
+        "iso3": "TUV",
+        "airport_name_ko": "푸나푸티 국제공항",
+        "airport_code": "FUN",
+        "currency_unit_ko": "호주 달러",
+        "currency_code": "AUD",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [179.216647, -8.517193] }
+    },
+        {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "튀니지",
+        "name_en": "Tunisia",
+        "iso2": "TN",
+        "iso3": "TUN",
+        "airport_name_ko": "튀니스 카르타고 국제공항",
+        "airport_code": "TUN",
+        "currency_unit_ko": "튀니지 디나르",
+        "currency_code": "TND",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [9.537499, 33.886917] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "튀르키예",
+        "name_en": "Republic of Turkiye",
+        "iso2": "TR",
+        "iso3": "TUR",
+        "airport_name_ko": "이스탄불 공항",
+        "airport_code": "IST",
+        "currency_unit_ko": "리라",
+        "currency_code": "TRY",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [35.243322, 38.963745] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "트리니다드토바고",
+        "name_en": "Trinidad & Tobago",
+        "iso2": "TT",
+        "iso3": "TTO",
+        "airport_name_ko": "피아르코 국제공항",
+        "airport_code": "POS",
+        "currency_unit_ko": "트리니다드 토바고 달러",
+        "currency_code": "TTD",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-61.222503, 10.691803] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "파나마",
+        "name_en": "Panama",
+        "iso2": "PA",
+        "iso3": "PAN",
+        "airport_name_ko": "토쿠멘 국제공항",
+        "airport_code": "PTY",
+        "currency_unit_ko": "발보아 (미국 달러 통용)",
+        "currency_code": "PAB",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-80.782127, 8.537981] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "파라과이",
+        "name_en": "Paraguay",
+        "iso2": "PY",
+        "iso3": "PRY",
+        "airport_name_ko": "실비오 페티로시 국제공항",
+        "airport_code": "ASU",
+        "currency_unit_ko": "과라니",
+        "currency_code": "PYG",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-58.443832, -23.442503] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "파키스탄",
+        "name_en": "Pakistan",
+        "iso2": "PK",
+        "iso3": "PAK",
+        "airport_name_ko": "진나 국제공항 (카라치)",
+        "airport_code": "KHI",
+        "currency_unit_ko": "파키스탄 루피",
+        "currency_code": "PKR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [69.345116, 30.375321] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "파푸아뉴기니",
+        "name_en": "Papua New Guinea",
+        "iso2": "PG",
+        "iso3": "PNG",
+        "airport_name_ko": "잭슨 국제공항",
+        "airport_code": "POM",
+        "currency_unit_ko": "키나",
+        "currency_code": "PGK",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [143.95555, -6.314993] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "팔라우",
+        "name_en": "Palau",
+        "iso2": "PW",
+        "iso3": "PLW",
+        "airport_name_ko": "로만 트메투출 국제공항",
+        "airport_code": "ROR",
+        "currency_unit_ko": "미국 달러",
+        "currency_code": "USD",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [134.58252, 7.51498] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "팔레스타인",
+        "name_en": "Palestine",
+        "iso2": "PS",
+        "iso3": "PSE",
+        "airport_name_ko": "(공항 없음, 요르단 AMM / 이스라엘 TLV 이용)",
+        "airport_code": "-",
+        "currency_unit_ko": "이스라엘 셰켈 / 요르단 디나르",
+        "currency_code": "ILS",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [35.2332, 31.9522] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "페루",
+        "name_en": "Peru",
+        "iso2": "PE",
+        "iso3": "PER",
+        "airport_name_ko": "호르헤 차베스 국제공항",
+        "airport_code": "LIM",
+        "currency_unit_ko": "솔",
+        "currency_code": "PEN",
+        "currency_trunc_unit": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-75.015152, -9.189967] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "포르투갈",
+        "name_en": "Portugal",
+        "iso2": "PT",
+        "iso3": "PRT",
+        "airport_name_ko": "리스본 공항",
+        "airport_code": "LIS",
+        "currency_unit_ko": "유로",
+        "currency_code": "EUR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [-8.224454, 39.399872] }
+    },
+        {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "폴란드",
+        "name_en": "Poland",
+        "iso2": "PL",
+        "iso3": "POL",
+        "airport_name_ko": "바르샤바 쇼팽 공항",
+        "airport_code": "WAW",
+        "currency_unit_ko": "즈워티",
+        "currency_code": "PLN",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [19.145136, 51.919438] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "프랑스",
+        "name_en": "France",
+        "iso2": "FR",
+        "iso3": "FRA",
+        "airport_name_ko": "파리 샤를 드 골 공항",
+        "airport_code": "CDG",
+        "currency_unit_ko": "유로",
+        "currency_code": "EUR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [2.213749, 46.227638] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "피지",
+        "name_en": "Fiji",
+        "iso2": "FJ",
+        "iso3": "FJI",
+        "airport_name_ko": "나디 국제공항",
+        "airport_code": "NAN",
+        "currency_unit_ko": "피지 달러",
+        "currency_code": "FJD",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [179.414413, -16.578193] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "핀란드",
+        "name_en": "Finland",
+        "iso2": "FI",
+        "iso3": "FIN",
+        "airport_name_ko": "헬싱키 반타 공항",
+        "airport_code": "HEL",
+        "currency_unit_ko": "유로",
+        "currency_code": "EUR",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [25.748151, 61.92411] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "필리핀",
+        "name_en": "Philippines",
+        "iso2": "PH",
+        "iso3": "PHL",
+        "airport_name_ko": "니노이 아키노 국제공항",
+        "airport_code": "MNL",
+        "currency_unit_ko": "필리핀 페소",
+        "currency_code": "PHP",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [121.774017, 12.879721] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "헝가리",
+        "name_en": "Hungary",
+        "iso2": "HU",
+        "iso3": "HUN",
+        "airport_name_ko": "부다페스트 리스트 페렌츠 공항",
+        "airport_code": "BUD",
+        "currency_unit_ko": "포린트",
+        "currency_code": "HUF",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [19.503304, 47.162494] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "호주",
+        "name_en": "Australia",
+        "iso2": "AU",
+        "iso3": "AUS",
+        "airport_name_ko": "시드니 킹스포드 스미스 공항",
+        "airport_code": "SYD",
+        "currency_unit_ko": "호주 달러",
+        "currency_code": "AUD",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [133.775136, -25.274398] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "홍콩",
+        "name_en": "Hongkong",
+        "iso2": "HK",
+        "iso3": "HKG",
+        "airport_name_ko": "홍콩 국제공항 (첵랍콕)",
+        "airport_code": "HKG",
+        "currency_unit_ko": "홍콩 달러",
+        "currency_code": "HKD",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [114.1095, 22.3964] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "대한민국",
+        "name_en": "South Korea",
+        "iso2": "KR",
+        "iso3": "KOR",
+        "airport_name_ko": "인천 국제공항",
+        "airport_code": "ICN",
+        "currency_unit_ko": "원",
+        "currency_code": "KRW",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [127.7669, 35.9078] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_ko": "북한",
+        "name_en": "North Korea",
+        "iso2": "KP",
+        "iso3": "PRK",
+        "airport_name_ko": "평양 순안 국제공항",
+        "airport_code": "FNJ",
+        "currency_unit_ko": "북한 원",
+        "currency_code": "KPW",
+        "currency_trunc_unit": 1
+      },
+      "geometry": { "type": "Point", "coordinates": [127.510093, 40.339852] }
+    }
+  ]
+}
+
+
+
+
+
+
+
+
+
+
+
+
