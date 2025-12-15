@@ -4,8 +4,7 @@
 
     <div class="content">
       <div class="left-column">
-        <PopularList />
-        <ExchangeList />
+        <LeftPanel />
       </div>
 
       <!-- 지도와 패널을 나란히 배치하는 래퍼 -->
@@ -27,8 +26,7 @@
 <script setup>
 import { ref } from "vue";
 import HeaderBar from "@/components/common/HeaderBar.vue";
-import PopularList from "@/components/home/PopularList.vue";
-import ExchangeList from "@/components/home/ExchangeList.vue";
+import LeftPanel from "@/components/home/LeftPanel.vue";
 import WorldMapView from "@/components/home/WorldMapView.vue";
 import CountryDetailPanel from "@/components/home/CountryDetailPanel.vue";
 

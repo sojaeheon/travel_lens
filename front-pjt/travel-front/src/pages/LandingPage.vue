@@ -17,7 +17,7 @@
 <script setup>
 </script>
 
-<style scoped>
+
 <style scoped>
 .landing {
   width: 100vw;
