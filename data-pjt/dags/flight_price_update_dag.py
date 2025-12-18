@@ -12,39 +12,54 @@ POSTGRES_CONN_ID = "travel_postgres"
 
 def update_flight_prices():
     hook = PostgresHook(postgres_conn_id=POSTGRES_CONN_ID)
+    conn = hook.get_conn()
+    conn.autocommit = False
 
-    # ✅ 수정: currency 테이블과 조인
-    airports = hook.get_records(
-        """
-        SELECT a.id, a.airport_code_iata
-        FROM airport a
-        INNER JOIN country c ON a.iso2 = c.iso2
-        INNER JOIN currency curr ON c.iso2 = curr.iso2
-        WHERE a.airport_code_iata IS NOT NULL
-        AND (
-            curr.currency_code = 'EUR'
-            OR curr.currency_krw_unit IS NOT NULL  -- 네이버 환율 업데이트된 통화
+    # 1) target_country의 77개 국가에 해당하는 공항 정보 조회
+    with conn.cursor() as cur:
+        cur.execute(
+            """
+            SELECT DISTINCT iso2, airport_code_iata, airport_name_ko
+            FROM flight_history
+            """
         )
-        """
-    )
+        airports = cur.fetchall()
+    
+    print(f"[INFO] DB에서 {len(airports)}개 공항 조회")
 
     target_date = date.today().isoformat()
-    updated_count = 0
+    insert_rows = []
 
-    for airport_id, airport_code in airports:
+    for iso2, airport_code, airport_name_ko in airports:
         price = get_lowest_price(airport_code, origin_airport_code="ICN", target_date=target_date)
 
         if price is None:
+            print(f"[SKIP] {airport_code}: 가격 없음")
             continue
 
-        hook.run(
-            "UPDATE airport SET flight_price = %s WHERE id = %s",
-            parameters=(price, airport_id),
-        )
+        insert_rows.append((iso2, airport_name_ko, airport_code, price, target_date))
+        print(f"[OK] {iso2} ({airport_code}): {price} KRW")
 
         time.sleep(0.12)
 
-    print(f"[INFO] Updated {updated_count} flight prices")
+    if not insert_rows:
+        print("[INFO] No prices to insert.")
+        return
+
+    # 2) flight_history에 INSERT
+    with conn.cursor() as cur:
+        cur.executemany(
+            """
+            INSERT INTO flight_history (iso2, airport_name_ko, airport_code_iata, flight_price, recorded_date)
+            VALUES (%s, %s, %s, %s, %s)
+            ON CONFLICT (iso2, airport_code_iata, recorded_date) DO UPDATE
+            SET flight_price = EXCLUDED.flight_price
+            """,
+            insert_rows,
+        )
+    conn.commit()
+    conn.close()
+    print(f"[INFO] Inserted {len(insert_rows)} flight price history rows.")
 
 
 default_args = {
@@ -57,7 +72,7 @@ with DAG(
     dag_id="update_flight_price_daily",
     default_args=default_args,
     start_date=datetime(2025, 1, 1),
-    schedule_interval="0 3 * * *",
+    schedule_interval="0 3 * * *",  # 매일 새벽 3시
     catchup=False,
 ) as dag:
     update_prices = PythonOperator(
