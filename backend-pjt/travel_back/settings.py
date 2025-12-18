@@ -52,6 +52,12 @@ INSTALLED_APPS = [
 
     # 생성한 앱
     'accounts',
+    'analytics',
+    'chat',
+    'chatbot',
+    'content',
+    'interaction',
+    'travel',
 
     # 설치한 라이브러리
     'rest_framework',

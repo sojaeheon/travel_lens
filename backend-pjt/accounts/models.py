@@ -33,7 +33,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50,unique=True)
     email = models.EmailField(unique=True)
-    password = models.CharField(max_length=128)
+    # 이미 AbstractBaseUser에 password에 대한 필드가 존재, 중복 방지로 삭제
+    # password = models.CharField(max_length=128)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
