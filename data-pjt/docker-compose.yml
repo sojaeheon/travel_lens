@@ -1,0 +1,294 @@
+version: "3.9"
+
+services:
+  ###############################
+  # DB (PostgreSQL) - 작업용
+  ###############################
+  db:
+    image: postgres:16
+    container_name: travellens-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      TZ: Asia/Seoul
+    volumes:
+      - ./postgres-init:/docker-entrypoint-initdb.d
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - travel-net
+
+  ###############################
+  # Zookeeper
+  ###############################
+  zookeeper:
+    container_name: zookeeper
+    image: confluentinc/cp-zookeeper:7.5.0
+    restart: unless-stopped
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - travel-net
+
+  ###############################
+  # Kafka
+  ###############################
+  kafka:
+    container_name: kafka
+    image: confluentinc/cp-kafka:7.5.0
+    restart: unless-stopped
+    ports:
+      - "9092:9092"    # docker 내부용
+      - "29092:29092"  # 호스트에서 접속
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,PLAINTEXT_HOST://0.0.0.0:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+    networks:
+      - travel-net
+
+  ###############################
+  # Airflow 메타데이터용 PostgreSQL
+  ###############################
+  airflow-db:
+    image: postgres:16
+    container_name: airflow-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    volumes:
+      - airflow-db-data:/var/lib/postgresql/data
+    networks:
+      - travel-net
+
+  ###############################
+  # Airflow 초기화 (1회 실행)
+  ###############################
+  airflow-init:
+    image: apache/airflow:2.10.0
+    container_name: airflow-init
+    entrypoint: /bin/bash
+    command:
+      - -c
+      - |
+        airflow db upgrade
+        airflow users create \
+          --username ${_AIRFLOW_WWW_USER_USERNAME:-airflow} \
+          --firstname Admin \
+          --lastname User \
+          --role Admin \
+          --email admin@example.com \
+          --password ${_AIRFLOW_WWW_USER_PASSWORD:-airflow}
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow-db:5432/airflow
+      AIRFLOW__CORE__FERNET_KEY: ""
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "true"
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW_UID: ${AIRFLOW_UID:-50000}
+      _PIP_ADDITIONAL_REQUIREMENTS: "amadeus==12.0.0"
+      AMADEUS_CLIENT_ID: ${AMADEUS_CLIENT_ID}
+      AMADEUS_CLIENT_SECRET: ${AMADEUS_CLIENT_SECRET}
+      SERVICE_KEY: ${SERVICE_KEY}
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./plugins:/opt/airflow/plugins
+      - ./scripts:/opt/airflow/scripts   # travel_*.py 넣을 폴더
+    depends_on:
+      - airflow-db
+    networks:
+      - travel-net
+
+  ###############################
+  # Airflow Webserver
+  ###############################
+  airflow-webserver:
+    image: apache/airflow:2.10.0
+    container_name: airflow-webserver
+    command: webserver
+    restart: unless-stopped
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow-db:5432/airflow
+      AIRFLOW__CORE__FERNET_KEY: ""
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "true"
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW_CONN_TRAVEL_POSTGRES: ${AIRFLOW_CONN_TRAVEL_POSTGRES}
+      AIRFLOW_UID: ${AIRFLOW_UID:-50000}
+      _PIP_ADDITIONAL_REQUIREMENTS: "amadeus==12.0.0"
+      AMADEUS_CLIENT_ID: ${AMADEUS_CLIENT_ID}
+      AMADEUS_CLIENT_SECRET: ${AMADEUS_CLIENT_SECRET}
+      SERVICE_KEY: ${SERVICE_KEY}
+    ports:
+      - "8080:8080"        # Airflow UI
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./plugins:/opt/airflow/plugins
+      - ./scripts:/opt/airflow/scripts
+    depends_on:
+      - airflow-db
+      - airflow-init
+      - db
+      - kafka
+    networks:
+      - travel-net
+
+  ###############################
+  # Airflow Scheduler
+  ###############################
+  airflow-scheduler:
+    image: apache/airflow:2.10.0
+    container_name: airflow-scheduler
+    command: scheduler
+    restart: unless-stopped
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow-db:5432/airflow
+      AIRFLOW__CORE__FERNET_KEY: ""
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "true"
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW_CONN_TRAVEL_POSTGRES: ${AIRFLOW_CONN_TRAVEL_POSTGRES}
+      AIRFLOW_UID: ${AIRFLOW_UID:-50000}
+      _PIP_ADDITIONAL_REQUIREMENTS: "amadeus==12.0.0"
+      AMADEUS_CLIENT_ID: ${AMADEUS_CLIENT_ID}
+      AMADEUS_CLIENT_SECRET: ${AMADEUS_CLIENT_SECRET}
+      SERVICE_KEY: ${SERVICE_KEY}
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./plugins:/opt/airflow/plugins
+      - ./scripts:/opt/airflow/scripts
+    depends_on:
+      - airflow-db
+      - airflow-init
+    networks:
+      - travel-net
+
+  ###############################
+  # Travel Blogs Producer/Consumer
+  ###############################
+
+  blog-producer:
+    build:
+      context: .
+      dockerfile: Dockerfile.blog
+    container_name: blog-producer
+    working_dir: /app
+    volumes:
+      - ./scripts:/app/scripts
+      - ./.env:/app/.env
+    environment:
+      KAFKA_BROKER: ${KAFKA_BROKER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      NAVER_CLIENT_ID: ${NAVER_CLIENT_ID}
+      NAVER_CLIENT_SECRET: ${NAVER_CLIENT_SECRET}
+    command: ["python", "scripts/producer/travel_blog_producer.py"]
+    depends_on:
+      - kafka
+      - db
+    networks:
+      - travel-net
+
+  blog-consumer:
+    build:
+      context: .
+      dockerfile: Dockerfile.blog
+    container_name: blog-consumer
+    working_dir: /app
+    volumes:
+      - ./scripts:/app/scripts
+      - ./.env:/app/.env
+    environment:
+      KAFKA_BROKER: ${KAFKA_BROKER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      NAVER_CLIENT_ID: ${NAVER_CLIENT_ID}
+      NAVER_CLIENT_SECRET: ${NAVER_CLIENT_SECRET}
+    command: ["python", "scripts/consumer/travel_blog_consumer.py"]
+    depends_on:
+      - kafka
+      - db
+    networks:
+      - travel-net
+
+  ###############################
+  # Travel News Producer/Consumer
+  ###############################
+
+  news-producer:
+    build:
+      context: .
+      dockerfile: Dockerfile.blog  
+    container_name: news-producer
+    working_dir: /app
+    volumes:
+      - ./scripts:/app/scripts
+      - ./.env:/app/.env
+    environment:
+      KAFKA_BROKER: ${KAFKA_BROKER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      # 뉴스 관련 환경변수 필요하면 여기 추가 (예: NEWS_KEYWORDS 등)
+    command: ["python", "scripts/producer/travel_news_producer.py"]
+    depends_on:
+      - kafka
+      - db
+    networks:
+      - travel-net
+
+  news-consumer:
+    build:
+      context: .
+      dockerfile: Dockerfile.blog      # 동일 이미지 사용
+    container_name: news-consumer
+    working_dir: /app
+    volumes:
+      - ./scripts:/app/scripts
+      - ./.env:/app/.env
+    environment:
+      KAFKA_BROKER: ${KAFKA_BROKER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+    command: ["python", "scripts/consumer/travel_news_consumer.py"]
+    depends_on:
+      - kafka
+      - db
+    networks:
+      - travel-net
+
+volumes:
+  postgres-data:
+  airflow-db-data:
+
+networks:
+  travel-net:
+    driver: bridge
