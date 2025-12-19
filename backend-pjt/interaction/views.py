@@ -45,6 +45,7 @@ class UserEventCreateView(APIView):
 
     def post(self, request):
         # 1️⃣ 입력값 검증
+        print(request.data)
         serializer = UserEventCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 

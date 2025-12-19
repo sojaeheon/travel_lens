@@ -102,7 +102,7 @@ onMounted(async () => {
       if (!features.length) return;
 
       const props = features[0].properties;
-      const iso2 = props.iso_a2; // ⭐ 반드시 ISO2
+      const iso2 = props.iso2; // ⭐ 반드시 ISO2
 
       // 🔥 Django 로그 전송
       sendLog({

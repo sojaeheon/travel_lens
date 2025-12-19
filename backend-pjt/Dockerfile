@@ -1,21 +1,21 @@
 FROM python:3.11-slim
 
-# 환경 변수 설정
-# 이 설정은 python이 .pyc 파일(파이썬 바이트코드 파일)을 생성하지 않도록 한다
-ENV PYTHONDONTWRITEBYTECODE 1
-# 이 설정은 python이 출력하는 내용(print()문의 결과)을 버퍼링(buffering)하지 않도록 만듦
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
+COPY . /app
 
-COPY . /app/
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
-RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
-RUN chmod +x /app/entrypoint.sh
+RUN apt-get update \
+    && apt-get install -y dos2unix postgresql-client \
+    && pip install --no-cache-dir -r requirements.txt \
+    && dos2unix /usr/local/bin/entrypoint.sh \
+    && chmod +x /usr/local/bin/entrypoint.sh \
+    && rm -rf /var/lib/apt/lists/*
 
-ENTRYPOINT ["/app/entrypoint.sh"]
+ENTRYPOINT ["entrypoint.sh"]
+CMD ["python","manage.py","runserver","0.0.0.0:8000"]
 
 EXPOSE 8000
-
-CMD ["python","manage.py","runserver","0.0.0.0:8000"]
