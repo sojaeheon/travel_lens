@@ -46,5 +46,10 @@ urlpatterns = [
     # 서버 관련 URL
     # ================================
     path('admin/', admin.site.urls),
+    
+    # ================================
+    # 앱 관련 URL
+    # ================================
     path('accounts/',include('accounts.urls')),
+    path("interaction/", include("interaction.urls")),
 ]

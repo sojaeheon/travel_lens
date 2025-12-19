@@ -1,32 +1,84 @@
 <script setup>
-import { ref, computed, watch } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import likeIcon from "@/assets/like_btn.png";
 import unlikeIcon from "@/assets/unlike_btn.png";
+import { sendLog } from "@/api/log";
 
 const props = defineProps({
   country: {
     type: Object,
-    default: () => ({ name_ko: "대한민국", name_en: "KOREA" })
-  }
+    default: () => ({
+      name_ko: "대한민국",
+      name_en: "KOREA",
+      iso: "KR", // ⭐ ISO2 기본값
+    }),
+  },
 });
+
+const emit = defineEmits(["close"]);
 
 const tabs = ["뉴스", "블로그", "출입국"];
 const currentTab = ref("뉴스");
 
-// ⭐ 국가별 좋아요 상태 저장용 Map
-const likedMap = ref({});
-
-// ⭐ 현재 패널에 표시할 국가의 좋아요 상태 (computed)
-const isLiked = computed(() => {
-  return likedMap.value[props.country.name_ko] || false;
+// ==================================================
+// ⭐ ISO 코드 안전 처리 (ISO3 → ISO2 방지)
+// ==================================================
+const iso2 = computed(() => {
+  const code = props.country.iso || "";
+  return code.length === 2
+    ? code.toUpperCase()
+    : code.slice(0, 2).toUpperCase();
 });
 
-// ⭐ 좋아요 토글
+// ==================================================
+// ⭐ 국가별 좋아요 상태 (UI 전용)
+// ==================================================
+const likedMap = ref({});
+
+const isLiked = computed(() => {
+  return likedMap.value[iso2.value] || false;
+});
+
+// ==================================================
+// ⏱ 체류 시간 측정
+// ==================================================
+let enterTime = 0;
+
+// ⭐ 패널 열림 → view 로그
+onMounted(() => {
+  enterTime = Date.now();
+
+  sendLog({
+    event_type: "country_detail_open",
+    country_code: iso2.value,
+  });
+});
+
+// ⭐ 패널 닫힘 → dwell 로그
+onBeforeUnmount(() => {
+  const durationSec = (Date.now() - enterTime) / 1000;
+
+  sendLog({
+    event_type: "country_detail_stay",
+    country_code: iso2.value,
+    value: Number(durationSec.toFixed(2)), // DecimalField 대응
+  });
+});
+
+// ==================================================
+// ❤️ 좋아요 토글 → favorite 로그
+// ==================================================
 const toggleLike = () => {
-  likedMap.value[props.country.name_ko] = !isLiked.value;
+  const next = !isLiked.value;
+  likedMap.value[iso2.value] = next;
+
+  sendLog({
+    event_type: "country_like_toggle",
+    country_code: iso2.value,
+    value: next ? 1 : 0, // ⭐ boolean → number (400 에러 방지)
+  });
 };
 </script>
-
 
 <template>
   <aside class="panel">
@@ -36,15 +88,22 @@ const toggleLike = () => {
           <div class="country">{{ props.country.name_ko }}</div>
 
           <!-- 이미지 좋아요 버튼 -->
-          <button class="like-btn" :class="{ liked: isLiked }" @click="toggleLike">
-            <img :src="isLiked ? likeIcon : unlikeIcon" class="like-img" />
+          <button
+            class="like-btn"
+            :class="{ liked: isLiked }"
+            @click="toggleLike"
+          >
+            <img
+              :src="isLiked ? likeIcon : unlikeIcon"
+              class="like-img"
+            />
           </button>
         </div>
 
         <div class="en">{{ props.country.name_en }}</div>
       </div>
 
-      <button class="close-btn" @click="$emit('close')">✕</button>
+      <button class="close-btn" @click="emit('close')">✕</button>
     </header>
 
     <!-- 탭 -->
@@ -62,7 +121,9 @@ const toggleLike = () => {
     <!-- 뉴스 탭 -->
     <div class="news-list" v-if="currentTab === '뉴스'">
       <div v-for="n in 4" :key="n" class="news-card">
-        <div class="title">[안전] {{ props.country.name_ko }} 관련 최신 뉴스 {{ n }}</div>
+        <div class="title">
+          [안전] {{ props.country.name_ko }} 관련 최신 뉴스 {{ n }}
+        </div>
         <div class="meta">2025-12-01 · 한국관광공사</div>
       </div>
 
@@ -138,7 +199,7 @@ const toggleLike = () => {
 }
 
 /* ----------------------------------------------------- */
-/* ❤️ 좋아요 이미지 버튼 (버튼처럼 자연스럽게 표현) */
+/* ❤️ 좋아요 이미지 버튼 */
 /* ----------------------------------------------------- */
 .like-btn {
   width: 34px;
@@ -147,11 +208,9 @@ const toggleLike = () => {
   border: none;
   background: #f2f2f7;
   cursor: pointer;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
   transition: transform 0.2s, background 0.2s;
 }
 
@@ -166,7 +225,7 @@ const toggleLike = () => {
 .like-img {
   width: 18px;
   height: 18px;
-  pointer-events: none; /* 이미지가 클릭을 막지 않도록 */
+  pointer-events: none;
 }
 
 /* ----------------------------------------------------- */
