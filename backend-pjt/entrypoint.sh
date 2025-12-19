@@ -9,5 +9,12 @@ done
 echo "🚀 Running migrations..."
 python manage.py migrate --noinput
 
+echo "🌍 Loading travel seed data..."
+python manage.py load_travel_seed
+
+echo "📰 Loading content seed..."
+python manage.py load_content_seed
+
+
 echo "🎉 Starting Django server..."
 exec "$@"
