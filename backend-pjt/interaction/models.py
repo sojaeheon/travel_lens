@@ -47,7 +47,7 @@ class UserEvent(models.Model):
         ("dwell", "Dwell"),      # 체류 시간
     )
 
-    # 로그인한 사용자 (비로그인 사용자는 null 허용)
+    # 로그인한 사용자 (비로그인 사용자는 null 
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         null=True,              # ⭐ 익명 로그 허용
