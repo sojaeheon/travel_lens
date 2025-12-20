@@ -79,6 +79,22 @@ REST_FRAMEWORK = {
     ),
 }
 
+
+SWAGGER_SETTINGS = {
+    "SECURITY_DEFINITIONS": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header",
+            "description": (
+                "JWT Authorization header using the Bearer scheme.\n\n"
+                "Enter: Bearer <your_access_token>"
+            ),
+        }
+    },
+    "USE_SESSION_AUTH": False,  # ⭐ 중요 (Basic 숨김)
+}
+
 AUTH_USER_MODEL = "accounts.User"
 
 # JWT 설정

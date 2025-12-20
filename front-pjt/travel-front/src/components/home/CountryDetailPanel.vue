@@ -5,7 +5,6 @@ import unlikeIcon from "@/assets/unlike_btn.png";
 import { sendLog } from "@/api/log";
 import { fetchFavoriteStatus as fetchFavoriteStatusApi } from "@/api/favorite";
 
-
 const props = defineProps({
   country: {
     type: Object,
@@ -17,6 +16,13 @@ const emit = defineEmits(["close"]);
 
 const tabs = ["뉴스", "블로그", "출입국"];
 const currentTab = ref("뉴스");
+
+// ==================================================
+// ⭐ 로그인 여부 (SimpleJWT 기준)
+// ==================================================
+const isAuthenticated = computed(() => {
+  return !!localStorage.getItem("access"); // 🔥 핵심 수정
+});
 
 // ==================================================
 // ⭐ ISO2 코드 계산
@@ -36,11 +42,15 @@ const loadingLike = ref(false);
 
 // 👉 찜 상태 조회 API
 const fetchFavoriteStatus = async () => {
+  if (!isAuthenticated.value) {
+    isLiked.value = false;
+    return;
+  }
+
   try {
     const res = await fetchFavoriteStatusApi(iso2.value);
-
     isLiked.value = res.data.is_favorited;
-  } catch (err) {
+  } catch {
     isLiked.value = false;
   }
 };
@@ -56,14 +66,12 @@ let enterTime = 0;
 onMounted(async () => {
   enterTime = Date.now();
 
-  // 상세 열림 로그
+  // 상세 열림 로그 (비로그인도 수집)
   sendLog({
     event_type: "country_detail_open",
     country_code: iso2.value,
   });
 
-  
-  // 찜 상태 조회
   await fetchFavoriteStatus();
 });
 
@@ -81,17 +89,20 @@ onBeforeUnmount(() => {
 // ❤️ 좋아요 토글 (서버 기준)
 // ==================================================
 const toggleLike = async () => {
+  if (!isAuthenticated.value) {
+    alert("로그인 후 찜할 수 있습니다.");
+    return;
+  }
+
   if (loadingLike.value) return;
   loadingLike.value = true;
 
   try {
-    // 서버 기준 토글 → value 필요 없음
     await sendLog({
       event_type: "country_like_toggle",
       country_code: iso2.value,
     });
 
-    // 서버 상태 다시 조회
     await fetchFavoriteStatus();
   } finally {
     loadingLike.value = false;
@@ -116,8 +127,9 @@ watch(
         <div class="country-row">
           <div class="country">{{ props.country.name_ko }}</div>
 
-          <!-- ❤️ 좋아요 버튼 -->
+          <!-- ❤️ 좋아요 버튼 (로그인 사용자만) -->
           <button
+            v-if="isAuthenticated"
             class="like-btn"
             :class="{ liked: isLiked }"
             :disabled="loadingLike"
@@ -148,7 +160,7 @@ watch(
       </button>
     </nav>
 
-    <!-- 뉴스 탭 -->
+    <!-- 뉴스 -->
     <div class="news-list" v-if="currentTab === '뉴스'">
       <div v-for="n in 4" :key="n" class="news-card">
         <div class="title">
@@ -183,6 +195,7 @@ watch(
     </section>
   </aside>
 </template>
+
 
 <style scoped>
 /* 패널 전체 */
