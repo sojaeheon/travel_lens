@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -82,18 +82,46 @@ class UserEventCreateView(APIView):
 
         # 6️⃣ 좋아요 이벤트면 FavoriteCountry 테이블도 동기화
         if raw_event_type == "country_like_toggle" and user:
-            if value:
-                # 좋아요
-                FavoriteCountry.objects.get_or_create(
-                    user=user,
-                    country=country
-                )
+            qs = FavoriteCountry.objects.filter(
+                user=user,
+                country=country
+            )
+
+            if qs.exists():
+                qs.delete()      # 이미 찜 → 취소
             else:
-                # 좋아요 취소
-                FavoriteCountry.objects.filter(
+                FavoriteCountry.objects.create(
                     user=user,
                     country=country
-                ).delete()
+                )                # 없으면 → 찜
 
         # 7️⃣ 응답 (비동기 로그 → 내용 반환 불필요)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class CountryFavoriteStatusAPIView(APIView):
+    """
+    특정 국가에 대한 찜 상태 조회
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, iso2):
+        # 1️⃣ 국가 존재 확인
+        try:
+            country = Country.objects.get(iso2=iso2)
+        except Country.DoesNotExist:
+            return Response(
+                {"detail": "Invalid country code"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # 2️⃣ 찜 여부 확인
+        is_favorited = FavoriteCountry.objects.filter(
+            user=request.user,
+            country=country
+        ).exists()
+        # 3️⃣ 응답
+        return Response(
+            {"is_favorited": is_favorited},
+            status=status.HTTP_200_OK
+        )

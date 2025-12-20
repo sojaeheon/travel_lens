@@ -1,20 +1,29 @@
 <template>
   <header class="header">
-    <!-- 로고 -->
-    <div class="logo-area" @click="$router.push('/home')">
-      <img src="/src/assets/logo.png" class="logo-icon" alt="logo" />
-      <span class="logo-title">Travel Lens</span>
+    <!-- ⭐ 좌측 영역 -->
+    <div class="left-section">
+      <!-- 메뉴 버튼 -->
+      <img
+        src="@/assets/menu_icon.png"
+        alt="menu"
+        class="menu-icon"
+        :class="{ active: isMenuOpen }"
+        @click="toggleMenu"
+      />
+
+      <!-- 로고 -->
+      <div class="logo-area" @click="$router.push('/home')">
+        <img src="/src/assets/logo.png" class="logo-icon" alt="logo" />
+        <span class="logo-title">Travel Lens</span>
+      </div>
     </div>
 
     <!-- 우측 네비 -->
     <div class="right-section">
-
-      <!-- 실시간 채팅방 -->
       <button class="chat-btn" @click="$router.push('/chat')">
         🧑‍🤝‍🧑 실시간 채팅방
       </button>
 
-      <!-- ⭐ 비회원 UI -->
       <template v-if="!isLoggedIn">
         <button class="auth-btn light" @click="$router.push('/login')">
           sign in
@@ -24,19 +33,16 @@
         </button>
       </template>
 
-      <!-- ⭐ 회원 UI -->
       <template v-else>
         <div class="profile-wrapper" @click="toggleDropdown">
           <div class="profile-icon">👤</div>
 
-          <!-- 드롭다운 -->
           <div v-if="dropdownOpen" class="dropdown">
             <div class="dropdown-item" @click="goMyPage">마이페이지</div>
             <div class="dropdown-item logout" @click="logout">로그아웃</div>
           </div>
         </div>
       </template>
-
     </div>
   </header>
 </template>
@@ -46,25 +52,35 @@ import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/store/user";
 
+/* emit 정의 */
+const emit = defineEmits(["toggle-left-panel"]);
+
 const router = useRouter();
 const userStore = useUserStore();
 
-// ⭐ 로그인 여부 — Pinia 구조대로 수정
+/* 로그인 여부 */
 const isLoggedIn = computed(() => userStore.isAuth);
 
-// 드롭다운 열기/닫기
+/* ⭐ 메뉴 열림 상태 */
+const isMenuOpen = ref(true);
+
+/* 메뉴 버튼 클릭 */
+const toggleMenu = () => {
+  isMenuOpen.value = !isMenuOpen.value;
+  emit("toggle-left-panel");
+};
+
+/* 드롭다운 */
 const dropdownOpen = ref(false);
 const toggleDropdown = () => {
   dropdownOpen.value = !dropdownOpen.value;
 };
 
-// 마이페이지 이동
 const goMyPage = () => {
   dropdownOpen.value = false;
   router.push("/mypage");
 };
 
-// 로그아웃 처리
 const logout = () => {
   userStore.logout();
   dropdownOpen.value = false;
@@ -73,27 +89,59 @@ const logout = () => {
 </script>
 
 <style scoped>
+/* 헤더 */
 .header {
   height: 72px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 40px;
+  padding: 0 30px;
   background: #fff;
   border-bottom: 1px solid #e5e5ea;
+}
+
+/* 좌측 */
+.left-section {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* ❌ 기본 상태 = 회색 */
+.menu-icon {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  background: #e5e5ea;          /* ⭐ 안 눌림 = 회색 */
+  transition: background 0.2s ease;
+}
+
+/* ✅ 눌린 상태 = 흰색 */
+.menu-icon.active {
+  background: #ffffff;
+}
+
+/* hover */
+.menu-icon:hover {
+  background: #f0f0f0;
 }
 
 /* 로고 */
 .logo-area {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 3px;
   cursor: pointer;
+  padding-left : 10px;
 }
+
 .logo-icon {
   width: 32px;
   height: 32px;
 }
+
 .logo-title {
   font-size: 22px;
   font-weight: 700;
@@ -121,9 +169,11 @@ const logout = () => {
   cursor: pointer;
   font-size: 14px;
 }
+
 .auth-btn.light {
   background: #e5e5ea;
 }
+
 .auth-btn.dark {
   background: #333;
   color: white;
@@ -134,6 +184,7 @@ const logout = () => {
   position: relative;
   cursor: pointer;
 }
+
 .profile-icon {
   width: 36px;
   height: 36px;
@@ -164,6 +215,7 @@ const logout = () => {
   font-size: 14px;
   cursor: pointer;
 }
+
 .dropdown-item:hover {
   background: #f5f5f5;
 }

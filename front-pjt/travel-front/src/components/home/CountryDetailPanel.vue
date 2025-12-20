@@ -1,17 +1,15 @@
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount, watch } from "vue";
 import likeIcon from "@/assets/like_btn.png";
 import unlikeIcon from "@/assets/unlike_btn.png";
 import { sendLog } from "@/api/log";
+import { fetchFavoriteStatus as fetchFavoriteStatusApi } from "@/api/favorite";
+
 
 const props = defineProps({
   country: {
     type: Object,
-    default: () => ({
-      name_ko: "대한민국",
-      name_en: "KOREA",
-      iso: "KR", // ⭐ ISO2 기본값
-    }),
+    required: true,
   },
 });
 
@@ -21,7 +19,7 @@ const tabs = ["뉴스", "블로그", "출입국"];
 const currentTab = ref("뉴스");
 
 // ==================================================
-// ⭐ ISO 코드 안전 처리 (ISO3 → ISO2 방지)
+// ⭐ ISO2 코드 계산
 // ==================================================
 const iso2 = computed(() => {
   const code = props.country.iso || "";
@@ -31,53 +29,84 @@ const iso2 = computed(() => {
 });
 
 // ==================================================
-// ⭐ 국가별 좋아요 상태 (UI 전용)
+// ❤️ 좋아요 상태 (서버 기준)
 // ==================================================
-const likedMap = ref({});
+const isLiked = ref(false);
+const loadingLike = ref(false);
 
-const isLiked = computed(() => {
-  return likedMap.value[iso2.value] || false;
-});
+// 👉 찜 상태 조회 API
+const fetchFavoriteStatus = async () => {
+  try {
+    const res = await fetchFavoriteStatusApi(iso2.value);
+
+    isLiked.value = res.data.is_favorited;
+  } catch (err) {
+    isLiked.value = false;
+  }
+};
 
 // ==================================================
 // ⏱ 체류 시간 측정
 // ==================================================
 let enterTime = 0;
 
-// ⭐ 패널 열림 → view 로그
-onMounted(() => {
+// ==================================================
+// 라이프사이클
+// ==================================================
+onMounted(async () => {
   enterTime = Date.now();
 
+  // 상세 열림 로그
   sendLog({
     event_type: "country_detail_open",
     country_code: iso2.value,
   });
+
+  
+  // 찜 상태 조회
+  await fetchFavoriteStatus();
 });
 
-// ⭐ 패널 닫힘 → dwell 로그
 onBeforeUnmount(() => {
   const durationSec = (Date.now() - enterTime) / 1000;
 
   sendLog({
     event_type: "country_detail_stay",
     country_code: iso2.value,
-    value: Number(durationSec.toFixed(2)), // DecimalField 대응
+    value: Number(durationSec.toFixed(2)),
   });
 });
 
 // ==================================================
-// ❤️ 좋아요 토글 → favorite 로그
+// ❤️ 좋아요 토글 (서버 기준)
 // ==================================================
-const toggleLike = () => {
-  const next = !isLiked.value;
-  likedMap.value[iso2.value] = next;
+const toggleLike = async () => {
+  if (loadingLike.value) return;
+  loadingLike.value = true;
 
-  sendLog({
-    event_type: "country_like_toggle",
-    country_code: iso2.value,
-    value: next ? 1 : 0, // ⭐ boolean → number (400 에러 방지)
-  });
+  try {
+    // 서버 기준 토글 → value 필요 없음
+    await sendLog({
+      event_type: "country_like_toggle",
+      country_code: iso2.value,
+    });
+
+    // 서버 상태 다시 조회
+    await fetchFavoriteStatus();
+  } finally {
+    loadingLike.value = false;
+  }
 };
+
+// ==================================================
+// 국가 변경 시 상태 재조회
+// ==================================================
+watch(
+  () => iso2.value,
+  async () => {
+    await fetchFavoriteStatus();
+  }
+);
 </script>
 
 <template>
@@ -87,10 +116,11 @@ const toggleLike = () => {
         <div class="country-row">
           <div class="country">{{ props.country.name_ko }}</div>
 
-          <!-- 이미지 좋아요 버튼 -->
+          <!-- ❤️ 좋아요 버튼 -->
           <button
             class="like-btn"
             :class="{ liked: isLiked }"
+            :disabled="loadingLike"
             @click="toggleLike"
           >
             <img
