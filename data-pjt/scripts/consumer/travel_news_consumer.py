@@ -10,6 +10,7 @@ from kafka.errors import NoBrokersAvailable
 import psycopg2
 from psycopg2.extras import execute_batch
 from dotenv import load_dotenv
+from email.utils import parsedate_to_datetime # RSS 날짜 파싱용 추가
 
 load_dotenv()
 
@@ -22,17 +23,23 @@ DB_PASSWORD = os.getenv("POSTGRES_PASSWORD")
 DB_HOST = os.getenv("POSTGRES_HOST", "db")
 DB_PORT = os.getenv("POSTGRES_PORT", "5432")
 
+# ✅ TARGET_COUNTRIES: 11개 주요 여행 국가만
+TARGET_COUNTRIES = ['JP', 'VN', 'CN', 'TH', 'PH', 'US', 'TW', 'HK', 'SG', 'MY', 'AU']
+
 
 def parse_published_at(s: str):
-    """published_at_raw 문자열을 datetime 으로 변환 (필요에 맞게 조정)."""
     if not s:
         return None
     try:
-        return datetime.fromisoformat(s)
-    except Exception as e:
-        print(f"[WARN] Failed to parse published_at_raw='{s}': {e}")
-        return None
-
+        # 1. ISO 형식 시도 (기존 방식)
+        return datetime.fromisoformat(s.replace("Z", "+00:00"))
+    except:
+        try:
+            # 2. RSS (RFC 2822) 형식 시도 (새로운 방식)
+            return parsedate_to_datetime(s)
+        except Exception as e:
+            print(f"[WARN] Failed to parse date '{s}': {e}")
+            return None
 
 
 def create_consumer_with_retry(retries: int = 10, delay: int = 3) -> KafkaConsumer:
@@ -44,34 +51,50 @@ def create_consumer_with_retry(retries: int = 10, delay: int = 3) -> KafkaConsum
                 TOPIC,
                 bootstrap_servers=KAFKA_BROKER,
                 value_deserializer=lambda v: json.loads(v.decode("utf-8")),
-                auto_offset_reset="earliest",
+                auto_offset_reset="earliest", 
                 enable_auto_commit=True,
                 group_id="news-consumer",
+                session_timeout_ms=30000,  # ✅ 세션 타임아웃 추가
             )
-            print("[INFO] News KafkaConsumer connected")
+            print("[INFO] News KafkaConsumer connected successfully")
             return consumer
         except NoBrokersAvailable:
-            print("[WARN] NoBrokersAvailable (news consumer), retrying in", delay, "seconds...")
+            print(f"[WARN] NoBrokersAvailable (news consumer), retrying in {delay} seconds...")
             time.sleep(delay)
+    
     raise RuntimeError("Kafka broker not available for news consumer after retries")
 
 
 def main():
-    consumer = create_consumer_with_retry()
+    # Kafka Consumer 설정 (재시도 포함)
+    try:
+        consumer = create_consumer_with_retry()
+    except RuntimeError as e:
+        print(f"[FATAL] {e}")
+        return
 
-    conn = psycopg2.connect(
-        dbname=DB_NAME,
-        user=DB_USER,
-        password=DB_PASSWORD,
-        host=DB_HOST,
-        port=DB_PORT,
-    )
-    conn.autocommit = False
+    # PostgreSQL 연결
+    try:
+        conn = psycopg2.connect(
+            dbname=DB_NAME,
+            user=DB_USER,
+            password=DB_PASSWORD,
+            host=DB_HOST,
+            port=DB_PORT,
+        )
+        conn.autocommit = False
+    except Exception as e:
+        print(f"[FATAL] Failed to connect to PostgreSQL: {e}")
+        return
 
     buffer = []
     BATCH_SIZE = 10
+    stats = {"total": 0, "inserted": 0, "skipped": 0, "failed": 0}
 
     print("[INFO] News consumer started")
+    print(f"[INFO] Target countries: {TARGET_COUNTRIES}")
+    print(f"[INFO] Batch size: {BATCH_SIZE}")
+    print("="*60)
 
     try:
         for msg in consumer:
@@ -82,14 +105,63 @@ def main():
             url = news.get("url")
             published_at_raw = news.get("published_at_raw", "")
 
+            stats["total"] += 1
+
+            # ✅ 필수 필드 검증
             if not iso2 or not title or not url:
+                print(f"[SKIP] Missing required fields: iso2={iso2}, title={bool(title)}, url={bool(url)}")
+                stats["skipped"] += 1
                 continue
 
+            # ✅ TARGET_COUNTRIES 필터링
+            if iso2 not in TARGET_COUNTRIES:
+                print(f"[SKIP] Not in TARGET_COUNTRIES: {iso2}")
+                stats["skipped"] += 1
+                continue
+
+            # ✅ published_at을 datetime으로 변환 (psycopg2가 자동으로 timestamptz 변환)
             published_at = parse_published_at(published_at_raw)
 
             buffer.append((iso2, title, url, published_at))
 
+            # ✅ Batch INSERT (10개씩 모아서 한 번에)
             if len(buffer) >= BATCH_SIZE:
+                try:
+                    with conn.cursor() as cur:
+                        execute_batch(
+                            cur,
+                            """
+                            INSERT INTO destination_news (iso2, title, url, published_at)
+                            VALUES (%s, %s, %s, %s)
+                            ON CONFLICT (url) DO NOTHING
+                            """,
+                            buffer,
+                        )
+                    conn.commit()
+                    stats["inserted"] += len(buffer)
+                    print(
+                        f"[BATCH] Inserted {len(buffer)} news | "
+                        f"Total: {stats['total']}, Inserted: {stats['inserted']}, "
+                        f"Skipped: {stats['skipped']}, Failed: {stats['failed']}"
+                    )
+                    buffer.clear()
+
+                except Exception as e:
+                    conn.rollback()
+                    stats["failed"] += len(buffer)
+                    print(f"[ERROR] Batch insert failed: {e}")
+                    buffer.clear()
+
+    except KeyboardInterrupt:
+        print("\n[INFO] Stopping news consumer (KeyboardInterrupt)")
+
+    except Exception as e:
+        print(f"[ERROR] Consumer error: {e}")
+
+    finally:
+        # ✅ 남아 있는 데이터 flush
+        if buffer:
+            try:
                 with conn.cursor() as cur:
                     execute_batch(
                         cur,
@@ -101,27 +173,23 @@ def main():
                         buffer,
                     )
                 conn.commit()
-                print(f"[INFO] Inserted news batch of {len(buffer)} rows")
-                buffer.clear()
+                stats["inserted"] += len(buffer)
+                print(f"[FLUSH] Inserted remaining {len(buffer)} news")
 
-    except KeyboardInterrupt:
-        print("[INFO] Stopping news consumer (KeyboardInterrupt)")
-    finally:
-        if buffer:
-            with conn.cursor() as cur:
-                execute_batch(
-                    cur,
-                    """
-                    INSERT INTO destination_news (iso2, title, url, published_at)
-                    VALUES (%s, %s, %s, %s)
-                    ON CONFLICT (url) DO NOTHING
-                    """,
-                    buffer,
-                )
-            conn.commit()
-            print(f"[INFO] Inserted remaining {len(buffer)} news rows")
+            except Exception as e:
+                stats["failed"] += len(buffer)
+                print(f"[ERROR] Final flush failed: {e}")
 
         conn.close()
+        consumer.close()
+
+        print("\n" + "="*60)
+        print(
+            f"[SUMMARY] Total received: {stats['total']}, "
+            f"Inserted: {stats['inserted']}, "
+            f"Skipped: {stats['skipped']}, "
+            f"Failed: {stats['failed']}"
+        )
 
 
 if __name__ == "__main__":
