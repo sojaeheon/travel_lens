@@ -6,6 +6,9 @@ until python manage.py dbshell >/dev/null 2>&1; do
   sleep 1
 done
 
+echo "Running migrations..."
+python manage.py makemigrations
+
 echo "🚀 Running migrations..."
 python manage.py migrate --noinput
 
