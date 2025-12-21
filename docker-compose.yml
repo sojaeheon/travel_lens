@@ -21,6 +21,7 @@ services:
     container_name: travel-backend
     volumes:
       - ./backend-pjt:/app
+      - ./backend-pjt/dummy_data:/data          # ⭐ CSV seed 데이터
     # backend는 db가 켜진 뒤에 실행해야 하므로 dependencies 선언.
     # 완전히 기다리지는 않지만 순서 보장됨
     depends_on:

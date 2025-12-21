@@ -13,6 +13,7 @@ import { ref, onMounted } from "vue";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import SearchBar from "@/components/common/SearchBar.vue";
+import { sendLog } from "@/api/log";   // ⭐ Django interaction/logs API
 
 const emit = defineEmits(["country-click"]);
 const mapContainer = ref(null);
@@ -22,11 +23,12 @@ const keyword = ref("");
 const continents = ref([]);
 const subregions = ref([]);
 
+// ⚠️ ISO2 기준으로 사용 (Django Country.iso2)
 const COUNTRY_CENTER = {
-  KOR: { lng: 127.7669, lat: 35.9078 },
-  USA: { lng: -98.5795, lat: 39.8283 },
-  FRA: { lng: 2.2137, lat: 46.2276 },
-  JPN: { lng: 138.2529, lat: 36.2048 }
+  KR: { lng: 127.7669, lat: 35.9078 },
+  US: { lng: -98.5795, lat: 39.8283 },
+  FR: { lng: 2.2137, lat: 46.2276 },
+  JP: { lng: 138.2529, lat: 36.2048 }
 };
 
 const RISK_POINTS = [
@@ -74,7 +76,7 @@ onMounted(async () => {
       layout: {
         "text-field": ["get", "name_ko"],
         "text-size": 12,
-        "text-font": ["Noto Sans Regular"],   // ⭐ 데모 서버 호환 폰트
+        "text-font": ["Noto Sans Regular"],
         "text-allow-overlap": false
       },
       paint: {
@@ -85,127 +87,41 @@ onMounted(async () => {
     });
 
     // ==========================
-    // 2️⃣ 대륙 라벨
+    // 위험 지역 표시
     // ==========================
-    const continentsGeo = {
-      type: "FeatureCollection",
-      features: continents.value.map(c => ({
-        type: "Feature",
-        properties: { name_ko: c.name_ko },
-        geometry: { type: "Point", coordinates: c.center }
-      }))
-    };
-
-    map.value.addSource("continents-src", { type: "geojson", data: continentsGeo });
-
-    map.value.addLayer({
-      id: "continent-labels",
-      type: "symbol",
-      source: "continents-src",
-      minzoom: 0.8,
-      maxzoom: 1.8,
-      layout: {
-        "text-field": ["get", "name_ko"],
-        "text-size": 22,
-        "text-font": ["Noto Sans Bold"],  // ⭐ Bold 지원 폰트
-        "text-anchor": "center"
-      },
-      paint: {
-        "text-color": "#ffffff",
-        "text-halo-color": "rgba(0,0,0,0.4)",
-        "text-halo-width": 2
-      }
-    });
-
-    // ==========================
-    // 3️⃣ Subregion 라벨
-    // ==========================
-    const subregionsGeo = {
-      type: "FeatureCollection",
-      features: subregions.value.map(r => ({
-        type: "Feature",
-        properties: { name_ko: r.name_ko },
-        geometry: { type: "Point", coordinates: r.center }
-      }))
-    };
-
-    map.value.addSource("subregions-src", { type: "geojson", data: subregionsGeo });
-
-    map.value.addLayer({
-      id: "subregion-labels",
-      type: "symbol",
-      source: "subregions-src",
-      minzoom: 2.0,
-      maxzoom: 3.5,
-      layout: {
-        "text-field": ["get", "name_ko"],
-        "text-size": 16,
-        "text-font": ["Noto Sans Regular"],  // ⭐ FIX
-        "text-anchor": "center"
-      },
-      paint: {
-        "text-color": "#ffffff",
-        "text-halo-color": "rgba(0,0,0,0.4)",
-        "text-halo-width": 1.3
-      }
-    });
-
-    // ==========================
-    // 4️⃣ Admin1 (주/도 라벨)
-    // ==========================
-    const admin1 = await fetch("/admin1.geojson").then(r => r.json());
-
-    map.value.addSource("admin1", { type: "geojson", data: admin1 });
-
-    map.value.addLayer({
-      id: "admin1-boundary",
-      type: "line",
-      source: "admin1",
-      minzoom: 3,
-      paint: {
-        "line-color": "rgba(255,255,255,0.35)",
-        "line-width": 0.6
-      }
-    });
-
-    map.value.addLayer({
-      id: "admin1-labels",
-      type: "symbol",
-      source: "admin1",
-      minzoom: 5,
-      maxzoom: 10,
-      layout: {
-        "text-field": ["get", "name"],
-        "text-size": 10,
-        "text-font": ["Noto Sans Regular"]   // ⭐ FIX
-      },
-      paint: {
-        "text-color": "#444",
-        "text-halo-color": "rgba(255,255,255,0.8)",
-        "text-halo-width": 1
-      }
-    });
-
     drawRiskCircles();
 
-    // 국가 클릭 이벤트
+    // ==========================
+    // 국가 클릭 이벤트 (click)
+    // ==========================
     map.value.on("click", (e) => {
       const features = map.value.queryRenderedFeatures(e.point, {
         layers: ["country-labels-ko"]
       });
 
-      if (features.length > 0) {
-        const props = features[0].properties;
-        emit("country-click", {
-          name_ko: props.name_ko,
-          name_en: props.name_en,
-          iso: props.iso_a3 || props.iso_a2
-        });
-      }
-    });
-  });
+      if (!features.length) return;
 
-  map.value.addControl(new maplibregl.NavigationControl(), "bottom-left");
+      const props = features[0].properties;
+      const iso2 = props.iso2; // ⭐ 반드시 ISO2
+
+      // 🔥 Django 로그 전송
+      sendLog({
+        event_type: "country_click",
+        country_code: iso2
+      });
+
+      emit("country-click", {
+        name_ko: props.name_ko,
+        name_en: props.name_en,
+        iso: iso2
+      });
+    });
+
+    map.value.addControl(
+      new maplibregl.NavigationControl(),
+      "bottom-left"
+    );
+  });
 });
 
 function drawRiskCircles() {
@@ -220,6 +136,9 @@ function drawRiskCircles() {
   });
 }
 
+// ==========================
+// 검색 이동 (search)
+// ==========================
 function moveToCountry(name) {
   const code = Object.keys(COUNTRY_CENTER).find(c =>
     name.toUpperCase().includes(c)
@@ -229,6 +148,12 @@ function moveToCountry(name) {
     alert("해당 국가를 찾을 수 없습니다.");
     return;
   }
+
+  // 🔥 검색 로그
+  sendLog({
+    event_type: "country_search_select",
+    country_code: code
+  });
 
   map.value.flyTo({
     center: [COUNTRY_CENTER[code].lng, COUNTRY_CENTER[code].lat],

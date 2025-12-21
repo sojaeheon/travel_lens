@@ -1,19 +1,19 @@
 <template>
   <div class="page">
-    <HeaderBar />
+    <HeaderBar @toggle-left-panel="toggleLeftPanel" />
 
     <div class="content">
-      <div class="left-column">
+      <!-- ⭐ 왼쪽 패널 -->
+      <div class="left-column" v-if="showLeftPanel">
         <LeftPanel />
       </div>
 
-      <!-- 지도와 패널을 나란히 배치하는 래퍼 -->
       <div class="map-and-panel">
         <WorldMapView @country-click="openPanel" />
 
-        <!-- absolute로 지도 위에 떠 있는 패널 -->
         <CountryDetailPanel
           v-if="showCountryPanel"
+          :key="selectedCountry?.iso"
           :country="selectedCountry"
           @close="showCountryPanel = false"
           class="floating-panel"
@@ -33,11 +33,19 @@ import CountryDetailPanel from "@/components/home/CountryDetailPanel.vue";
 const showCountryPanel = ref(false);
 const selectedCountry = ref(null);
 
+// ⭐ 왼쪽 패널 상태
+const showLeftPanel = ref(false);
+
+const toggleLeftPanel = () => {
+  showLeftPanel.value = !showLeftPanel.value;
+};
+
 const openPanel = (country) => {
   selectedCountry.value = country;
   showCountryPanel.value = true;
 };
 </script>
+
 
 <style scoped>
 .page {
