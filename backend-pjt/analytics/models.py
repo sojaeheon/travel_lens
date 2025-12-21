@@ -36,9 +36,11 @@ class CountryPopularity(models.Model):
 
     class Meta:
         db_table = "country_popularity"
-        indexes = [
-            models.Index(fields=["country", "window_type"]),
-            models.Index(fields=["window_type", "calculated_at"]),
+        constraints = [
+            models.UniqueConstraint(
+                fields=["country", "window_type"],
+                name="uniq_country_window"
+            )
         ]
 
 

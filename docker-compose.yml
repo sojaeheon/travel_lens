@@ -66,7 +66,7 @@ services:
     networks:
       - travel-net
 
-    ###############################
+  ###############################
   # Zookeeper 
   ###############################
   zookeeper:
@@ -77,6 +77,8 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - travel-net
 
 
   ###############################
@@ -100,7 +102,40 @@ services:
 
     depends_on:
       - zookeeper
+    networks:
+      - travel-net
 
+  ###############################
+  # Flink JobManager
+  ###############################
+  flink-jobmanager:
+    build: ./data-pipeline/flink
+    container_name: flink-jobmanager
+    command: jobmanager
+    ports:
+      - "8081:8081"
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=flink-jobmanager
+    volumes:
+      - ./data-pipeline/flink/jars:/opt/flink/lib
+      - ./data-pipeline/flink/jobs:/jobs
+    networks:
+      - travel-net
+
+  ###############################
+  # Flink TaskManager
+  ###############################
+  flink-taskmanager:
+    build: ./data-pipeline/flink
+    container_name: flink-taskmanager
+    command: taskmanager
+    depends_on:
+      - flink-jobmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=flink-jobmanager
+      - TASK_MANAGER_NUMBER_OF_TASK_SLOTS=4
+    networks:
+      - travel-net
 
 volumes:
   postgres-data:

@@ -79,7 +79,7 @@ REST_FRAMEWORK = {
     ),
 }
 
-
+# SWAGGER 인증 방식에서 사용할 설정
 SWAGGER_SETTINGS = {
     "SECURITY_DEFINITIONS": {
         "Bearer": {
@@ -125,6 +125,9 @@ CORS_ALLOWED_ORIGINS = [
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
 ]
+
+# 카프카 연결
+KAFKA_BOOTSTRAP_SERVERS = ["kafka:9092"]
 
 ROOT_URLCONF = 'travel_back.urls'
 
