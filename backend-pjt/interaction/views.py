@@ -80,18 +80,20 @@ class UserEventCreateView(APIView):
             event_value=value
         )
 
-        # 6️⃣ Kafka 발행 (🔥 분석용 스트림)
+        # 6️⃣ Kafka 발행 코드 수정
         try:
+            # isoformat() 대신 strftime을 사용하여 밀리초까지만 자르고 형식을 맞춥니다.
+            formatted_created_at = event.created_at.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
+            
             send_user_event({
                 "event_id": event.id,
                 "user_id": user.id if user else None,
                 "country_iso2": country.iso2,
                 "event_type": event.event_type,
                 "event_value": float(event.event_value) if event.event_value else None,
-                "created_at": event.created_at.isoformat(),
+                "created_at": formatted_created_at
             })
         except Exception as e:
-            # ⚠️ Kafka 장애 → 서비스는 정상 동작
             print("Kafka send failed:", e)
 
         # 6️⃣ 좋아요 이벤트면 FavoriteCountry 테이블도 동기화
