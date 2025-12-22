@@ -52,4 +52,11 @@ urlpatterns = [
     # ================================
     path('accounts/',include('accounts.urls')),
     path("interaction/", include("interaction.urls")),
+
+
+    # ================================
+    # 채팅 관련 URL
+    # ================================
+    path('api/chat/', include('chat.urls')),
+
 ]

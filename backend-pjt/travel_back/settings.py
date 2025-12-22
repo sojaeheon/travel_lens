@@ -42,6 +42,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    #채팅을 위함(맨위에 존재해야함)
+    'daphne',
+    'channels',
     # Django 기본
     'django.contrib.admin',
     'django.contrib.auth',
@@ -144,6 +147,20 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'travel_back.wsgi.application'
+
+
+# 기존 WSGI 대신 ASGI를 사용하도록 설정 (채팅 설정)
+ASGI_APPLICATION = 'travel_back.asgi.application'
+
+# Redis를 Channel Layer로 설정
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('redis', 6379)],
+        },
+    },
+}
 
 
 # Database
