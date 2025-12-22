@@ -27,6 +27,7 @@ services:
     depends_on:
       - db
       - kafka
+      - elasticsearch
     # Django가 DB에 접속할 때 필요한 환경 변수들 전달
     environment:
       POSTGRES_DB: ${POSTGRES_DB} 
@@ -140,8 +141,35 @@ services:
     networks:
       - travel-net
 
+  ###############################
+  # Elasticsearch
+  ###############################
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.2
+    container_name: travellens-elasticsearch
+    environment:
+      - node.name=es01
+      - cluster.name=travellens-cluster
+      - discovery.type=single-node
+
+      # ⭐ 개발용 (보안 OFF)
+      - xpack.security.enabled=false
+
+      # ⭐ 메모리 제한 (안 하면 종종 죽음)
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+
+    ports:
+      - "9200:9200"
+
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+
+    networks:
+      - travel-net
+
 volumes:
   postgres-data:
+  es-data:
 
 networks:
   travel-net:

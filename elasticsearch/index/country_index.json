@@ -1,0 +1,40 @@
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "korean_analyzer": {
+          "type": "custom",
+          "tokenizer": "nori_tokenizer"
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "iso2": {
+        "type": "keyword"
+      },
+      "iso3": {
+        "type": "keyword"
+      },
+      "name_ko": {
+        "type": "text",
+        "analyzer": "korean_analyzer"
+      },
+      "name_en": {
+        "type": "text"
+      },
+      "continent_name_ko": {
+        "type": "text",
+        "analyzer": "korean_analyzer"
+      },
+      "continent_name_en": {
+        "type": "text"
+      },
+      "search_text": {
+        "type": "text",
+        "analyzer": "korean_analyzer"
+      }
+    }
+  }
+}
