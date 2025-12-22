@@ -223,7 +223,7 @@ services:
 
   blog-consumer:
     build:
-      context: .
+      context: .F
       dockerfile: Dockerfile.blog
     container_name: blog-consumer
     working_dir: /app
