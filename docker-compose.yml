@@ -26,6 +26,7 @@ services:
     # 완전히 기다리지는 않지만 순서 보장됨
     depends_on:
       - db
+      - kafka
     # Django가 DB에 접속할 때 필요한 환경 변수들 전달
     environment:
       POSTGRES_DB: ${POSTGRES_DB} 
@@ -117,8 +118,9 @@ services:
     environment:
       - JOB_MANAGER_RPC_ADDRESS=flink-jobmanager
     volumes:
-      - ./data-pipeline/flink/jars:/opt/flink/lib
       - ./data-pipeline/flink/jobs:/jobs
+    depends_on:
+      - kafka    
     networks:
       - travel-net
 
@@ -131,6 +133,7 @@ services:
     command: taskmanager
     depends_on:
       - flink-jobmanager
+      - kafka
     environment:
       - JOB_MANAGER_RPC_ADDRESS=flink-jobmanager
       - TASK_MANAGER_NUMBER_OF_TASK_SLOTS=4
