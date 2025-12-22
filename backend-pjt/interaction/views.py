@@ -10,6 +10,8 @@ from .serializers import UserEventCreateSerializer
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
+# kafka producer 관련 함수
+from interaction.kafka.producer import send_user_event
 
 # ⭐ 프론트 이벤트 → DB 이벤트 타입 매핑
 # 프론트는 의미 중심, DB는 집계 중심
@@ -44,8 +46,6 @@ class UserEventCreateView(APIView):
     )
 
     def post(self, request):
-        # 1️⃣ 입력값 검증
-        print(request.data)
         serializer = UserEventCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -72,13 +72,29 @@ class UserEventCreateView(APIView):
         # 4️⃣ 사용자 판별 (JWT 있으면 user, 없으면 None)
         user = request.user if request.user.is_authenticated else None
 
-        # 5️⃣ UserEvent 저장 (행동 로그)
-        UserEvent.objects.create(
+        # 5️⃣ user_event PostgreSQL 저장 (🔥 정답 데이터)
+        event = UserEvent.objects.create(
             user=user,
             country=country,
             event_type=EVENT_TYPE_MAP[raw_event_type],
             event_value=value
         )
+
+        # 6️⃣ Kafka 발행 코드 수정
+        try:
+            # isoformat() 대신 strftime을 사용하여 밀리초까지만 자르고 형식을 맞춥니다.
+            formatted_created_at = event.created_at.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
+            
+            send_user_event({
+                "event_id": event.id,
+                "user_id": user.id if user else None,
+                "country_iso2": country.iso2,
+                "event_type": event.event_type,
+                "event_value": float(event.event_value) if event.event_value else None,
+                "created_at": formatted_created_at
+            })
+        except Exception as e:
+            print("Kafka send failed:", e)
 
         # 6️⃣ 좋아요 이벤트면 FavoriteCountry 테이블도 동기화
         if raw_event_type == "country_like_toggle" and user:
