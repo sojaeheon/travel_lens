@@ -52,4 +52,8 @@ urlpatterns = [
     # ================================
     path('accounts/',include('accounts.urls')),
     path("interaction/", include("interaction.urls")),
+
+    # ================================
+    # 검색 관련
+    path('search/',include('search.urls')),
 ]
