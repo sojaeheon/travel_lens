@@ -1,14 +1,14 @@
 from elasticsearch import Elasticsearch, helpers
 import psycopg2
 
-es = Elasticsearch("http://localhost:9200")
+es = Elasticsearch("http://elasticsearch:9200")
 
 conn = psycopg2.connect(
-    host="localhost",
+    host="db",
     dbname="travellens",
     user="travellens",
     password="2049",
-    port=5433
+    port=5432
 )
 
 cur = conn.cursor()

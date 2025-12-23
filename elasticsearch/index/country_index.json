@@ -1,39 +1,70 @@
 {
   "settings": {
     "analysis": {
+      "tokenizer": {
+        "edge_ngram_tokenizer": {
+          "type": "edge_ngram",
+          "min_gram": 1,
+          "max_gram": 10,
+          "token_chars": ["letter"]
+        }
+      },
       "analyzer": {
         "korean_analyzer": {
           "type": "custom",
           "tokenizer": "nori_tokenizer"
+        },
+        "edge_ngram_analyzer": {
+          "type": "custom",
+          "tokenizer": "edge_ngram_tokenizer"
         }
       }
     }
   },
   "mappings": {
     "properties": {
-      "iso2": {
-        "type": "keyword"
-      },
-      "iso3": {
-        "type": "keyword"
-      },
+      "iso2": { "type": "keyword" },
+      "iso3": { "type": "keyword" },
+
       "name_ko": {
         "type": "text",
-        "analyzer": "korean_analyzer"
+        "analyzer": "korean_analyzer",
+        "fields": {
+          "ngram": {
+            "type": "text",
+            "analyzer": "edge_ngram_analyzer"
+          }
+        }
       },
+
       "name_en": {
-        "type": "text"
+        "type": "text",
+        "fields": {
+          "ngram": {
+            "type": "text",
+            "analyzer": "edge_ngram_analyzer"
+          }
+        }
       },
+
       "continent_name_ko": {
         "type": "text",
         "analyzer": "korean_analyzer"
       },
+
       "continent_name_en": {
         "type": "text"
       },
+
       "search_text": {
         "type": "text",
-        "analyzer": "korean_analyzer"
+        "analyzer": "korean_analyzer",
+        "fields": {
+          "ngram": {
+            "type": "text",
+            "analyzer": "edge_ngram_analyzer"
+          }
+        }
       }
     }
   }
