@@ -1,60 +1,70 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
+from django.utils import timezone
 from .models import GlobalChatMessage
 
 class ChatConsumer(AsyncWebsocketConsumer):
-    # 1. WebSocket 연결 시 호출
     async def connect(self):
-        # 방 이름을 'global_chat'으로 고정 (단일 채팅창)
         self.room_group_name = 'global_chat'
-
-        # Redis 그룹에 현재 채널 추가
-        await self.channel_layer.group_add(
-            self.room_group_name,
-            self.channel_name
-        )
-
-        # 연결 수락
+        await self.channel_layer.group_add(self.room_group_name, self.channel_name)
         await self.accept()
+        
+        print(f"✅ 클라이언트 연결됨")
 
-    # 2. 연결 해제 시 호출
     async def disconnect(self, close_code):
-        # Redis 그룹에서 현재 채널 제거
-        await self.channel_layer.group_discard(
-            self.room_group_name,
-            self.channel_name
-        )
+        await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
+        print(f"⛔ 클라이언트 연결 해제 (코드: {close_code})")
 
-    # 3. 클라이언트(Vue)로부터 메시지를 받았을 때 호출
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        message = text_data_json.get('message')
-        
-        # 현재 접속한 유저 정보 가져오기 (JWT 미들웨어 적용 시 scope['user']에 유저 객체 존재)
+        message_text = text_data_json.get('message')
         user = self.scope.get('user')
 
-        if not user or user.is_anonymous:
-            # 비로그인 유저인 경우 (테스트 시에는 익명 유저 허용 가능하나 실제 운영 시 제한 필요)
-            user_nickname = "Anonymous"
-        else:
-            # 모델에 nickname 필드가 있다면 사용, 없으면 email 사용
-            user_nickname = getattr(user, 'nickname', user.email)
-
-        # 1) DB에 메시지 저장 (비동기 함수 호출)
+        print(f"\n📨 메시지 수신: {message_text}")
+        print(f"👤 user 객체: {user}")
+        print(f"👤 is_anonymous: {user.is_anonymous if hasattr(user, 'is_anonymous') else 'N/A'}")
+        
+        # 유저가 있거나 로그인된 경우 정보 추출, 아니면 익명 처리
         if user and not user.is_anonymous:
-            await self.save_message(user, message)
+            # ⭐ email에서 @ 앞 부분만 추출
+            user_email = user.email
+            user_nickname = user_email.split('@')[0] if user_email else "사용자"
+            print(f"✅ 로그인 사용자: {user_nickname} ({user_email})")
+            
+            # 로그인 된 경우만 DB 저장
+            await self.save_message(user, message_text)
+        else:
+            user_nickname = "익명 사용자"
+            user_email = "anonymous"
+            print(f"⚠️  익명 사용자 메시지")
 
-        # 2) 그룹 전체에 메시지 전송 (브로드캐스팅)
+        # 그룹 전체에 알림 (모든 필드 포함)
         await self.channel_layer.group_send(
             self.room_group_name,
             {
-                'type': 'chat_message',  # 아래 정의한 chat_message 메서드를 호출함
-                'message': message,
+                'type': 'chat_message',
+                'message': message_text,
                 'user': user_nickname,
+                'sender_nickname': user_nickname,
+                'sender_email': user_email,
+                'created_at': timezone.now().isoformat(),
             }
         )
 
-    # 4. Redis 그룹에서 메시지를 보낼 때 (실제 클라이언트에게 전송)
     async def chat_message(self, event):
-        message = event['message']
+        # ✅ 히스토리 API의 필드와 일관성 있게 전송
+        await self.send(text_data=json.dumps({
+            'message': event['message'],
+            'user': event['user'],
+            'sender_nickname': event.get('sender_nickname', event['user']),
+            'sender_email': event['sender_email'],
+            'created_at': event['created_at']
+        }))
+
+    @database_sync_to_async
+    def save_message(self, user, message):
+        return GlobalChatMessage.objects.create(
+            sender=user,
+            content=message
+        )

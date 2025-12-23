@@ -11,4 +11,4 @@ class ChatPagination(CursorPagination):
 class GlobalChatHistoryView(generics.ListAPIView):
     queryset = GlobalChatMessage.objects.all().select_related('sender')
     serializer_class = GlobalChatMessageSerializer
-    pagination_class = ChatPagination
+    pagination_class = None
