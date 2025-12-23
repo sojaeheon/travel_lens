@@ -1,0 +1,10 @@
+# Dockerfile.blog
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# 의존성 설치
+COPY requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir -r /app/requirements.txt
+
+# 코드/스크립트는 볼륨으로 마운트해서 쓸 거라 여기서는 복사 안 함
