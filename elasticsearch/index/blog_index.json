@@ -1,0 +1,49 @@
+{
+  "settings": {
+    "analysis": {
+      "tokenizer": {
+        "nori_tokenizer": {
+          "type": "nori_tokenizer"
+        }
+      },
+      "filter": {
+        "ngram_filter": {
+          "type": "ngram",
+          "min_gram": 2,
+          "max_gram": 3
+        }
+      },
+      "analyzer": {
+        "korean_ngram_analyzer": {
+          "type": "custom",
+          "tokenizer": "nori_tokenizer",
+          "filter": ["lowercase", "ngram_filter"]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "id": {
+        "type": "keyword"
+      },
+      "title": {
+        "type": "text",
+        "analyzer": "korean_ngram_analyzer"
+      },
+      "url": {
+        "type": "keyword"
+      },
+      "published_at": {
+        "type": "date"
+      },
+      "iso2": {
+        "type": "keyword"
+      },
+      "search_text": {
+        "type": "text",
+        "analyzer": "korean_ngram_analyzer"
+      }
+    }
+  }
+}

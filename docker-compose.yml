@@ -65,6 +65,11 @@ services:
       TZ: Asia/Seoul
     # Postgres의 실제 데이터 파일은 /var/lib/postgresql/data에 저장
     # 이를 도커 볼륨(postgres-data)에 연결 -> 컨테이너가 삭제되어도 데이터 유지됨
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h localhost -p 5432 -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
       - postgres-data:/var/lib/postgresql/data
     # 호스트 PC 포트 5432 -> 컨테이너 포트 5432 연결
@@ -194,6 +199,41 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+    # Logstash
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.17.1
+    container_name: logstash
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    volumes:
+      - ./elasticsearch/pipeline:/usr/share/logstash/pipeline
+      - ./elasticsearch/ingest_data:/usr/share/logstash/ingest_data
+    ports:
+      - "5044:5044"
+    networks:
+      - travel-net
+  
+  kibana:
+    image: kibana:8.11.0
+    container_name: kibana
+    depends_on:
+      - elasticsearch
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    networks:
+      - travel-net
 
   
 
