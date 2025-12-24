@@ -317,7 +317,7 @@ services:
         condition: service_started
     volumes:
       - ./elasticsearch/pipeline:/usr/share/logstash/pipeline
-      - ./elasticsearch/ingest_data:/usr/share/logstash/ingest_data
+      - ./elasticsearch/ingest_data/postgresql.jar:/usr/share/logstash/plugins/postgresql.jar
     ports:
       - "5044:5044"
     networks:

@@ -4,7 +4,11 @@ import likeIcon from "@/assets/like_btn.png";
 import unlikeIcon from "@/assets/unlike_btn.png";
 import { sendLog } from "@/api/log";
 import { fetchFavoriteStatus as fetchFavoriteStatusApi } from "@/api/favorite";
+import { fetchNewsByCountry, fetchBlogsByCountry } from "@/api/search";
 
+/* ===============================
+   props / emit
+================================ */
 const props = defineProps({
   country: {
     type: Object,
@@ -14,39 +18,39 @@ const props = defineProps({
 
 const emit = defineEmits(["close"]);
 
-const tabs = ["뉴스", "블로그", "출입국"];
+/* ===============================
+   탭 / 검색
+================================ */
+const tabs = ["뉴스", "블로그"];
 const currentTab = ref("뉴스");
 
-// ==================================================
-// ⭐ 로그인 여부 (SimpleJWT 기준)
-// ==================================================
-const isAuthenticated = computed(() => {
-  return !!localStorage.getItem("access"); // 🔥 핵심 수정
-});
+const searchQuery = ref(""); // 입력 중
+const appliedQuery = ref(""); // 실제 검색어(엔터/버튼 시에만 반영)
 
-// ==================================================
-// ⭐ ISO2 코드 계산
-// ==================================================
+/* ===============================
+   로그인 여부
+================================ */
+const isAuthenticated = computed(() => !!localStorage.getItem("access"));
+
+/* ===============================
+   ISO2 코드
+================================ */
 const iso2 = computed(() => {
   const code = props.country.iso || "";
-  return code.length === 2
-    ? code.toUpperCase()
-    : code.slice(0, 2).toUpperCase();
+  return code.length === 2 ? code.toUpperCase() : code.slice(0, 2).toUpperCase();
 });
 
-// ==================================================
-// ❤️ 좋아요 상태 (서버 기준)
-// ==================================================
+/* ===============================
+   ❤️ 좋아요
+================================ */
 const isLiked = ref(false);
 const loadingLike = ref(false);
 
-// 👉 찜 상태 조회 API
 const fetchFavoriteStatus = async () => {
   if (!isAuthenticated.value) {
     isLiked.value = false;
     return;
   }
-
   try {
     const res = await fetchFavoriteStatusApi(iso2.value);
     isLiked.value = res.data.is_favorited;
@@ -55,24 +59,21 @@ const fetchFavoriteStatus = async () => {
   }
 };
 
-// ==================================================
-// ⏱ 체류 시간 측정
-// ==================================================
+/* ===============================
+   ⏱ 체류 시간 로그
+================================ */
 let enterTime = 0;
 
-// ==================================================
-// 라이프사이클
-// ==================================================
 onMounted(async () => {
   enterTime = Date.now();
 
-  // 상세 열림 로그 (비로그인도 수집)
   sendLog({
     event_type: "country_detail_open",
     country_code: iso2.value,
   });
 
   await fetchFavoriteStatus();
+  fetchContents(); // ✅ 첫 진입 시 바로 로드
 });
 
 onBeforeUnmount(() => {
@@ -85,49 +86,154 @@ onBeforeUnmount(() => {
   });
 });
 
-// ==================================================
-// ❤️ 좋아요 토글 (서버 기준)
-// ==================================================
+/* ===============================
+   ❤️ 좋아요 토글
+================================ */
 const toggleLike = async () => {
   if (!isAuthenticated.value) {
     alert("로그인 후 찜할 수 있습니다.");
     return;
   }
-
   if (loadingLike.value) return;
-  loadingLike.value = true;
 
+  loadingLike.value = true;
   try {
     await sendLog({
       event_type: "country_like_toggle",
       country_code: iso2.value,
     });
-
     await fetchFavoriteStatus();
   } finally {
     loadingLike.value = false;
   }
 };
 
-// ==================================================
-// 국가 변경 시 상태 재조회
-// ==================================================
+/* ===============================
+   📰 뉴스 / 블로그 데이터
+================================ */
+const contents = ref([]);
+const loading = ref(false);
+
+/* ===============================
+   Pagination (10개 단위 + 번호 10개만 표시)
+================================ */
+const page = ref(1);
+const pageSize = 10; // 한 페이지에 10개
+const groupSize = 10; // 아래 번호 10개만 보여주기
+
+const totalCount = ref(0);
+const totalPages = computed(() => Math.max(1, Math.ceil(totalCount.value / pageSize)));
+
+const pageGroupStart = computed(() => Math.floor((page.value - 1) / groupSize) * groupSize + 1);
+const pageGroupEnd = computed(() => Math.min(pageGroupStart.value + groupSize - 1, totalPages.value));
+
+const pagesToShow = computed(() => {
+  const arr = [];
+  for (let p = pageGroupStart.value; p <= pageGroupEnd.value; p++) arr.push(p);
+  return arr; // ✅ 최대 10개만
+});
+
+const goPage = (p) => {
+  if (p < 1 || p > totalPages.value) return;
+  page.value = p;
+  fetchContents();
+};
+const goPrev = () => goPage(page.value - 1);
+const goNext = () => goPage(page.value + 1);
+
+const goPrevGroup = () => {
+  if (pageGroupStart.value === 1) return;
+  goPage(pageGroupStart.value - 1);
+};
+const goNextGroup = () => {
+  if (pageGroupEnd.value === totalPages.value) return;
+  goPage(pageGroupEnd.value + 1);
+};
+
+/* ===============================
+   데이터 호출
+   - 검색어 없을 때: 해당 국가 최신 10개(페이지 적용)
+   - 검색어 있을 때: 엔터/검색 버튼 눌렀을 때만 적용(appliedQuery)
+================================ */
+const fetchContents = async () => {
+  if (!iso2.value) return;
+
+  loading.value = true;
+
+  try {
+    const res =
+      currentTab.value === "뉴스"
+        ? await fetchNewsByCountry(iso2.value, appliedQuery.value, page.value, pageSize)
+        : await fetchBlogsByCountry(iso2.value, appliedQuery.value, page.value, pageSize);
+
+    contents.value = res.data.results || [];
+    totalCount.value = res.data.count ?? 0;
+  } catch {
+    contents.value = [];
+    totalCount.value = 0;
+  } finally {
+    loading.value = false;
+  }
+};
+
+/* ===============================
+   🔍 검색 실행 (엔터 / 버튼)
+================================ */
+const onSearch = () => {
+  appliedQuery.value = searchQuery.value.trim();
+  page.value = 1; // ✅ 검색하면 1페이지부터
+  fetchContents();
+};
+
+/* ===============================
+   탭/국가 변경 시: 검색 초기화 + 1페이지 + 바로 조회
+================================ */
+watch([iso2, currentTab], () => {
+  searchQuery.value = "";
+  appliedQuery.value = "";
+  page.value = 1;
+  fetchContents();
+});
+
+/* 국가 변경 시 좋아요 재조회 */
 watch(
   () => iso2.value,
   async () => {
     await fetchFavoriteStatus();
   }
 );
+
+/* ===============================
+   카드 클릭 시 링크 이동 + 날짜 포맷(오늘 날짜 시분초까지만)
+================================ */
+const openLink = (url) => {
+  if (!url) return;
+  window.open(url, "_blank", "noopener,noreferrer");
+};
+
+const formatKstDateTime = (value) => {
+  if (!value) return "";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return String(value);
+
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  const hh = String(d.getHours()).padStart(2, "0");
+  const mi = String(d.getMinutes()).padStart(2, "0");
+  const ss = String(d.getSeconds()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd} ${hh}:${mi}:${ss}`;
+};
 </script>
 
 <template>
   <aside class="panel">
+    <!-- 헤더 -->
     <header class="head">
       <div class="title-group">
         <div class="country-row">
           <div class="country">{{ props.country.name_ko }}</div>
 
-          <!-- ❤️ 좋아요 버튼 (로그인 사용자만) -->
           <button
             v-if="isAuthenticated"
             class="like-btn"
@@ -135,10 +241,7 @@ watch(
             :disabled="loadingLike"
             @click="toggleLike"
           >
-            <img
-              :src="isLiked ? likeIcon : unlikeIcon"
-              class="like-img"
-            />
+            <img :src="isLiked ? likeIcon : unlikeIcon" class="like-img" />
           </button>
         </div>
 
@@ -147,6 +250,18 @@ watch(
 
       <button class="close-btn" @click="emit('close')">✕</button>
     </header>
+
+    <!-- 검색 -->
+    <div style="display: flex; gap: 6px">
+      <input
+        v-model="searchQuery"
+        type="text"
+        placeholder="뉴스 · 블로그 검색"
+        class="search-input"
+        @keyup.enter="onSearch"
+      />
+      <button class="tab" style="flex: 0 0 60px" @click="onSearch">검색</button>
+    </div>
 
     <!-- 탭 -->
     <nav class="tabs">
@@ -160,18 +275,49 @@ watch(
       </button>
     </nav>
 
-    <!-- 뉴스 -->
-    <div class="news-list" v-if="currentTab === '뉴스'">
-      <div v-for="n in 4" :key="n" class="news-card">
-        <div class="title">
-          [안전] {{ props.country.name_ko }} 관련 최신 뉴스 {{ n }}
+    <!-- 뉴스 / 블로그 -->
+    <div class="news-list">
+      <div v-if="loading" class="pagination">불러오는 중...</div>
+
+      <div
+        v-for="item in contents"
+        :key="item.id ?? item.url"
+        class="news-card"
+        @click="openLink(item.url)"
+        style="cursor: pointer"
+      >
+        <div class="title">{{ item.title }}</div>
+        <div class="meta">
+          {{ formatKstDateTime(item.published_at) }}
         </div>
-        <div class="meta">2025-12-01 · 한국관광공사</div>
       </div>
 
-      <div class="pagination">
-        <span v-for="n in 6" :key="n" class="page">{{ n }}</span>
-      </div>
+      <div v-if="!loading && contents.length === 0" class="pagination">검색 결과가 없습니다</div>
+    </div>
+
+    <!-- 페이지네이션 -->
+    <div class="pagination" v-if="totalPages > 1">
+      <span class="page" @click="goPrevGroup" :style="pageGroupStart === 1 ? 'opacity:.4;pointer-events:none;' : ''">«</span>
+      <span class="page" @click="goPrev" :style="page === 1 ? 'opacity:.4;pointer-events:none;' : ''">‹</span>
+
+      <span
+        v-for="p in pagesToShow"
+        :key="p"
+        class="page"
+        :style="p === page ? 'background:#333;color:#fff;' : ''"
+        @click="goPage(p)"
+      >
+        {{ p }}
+      </span>
+
+      <span class="page" @click="goNext" :style="page === totalPages ? 'opacity:.4;pointer-events:none;' : ''">›</span>
+      <span
+        class="page"
+        @click="goNextGroup"
+        :style="pageGroupEnd === totalPages ? 'opacity:.4;pointer-events:none;' : ''"
+      >
+        »
+      </span>
     </div>
 
     <!-- 항공료 -->
@@ -195,7 +341,6 @@ watch(
     </section>
   </aside>
 </template>
-
 
 <style scoped>
 /* 패널 전체 */
@@ -352,6 +497,7 @@ watch(
   padding: 3px 6px;
   border-radius: 6px;
   transition: background 0.2s;
+  cursor: pointer;
 }
 .page:hover {
   background: #eee;
@@ -386,5 +532,19 @@ watch(
 
 .change.up {
   color: #1bbf4b;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: none;
+  background: #f2f2f7;
+  font-size: 13px;
+  outline: none;
+}
+.search-input:focus {
+  background: #fff;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.08);
 }
 </style>

@@ -3,52 +3,51 @@ import os
 
 ES_HOST = os.getenv("ELASTICSEARCH_HOST", "elasticsearch")
 ES_PORT = os.getenv("ELASTICSEARCH_PORT", "9200")
-
 es = Elasticsearch(f"http://{ES_HOST}:{ES_PORT}")
 
-
-def search_blogs(keyword: str, iso2: str | None = None, size: int = 10):
-    if not keyword:
-        return []
-
-    must = [{
-        "multi_match": {
-            "query": keyword,
-            "fields": [
-                "title^3",
-                "search_text"
-            ]
-        }
-    }]
-
+def search_blogs(keyword: str, iso2: str | None = None, page: int = 1, size: int = 10):
+    must = []
     filters = []
+
+    if keyword:
+        must.append({
+            "multi_match": {
+                "query": keyword,
+                "fields": ["title^3", "search_text"]
+            }
+        })
+
     if iso2:
         filters.append({"term": {"iso2": iso2}})
 
     query = {
         "bool": {
-            "must": must,
+            "must": must if must else [{"match_all": {}}],
             "filter": filters
         }
     }
 
     response = es.search(
         index="blog_index",
+        from_=(page - 1) * size,          # ✅ 핵심
         size=size,
         query=query,
-        sort=[{"published_at": "desc"}]
+        sort=[{"published_at": {"order": "desc"}}],
+        track_total_hits=True
     )
+
+    total = response["hits"]["total"]["value"]
 
     results = []
     for hit in response["hits"]["hits"]:
         src = hit["_source"]
         results.append({
-            "id": src["id"],
-            "title": src["title"],
-            "url": src["url"],
-            "published_at": src["published_at"],
-            "iso2": src["iso2"],
-            "score": hit["_score"],
+            "id": src.get("id"),
+            "title": src.get("title"),
+            "url": src.get("url"),
+            "published_at": src.get("published_at"),
+            "iso2": src.get("iso2"),
+            "score": hit.get("_score"),
         })
 
-    return results
+    return {"total": total, "results": results}
