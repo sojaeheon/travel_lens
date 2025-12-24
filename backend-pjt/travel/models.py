@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils import timezone
 
 class Country(models.Model):
     """
@@ -31,7 +31,8 @@ class Country(models.Model):
 class Currency(models.Model):
     """
     국가별 환율 스냅샷
-    - 최신 환율만 유지 (히스토리는 별도 파이프라인 가능)
+    - 날짜 단위로 환율 저장
+    - (국가, 날짜) 기준 upsert
     """
 
     # 국가 FK (iso2 기준)
@@ -42,26 +43,29 @@ class Currency(models.Model):
         db_column="iso2"
     )
 
-    # 통화 한글명 (미국 달러, 일본 엔 등)
-    currency_unit_ko = models.CharField(max_length=100)
-
     # 통화 코드 (USD, JPY ...)
     currency_code = models.CharField(max_length=50)
 
-    # 환율 단위 (1, 100 등)
-    currency_trunc_unit = models.IntegerField()
-
     # 원화 기준 환율
     currency_krw_unit = models.DecimalField(
-        max_digits=15, decimal_places=4,
-        null=True, blank=True
+        max_digits=15,
+        decimal_places=4,
+        null=True,
+        blank=True
     )
 
-    # 환율 업데이트 시각
-    updated_at = models.DateTimeField(null=True, blank=True)
+    recorded_date = models.DateField(
+        default=timezone.now
+    )
 
     class Meta:
         db_table = "currency"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["country", "recorded_date"],
+                name="unique_currency_per_day"
+            )
+        ]
 
 
 class Airport(models.Model):
@@ -89,8 +93,19 @@ class Airport(models.Model):
         null=True, blank=True
     )
 
+    # ⭐ 기록 날짜 (항공료 기준 날짜)
+    recorded_date = models.DateField(
+        default=timezone.now
+    )
+
     class Meta:
         db_table = "airport"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["country", "airport_code_iata", "recorded_date"],
+                name="unique_airport_price_per_day"
+            )
+        ]
 
 
 class TravelAlert(models.Model):
@@ -118,3 +133,54 @@ class TravelAlert(models.Model):
 
     class Meta:
         db_table = "travel_alert"
+
+class TargetCountry(models.Model):
+    """
+    주요 타겟 국가 테이블
+    - 환율 / 항공 데이터 수집 기준 국가
+    - Kafka / Batch / 통계 파이프라인의 시작점
+    """
+
+    # ISO 국가 코드 (PK)
+    iso2 = models.CharField(
+        max_length=2,
+        primary_key=True
+    )
+
+    # 국가명 (한글)
+    name_ko = models.CharField(
+        max_length=100
+    )
+
+    # 통화 코드 (USD, JPY ...)
+    currency_code = models.CharField(
+        max_length=3
+    )
+
+    # 대표 공항 IATA 코드 (ICN, NRT ...)
+    airport_code_iata = models.CharField(
+        max_length=3
+    )
+
+    # 대표 공항명 (한글)
+    airport_name_ko = models.CharField(
+        max_length=100
+    )
+
+    class Meta:
+        db_table = "target_country"
+        constraints = [
+            # 환율 히스토리용 UNIQUE
+            models.UniqueConstraint(
+                fields=["iso2", "currency_code"],
+                name="unique_target_country_currency"
+            ),
+            # 항공 히스토리용 UNIQUE
+            models.UniqueConstraint(
+                fields=["iso2", "airport_code_iata", "airport_name_ko"],
+                name="unique_target_country_airport"
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.name_ko} ({self.iso2})"

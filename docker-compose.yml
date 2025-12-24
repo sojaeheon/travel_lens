@@ -30,7 +30,7 @@ services:
       kafka:
         condition: service_started
       elasticsearch:
-        condition: service_healthy
+        condition: service_started
 
     # Django가 DB에 접속할 때 필요한 환경 변수들 전달
     environment:
@@ -65,6 +65,11 @@ services:
       TZ: Asia/Seoul
     # Postgres의 실제 데이터 파일은 /var/lib/postgresql/data에 저장
     # 이를 도커 볼륨(postgres-data)에 연결 -> 컨테이너가 삭제되어도 데이터 유지됨
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h localhost -p 5432 -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
       - postgres-data:/var/lib/postgresql/data
     # 호스트 PC 포트 5432 -> 컨테이너 포트 5432 연결
@@ -95,6 +100,7 @@ services:
   kafka:
     container_name: kafka
     image: confluentinc/cp-kafka:7.5.0
+    restart: unless-stopped
     ports:
       - "9092:9092" # docker 내부용
       - "29092:29092" # docker 외부 (호스트(WSL/Windows)에서 접속)
@@ -114,6 +120,105 @@ services:
       - travel-net
 
   ###############################
+  # Blog / News Producer & Consumer
+  ###############################
+  blog-producer:
+    build:
+      context: .
+      dockerfile: ./data-pipeline/Dockerfile.blog
+    container_name: blog-producer
+    working_dir: /app
+    volumes:
+      - ./data-pipeline/kafka:/app/scripts
+      - ./.env:/app/.env
+    environment:
+      KAFKA_BROKER: ${KAFKA_BROKER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      NAVER_CLIENT_ID: ${NAVER_CLIENT_ID}
+      NAVER_CLIENT_SECRET: ${NAVER_CLIENT_SECRET}
+    command: ["python", "scripts/producer/travel_blog_producer.py"]
+    depends_on:
+      - kafka
+      - db
+    networks:
+      - travel-net
+
+  blog-consumer:
+    build:
+      context: .
+      dockerfile: ./data-pipeline/Dockerfile.blog
+    container_name: blog-consumer
+    working_dir: /app
+    volumes:
+      - ./data-pipeline/kafka:/app/scripts
+      - ./.env:/app/.env
+    environment:
+      KAFKA_BROKER: ${KAFKA_BROKER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      NAVER_CLIENT_ID: ${NAVER_CLIENT_ID}
+      NAVER_CLIENT_SECRET: ${NAVER_CLIENT_SECRET}
+    command: ["python", "scripts/consumer/travel_blog_consumer.py"]
+    depends_on:
+      - kafka
+      - db
+    networks:
+      - travel-net
+
+  news-producer:
+    build:
+      context: .
+      dockerfile: ./data-pipeline/Dockerfile.blog
+    container_name: news-producer
+    working_dir: /app
+    volumes:
+      - ./data-pipeline/kafka:/app/scripts
+      - ./.env:/app/.env
+    environment:
+      KAFKA_BROKER: ${KAFKA_BROKER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+    command: ["python", "scripts/producer/travel_news_producer.py"]
+    depends_on:
+      - kafka
+      - db
+    networks:
+      - travel-net
+
+  news-consumer:
+    build:
+      context: .
+      dockerfile: ./data-pipeline/Dockerfile.blog
+    container_name: news-consumer
+    working_dir: /app
+    volumes:
+      - ./data-pipeline/kafka:/app/scripts
+      - ./.env:/app/.env
+    environment:
+      KAFKA_BROKER: ${KAFKA_BROKER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+    command: ["python", "scripts/consumer/travel_news_consumer.py"]
+    depends_on:
+      - kafka
+      - db
+    networks:
+      - travel-net
+
+  ###############################
   # Flink JobManager
   ###############################
   flink-jobmanager:
@@ -121,7 +226,7 @@ services:
     container_name: flink-jobmanager
     command: jobmanager
     ports:
-      - "8081:8081"
+      - "8084:8081"
     environment:
       - JOB_MANAGER_RPC_ADDRESS=flink-jobmanager
     volumes:
@@ -147,9 +252,9 @@ services:
     networks:
       - travel-net
 
-  ###############################
-  # Elasticsearch
-  ###############################
+  ####################################
+  # Elasticsearch & Logstash & Kibana
+  ####################################
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.17.1
     container_name: elasticsearch
@@ -190,12 +295,237 @@ services:
       "
 
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
-      interval: 10s
-      timeout: 5s
+      test: ["CMD-SHELL", "curl -s http://localhost:9200 >/dev/null || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.17.1
+    container_name: logstash
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+    depends_on:
+      elasticsearch:
+        condition: service_started
+      db:
+        condition: service_started
+    volumes:
+      - ./elasticsearch/pipeline:/usr/share/logstash/pipeline
+      - ./elasticsearch/ingest_data:/usr/share/logstash/ingest_data
+    ports:
+      - "5044:5044"
+    networks:
+      - travel-net
+  
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.17.1
+    container_name: kibana
+    depends_on:
+      - elasticsearch
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    networks:
+      - travel-net
+
+  ################################
+  # Hadoop & Spark
+  ################################
+  namenode:
+    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+    container_name: namenode
+    restart: unless-stopped
+    environment:
+      CLUSTER_NAME: test
+      CORE_CONF_fs_defaultFS: ${CORE_CONF_fs_defaultFS}
+      HDFS_CONF_dfs_webhdfs_enabled: ${HDFS_CONF_dfs_webhdfs_enabled}
+      HDFS_CONF_dfs_permissions_enabled: ${HDFS_CONF_dfs_permissions_enabled}
+    volumes:
+      - namenode_data:/hadoop/dfs/name
+    ports:
+      - "9870:9870"
+    networks:
+      - travel-net
+
+  datanode:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode
+    restart: unless-stopped
+    environment:
+      CLUSTER_NAME: test
+      CORE_CONF_fs_defaultFS: ${CORE_CONF_fs_defaultFS}
+      HDFS_CONF_dfs_webhdfs_enabled: ${HDFS_CONF_dfs_webhdfs_enabled}
+      HDFS_CONF_dfs_permissions_enabled: ${HDFS_CONF_dfs_permissions_enabled}
+    volumes:
+      - datanode_data:/hadoop/dfs/data
+    depends_on:
+      - namenode
+    networks:
+      - travel-net
+
+  spark-master:
+    image: bde2020/spark-master:3.0.1-hadoop3.2
+    container_name: spark-master
+    restart: unless-stopped
+    environment:
+      INIT_DAEMON_STEP: setup_spark
+    ports:
+      - "8081:8080"
+      - "7077:7077"
+    networks:
+      - travel-net
+
+  spark-worker:
+    image: bde2020/spark-worker:3.0.1-hadoop3.2
+    container_name: spark-worker
+    restart: unless-stopped
+    environment:
+      SPARK_MASTER: ${SPARK_MASTER}
+      INIT_DAEMON_STEP: setup_spark
+    ports:
+      - "8082:8081"
+    depends_on:
+      - spark-master
+    networks:
+      - travel-net
+
+  ###############################
+  # Airflow DB
+  ###############################
+  airflow-db:
+    image: postgres:16
+    container_name: airflow-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    volumes:
+      - airflow-db-data:/var/lib/postgresql/data
+    networks:
+      - travel-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U airflow"]
+      interval: 5s
       retries: 5
 
   ###############################
+  # Airflow 초기화 (1회)
+  ###############################
+  airflow-init:
+    build:
+      context: .
+      dockerfile: ./data-pipeline/Dockerfile.airflow
+    container_name: airflow-init
+    entrypoint: /bin/bash
+    command:
+      - -c
+      - |
+        airflow db migrate
+        airflow users create \
+          --username airflow \
+          --firstname Admin \
+          --lastname User \
+          --role Admin \
+          --email admin@example.com \
+          --password airflow
+        echo "✅ Airflow initialization complete!"
+    environment:
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ${AIRFLOW_CONN_TRAVEL_POSTGRES}
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW_UID: ${AIRFLOW_UID}
+    volumes:
+      - ./data-pipeline/airflow/dags:/opt/airflow/dags
+      - ./data-pipeline/airflow/logs:/opt/airflow/logs
+      - ./data-pipeline/airflow/plugins:/opt/airflow/plugins
+      - ./data-pipeline/airflow/scripts:/opt/airflow/scripts
+    depends_on:
+      airflow-db:
+        condition: service_healthy
+    networks:
+      - travel-net
+
+  ###############################
+  # Airflow Webserver
+  ###############################
+  airflow-webserver:
+    build:
+      context: .
+      dockerfile: ./data-pipeline/Dockerfile.airflow
+    container_name: airflow-webserver
+    command: webserver
+    restart: unless-stopped
+    environment:
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ${AIRFLOW_CONN_TRAVEL_POSTGRES}
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__FERNET_KEY: ${AIRFLOW_FERNET_KEY:-}
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "true"
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW_UID: ${AIRFLOW_UID:-50000}
+      AIRFLOW_CONN_TRAVEL_POSTGRES: ${AIRFLOW_CONN_TRAVEL_POSTGRES}
+      AIRFLOW_CONN_SPARK_DEFAULT: 'spark://spark-master:7077'
+      AMADEUS_CLIENT_ID: ${AMADEUS_CLIENT_ID}
+      AMADEUS_CLIENT_SECRET: ${AMADEUS_CLIENT_SECRET}
+      SERVICE_KEY: ${SERVICE_KEY}
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data-pipeline/airflow/dags:/opt/airflow/dags
+      - ./data-pipeline/airflow/logs:/opt/airflow/logs
+      - ./data-pipeline/airflow/plugins:/opt/airflow/plugins
+      - ./data-pipeline/airflow/scripts:/opt/airflow/scripts
+    depends_on:
+      db:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+    networks:
+      - travel-net
+
+  ###############################
+  # Airflow Scheduler
+  ###############################
+  airflow-scheduler:
+    build:
+      context: .
+      dockerfile: ./data-pipeline/Dockerfile.airflow
+    container_name: airflow-scheduler
+    command: scheduler
+    restart: unless-stopped
+    environment:
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ${AIRFLOW_CONN_TRAVEL_POSTGRES}
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW_UID: ${AIRFLOW_UID}
+      AIRFLOW_CONN_TRAVEL_POSTGRES: ${AIRFLOW_CONN_TRAVEL_POSTGRES}
+      AIRFLOW_CONN_SPARK_DEFAULT: 'spark://spark-master:7077'
+      HADOOP_CONF_DIR: /opt/hadoop/etc/hadoop
+      HADOOP_USER_NAME: airflow
+      AMADEUS_CLIENT_ID: ${AMADEUS_CLIENT_ID}
+      AMADEUS_CLIENT_SECRET: ${AMADEUS_CLIENT_SECRET}
+      SERVICE_KEY: ${SERVICE_KEY}
+      NAVER_CLIENT_ID: ${NAVER_CLIENT_ID}
+      NAVER_CLIENT_SECRET: ${NAVER_CLIENT_SECRET}
+    volumes:
+      - ./data-pipeline/airflow/dags:/opt/airflow/dags
+      - ./data-pipeline/airflow/logs:/opt/airflow/logs
+      - ./data-pipeline/airflow/plugins:/opt/airflow/plugins
+      - ./data-pipeline/airflow/scripts:/opt/airflow/scripts
+      - ./data-pipeline/hdfs/hadoop_conf:/opt/hadoop/etc/hadoop
+    depends_on:
+      db:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+    networks:
+      - travel-net
+  
   # Redis (Chat Message Broker)
   ###############################
   redis:
@@ -209,6 +539,9 @@ services:
 volumes:
   postgres-data:
   es-data:
+  namenode_data:
+  datanode_data:
+  airflow-db-data:
 
 networks:
   travel-net:
