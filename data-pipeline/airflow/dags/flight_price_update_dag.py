@@ -20,7 +20,7 @@ def update_flight_prices():
         cur.execute(
             """
             SELECT DISTINCT iso2, airport_code_iata, airport_name_ko
-            FROM flight_history
+            FROM airport
             """
         )
         airports = cur.fetchall()
@@ -50,7 +50,7 @@ def update_flight_prices():
     with conn.cursor() as cur:
         cur.executemany(
             """
-            INSERT INTO flight_history (iso2, airport_name_ko, airport_code_iata, flight_price, recorded_date)
+            INSERT INTO airport (iso2, airport_name_ko, airport_code_iata, flight_price, recorded_date)
             VALUES (%s, %s, %s, %s, %s)
             ON CONFLICT (iso2, airport_code_iata, recorded_date) DO UPDATE
             SET flight_price = EXCLUDED.flight_price

@@ -30,7 +30,7 @@ services:
       kafka:
         condition: service_started
       elasticsearch:
-        condition: service_healthy
+        condition: service_started
 
     # Django가 DB에 접속할 때 필요한 환경 변수들 전달
     environment:
@@ -120,6 +120,105 @@ services:
       - travel-net
 
   ###############################
+  # Blog / News Producer & Consumer
+  ###############################
+  blog-producer:
+    build:
+      context: .
+      dockerfile: ./data-pipeline/Dockerfile.blog
+    container_name: blog-producer
+    working_dir: /app
+    volumes:
+      - ./data-pipeline/kafka:/app/scripts
+      - ./.env:/app/.env
+    environment:
+      KAFKA_BROKER: ${KAFKA_BROKER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      NAVER_CLIENT_ID: ${NAVER_CLIENT_ID}
+      NAVER_CLIENT_SECRET: ${NAVER_CLIENT_SECRET}
+    command: ["python", "scripts/producer/travel_blog_producer.py"]
+    depends_on:
+      - kafka
+      - db
+    networks:
+      - travel-net
+
+  blog-consumer:
+    build:
+      context: .
+      dockerfile: ./data-pipeline/Dockerfile.blog
+    container_name: blog-consumer
+    working_dir: /app
+    volumes:
+      - ./data-pipeline/kafka:/app/scripts
+      - ./.env:/app/.env
+    environment:
+      KAFKA_BROKER: ${KAFKA_BROKER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      NAVER_CLIENT_ID: ${NAVER_CLIENT_ID}
+      NAVER_CLIENT_SECRET: ${NAVER_CLIENT_SECRET}
+    command: ["python", "scripts/consumer/travel_blog_consumer.py"]
+    depends_on:
+      - kafka
+      - db
+    networks:
+      - travel-net
+
+  news-producer:
+    build:
+      context: .
+      dockerfile: ./data-pipeline/Dockerfile.blog
+    container_name: news-producer
+    working_dir: /app
+    volumes:
+      - ./data-pipeline/kafka:/app/scripts
+      - ./.env:/app/.env
+    environment:
+      KAFKA_BROKER: ${KAFKA_BROKER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+    command: ["python", "scripts/producer/travel_news_producer.py"]
+    depends_on:
+      - kafka
+      - db
+    networks:
+      - travel-net
+
+  news-consumer:
+    build:
+      context: .
+      dockerfile: ./data-pipeline/Dockerfile.blog
+    container_name: news-consumer
+    working_dir: /app
+    volumes:
+      - ./data-pipeline/kafka:/app/scripts
+      - ./.env:/app/.env
+    environment:
+      KAFKA_BROKER: ${KAFKA_BROKER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+    command: ["python", "scripts/consumer/travel_news_consumer.py"]
+    depends_on:
+      - kafka
+      - db
+    networks:
+      - travel-net
+
+  ###############################
   # Flink JobManager
   ###############################
   flink-jobmanager:
@@ -127,7 +226,7 @@ services:
     container_name: flink-jobmanager
     command: jobmanager
     ports:
-      - "8081:8081"
+      - "8084:8081"
     environment:
       - JOB_MANAGER_RPC_ADDRESS=flink-jobmanager
     volumes:
@@ -196,10 +295,11 @@ services:
       "
 
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      test: ["CMD-SHELL", "curl -s http://localhost:9200 >/dev/null || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
 
   logstash:
     image: docker.elastic.co/logstash/logstash:8.17.1
@@ -212,9 +312,9 @@ services:
       POSTGRES_PORT: ${POSTGRES_PORT}
     depends_on:
       elasticsearch:
-        condition: service_healthy
+        condition: service_started
       db:
-        condition: service_healthy
+        condition: service_started
     volumes:
       - ./elasticsearch/pipeline:/usr/share/logstash/pipeline
       - ./elasticsearch/ingest_data:/usr/share/logstash/ingest_data
@@ -224,7 +324,7 @@ services:
       - travel-net
   
   kibana:
-    image: kibana:8.11.0
+    image: docker.elastic.co/kibana/kibana:8.17.1
     container_name: kibana
     depends_on:
       - elasticsearch
@@ -322,7 +422,7 @@ services:
   airflow-init:
     build:
       context: .
-      dockerfile: Dockerfile.airflow
+      dockerfile: ./data-pipeline/Dockerfile.airflow
     container_name: airflow-init
     entrypoint: /bin/bash
     command:
@@ -342,10 +442,10 @@ services:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW_UID: ${AIRFLOW_UID}
     volumes:
-      - ./dags:/opt/airflow/dags
-      - ./logs:/opt/airflow/logs
-      - ./plugins:/opt/airflow/plugins
-      - ./scripts:/opt/airflow/scripts
+      - ./data-pipeline/airflow/dags:/opt/airflow/dags
+      - ./data-pipeline/airflow/logs:/opt/airflow/logs
+      - ./data-pipeline/airflow/plugins:/opt/airflow/plugins
+      - ./data-pipeline/airflow/scripts:/opt/airflow/scripts
     depends_on:
       airflow-db:
         condition: service_healthy
@@ -358,7 +458,7 @@ services:
   airflow-webserver:
     build:
       context: .
-      dockerfile: Dockerfile.airflow
+      dockerfile: ./data-pipeline/Dockerfile.airflow
     container_name: airflow-webserver
     command: webserver
     restart: unless-stopped
@@ -377,10 +477,10 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./dags:/opt/airflow/dags
-      - ./logs:/opt/airflow/logs
-      - ./plugins:/opt/airflow/plugins
-      - ./scripts:/opt/airflow/scripts
+      - ./data-pipeline/airflow/dags:/opt/airflow/dags
+      - ./data-pipeline/airflow/logs:/opt/airflow/logs
+      - ./data-pipeline/airflow/plugins:/opt/airflow/plugins
+      - ./data-pipeline/airflow/scripts:/opt/airflow/scripts
     depends_on:
       db:
         condition: service_healthy
@@ -395,7 +495,7 @@ services:
   airflow-scheduler:
     build:
       context: .
-      dockerfile: Dockerfile.airflow
+      dockerfile: ./data-pipeline/Dockerfile.airflow
     container_name: airflow-scheduler
     command: scheduler
     restart: unless-stopped
@@ -413,11 +513,11 @@ services:
       NAVER_CLIENT_ID: ${NAVER_CLIENT_ID}
       NAVER_CLIENT_SECRET: ${NAVER_CLIENT_SECRET}
     volumes:
-      - ./dags:/opt/airflow/dags
-      - ./logs:/opt/airflow/logs
-      - ./plugins:/opt/airflow/plugins
-      - ./scripts:/opt/airflow/scripts
-      - ./hadoop_conf:/opt/hadoop/etc/hadoop
+      - ./data-pipeline/airflow/dags:/opt/airflow/dags
+      - ./data-pipeline/airflow/logs:/opt/airflow/logs
+      - ./data-pipeline/airflow/plugins:/opt/airflow/plugins
+      - ./data-pipeline/airflow/scripts:/opt/airflow/scripts
+      - ./data-pipeline/hdfs/hadoop_conf:/opt/hadoop/etc/hadoop
     depends_on:
       db:
         condition: service_healthy

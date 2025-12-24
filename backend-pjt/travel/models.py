@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils import timezone
 
 class Country(models.Model):
     """
@@ -31,7 +31,8 @@ class Country(models.Model):
 class Currency(models.Model):
     """
     국가별 환율 스냅샷
-    - 최신 환율만 유지 (히스토리는 별도 파이프라인 가능)
+    - 날짜 단위로 환율 저장
+    - (국가, 날짜) 기준 upsert
     """
 
     # 국가 FK (iso2 기준)
@@ -42,26 +43,32 @@ class Currency(models.Model):
         db_column="iso2"
     )
 
-    # 통화 한글명 (미국 달러, 일본 엔 등)
-    currency_unit_ko = models.CharField(max_length=100)
-
     # 통화 코드 (USD, JPY ...)
     currency_code = models.CharField(max_length=50)
 
-    # 환율 단위 (1, 100 등)
-    currency_trunc_unit = models.IntegerField()
+    # 통화 한글명 (미국 달러, 일본 엔 등)
+    currency_unit_ko = models.CharField(max_length=100)
 
     # 원화 기준 환율
     currency_krw_unit = models.DecimalField(
-        max_digits=15, decimal_places=4,
-        null=True, blank=True
+        max_digits=15,
+        decimal_places=4,
+        null=True,
+        blank=True
     )
 
-    # 환율 업데이트 시각
-    updated_at = models.DateTimeField(null=True, blank=True)
+    recorded_date = models.DateField(
+        default=timezone.now
+    )
 
     class Meta:
         db_table = "currency"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["country", "recorded_date"],
+                name="unique_currency_per_day"
+            )
+        ]
 
 
 class Airport(models.Model):
@@ -89,8 +96,19 @@ class Airport(models.Model):
         null=True, blank=True
     )
 
+    # ⭐ 기록 날짜 (항공료 기준 날짜)
+    recorded_date = models.DateField(
+        default=timezone.now
+    )
+
     class Meta:
         db_table = "airport"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["country", "airport_code_iata", "recorded_date"],
+                name="unique_airport_price_per_day"
+            )
+        ]
 
 
 class TravelAlert(models.Model):

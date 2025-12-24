@@ -20,7 +20,7 @@ def update_currency_rates():
         cur.execute(
             """
             SELECT DISTINCT iso2, currency_code, currency_unit_ko
-            FROM currency_history
+            FROM currency
             """
         )
         target_data = cur.fetchall()
@@ -62,7 +62,7 @@ def update_currency_rates():
     with conn.cursor() as cur:
         cur.executemany(
             """
-            INSERT INTO currency_history (iso2, currency_code, currency_unit_ko, currency_krw_unit, recorded_date)
+            INSERT INTO currency (iso2, currency_code, currency_unit_ko, currency_krw_unit, recorded_date)
             VALUES (%s, %s, %s, %s, %s)
             ON CONFLICT (iso2, recorded_date) DO UPDATE
             SET currency_krw_unit = EXCLUDED.currency_krw_unit

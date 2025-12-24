@@ -14,7 +14,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         self.load_country()
-        # self.load_currency()
+        self.load_currency()
         # self.load_airport()
         # self.load_travel_alert()
 
@@ -47,37 +47,37 @@ class Command(BaseCommand):
 
         Country.objects.bulk_create(objs)
 
-    # # -----------------------
-    # # 2. Currency
-    # # -----------------------
-    # def load_currency(self):
-    #     if Currency.objects.exists():
-    #         self.stdout.write("Currency already exists. Skip.")
-    #         return
+    # -----------------------
+    # 2. Currency
+    # -----------------------
+    def load_currency(self):
+        if Currency.objects.exists():
+            self.stdout.write("Currency already exists. Skip.")
+            return
 
-    #     path = BASE_DIR / "currency.csv"
-    #     objs = []
+        path = BASE_DIR / "currency.csv"
+        objs = []
 
-    #     with open(path, encoding="utf-8") as f:
-    #         reader = csv.DictReader(f)
-    #         for row in reader:
-    #             try:
-    #                 country = Country.objects.get(iso2=row["iso2"])
-    #             except Country.DoesNotExist:
-    #                 continue
+        with open(path, encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                try:
+                    country = Country.objects.get(iso2=row["iso2"])
+                except Country.DoesNotExist:
+                    continue
 
-    #             objs.append(
-    #                 Currency(
-    #                     country=country,
-    #                     currency_unit_ko=row["currency_unit_ko"],
-    #                     currency_code=row["currency_code"],
-    #                     currency_trunc_unit=int(row["currency_trunc_unit"]),
-    #                     currency_krw_unit=row["currency_krw_unit"] or None,
-    #                     updated_at=row["updated_at"] or None,
-    #                 )
-    #             )
+                objs.append(
+                    Currency(
+                        country=country,
+                        currency_unit_ko=row["currency_unit_ko"],
+                        currency_code=row["currency_code"],
+                        currency_trunc_unit=int(row["currency_trunc_unit"]),
+                        currency_krw_unit=row["currency_krw_unit"] or None,
+                        updated_at=row["recorded_date"] or None,
+                    )
+                )
 
-    #     Currency.objects.bulk_create(objs)
+        Currency.objects.bulk_create(objs)
 
     # # -----------------------
     # # 3. Airport
