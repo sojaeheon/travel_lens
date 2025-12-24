@@ -2,7 +2,7 @@ import csv
 from pathlib import Path
 from django.core.management.base import BaseCommand
 from django.db import transaction
-from travel.models import Country, Currency, Airport, TravelAlert
+from travel.models import Country, Currency, Airport, TravelAlert,TargetCountry
 
 BASE_DIR = Path("/data")
 
@@ -14,7 +14,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         self.load_country()
-        self.load_currency()
+        # self.load_currency()
+        self.load_target_country() 
         # self.load_airport()
         # self.load_travel_alert()
 
@@ -50,34 +51,61 @@ class Command(BaseCommand):
     # -----------------------
     # 2. Currency
     # -----------------------
-    def load_currency(self):
-        if Currency.objects.exists():
-            self.stdout.write("Currency already exists. Skip.")
+    # def load_currency(self):
+    #     if Currency.objects.exists():
+    #         self.stdout.write("Currency already exists. Skip.")
+    #         return
+
+    #     path = BASE_DIR / "currency.csv"
+    #     objs = []
+
+    #     with open(path, encoding="utf-8") as f:
+    #         reader = csv.DictReader(f)
+    #         for row in reader:
+    #             try:
+    #                 country = Country.objects.get(iso2=row["iso2"])
+    #             except Country.DoesNotExist:
+    #                 continue
+
+    #             objs.append(
+    #                 Currency(
+    #                     country=country,
+    #                     currency_unit_ko=row["currency_unit_ko"],
+    #                     currency_code=row["currency_code"],
+    #                     currency_krw_unit=row["currency_krw_unit"] or None,
+    #                     updated_at=row["recorded_date"] or None,
+    #                 )
+    #             )
+
+    #     Currency.objects.bulk_create(objs)
+
+    # -----------------------
+    # 3. Target Country
+    # -----------------------
+    def load_target_country(self):
+        if TargetCountry.objects.exists():
+            self.stdout.write("TargetCountry already exists. Skip.")
             return
 
-        path = BASE_DIR / "currency.csv"
+        path = BASE_DIR / "target_country.csv"
         objs = []
 
-        with open(path, encoding="utf-8") as f:
+        with open(path, encoding="utf-8-sig") as f:  # ⭐ 핵심
             reader = csv.DictReader(f)
             for row in reader:
-                try:
-                    country = Country.objects.get(iso2=row["iso2"])
-                except Country.DoesNotExist:
-                    continue
-
                 objs.append(
-                    Currency(
-                        country=country,
-                        currency_unit_ko=row["currency_unit_ko"],
+                    TargetCountry(
+                        iso2=row["iso2"],
+                        name_ko=row["name_ko"],
                         currency_code=row["currency_code"],
-                        currency_trunc_unit=int(row["currency_trunc_unit"]),
-                        currency_krw_unit=row["currency_krw_unit"] or None,
-                        updated_at=row["recorded_date"] or None,
+                        airport_code_iata=row["airport_code_iata"],
+                        airport_name_ko=row["airport_name_ko"],
                     )
                 )
 
-        Currency.objects.bulk_create(objs)
+        TargetCountry.objects.bulk_create(objs)
+        self.stdout.write(f"TargetCountry loaded: {len(objs)} rows")
+
 
     # # -----------------------
     # # 3. Airport

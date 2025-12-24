@@ -48,7 +48,12 @@ def update_currency_rates():
     for iso2, currency_code in target_countries:
         if currency_code in fx_rates:
             krw_unit = fx_rates[currency_code]
-            update_rows.append((iso2, currency_code, krw_unit, today))
+            update_rows.append((
+                iso2,           # iso2 (FK)
+                currency_code,  # 통화 코드
+                krw_unit,       # 환율
+                today           # 날짜
+            ))
             matched_count += 1
             print(f"[MATCH] {iso2} ({currency_code}): {krw_unit} KRW")
         else:
@@ -66,15 +71,21 @@ def update_currency_rates():
         return
 
     # 4) currency_history에 INSERT or UPDATE (국가당 1개 행 유지)
+    # 4) currency 테이블에 INSERT or UPDATE
     with conn.cursor() as cur:
         cur.executemany("""
-            INSERT INTO currency (iso2, currency_code, currency_krw_unit, recorded_date)
+            INSERT INTO currency (
+                iso2,
+                currency_code,
+                currency_krw_unit,
+                recorded_date
+            )
             VALUES (%s, %s, %s, %s)
-            ON CONFLICT (iso2) 
-            DO UPDATE SET 
-                currency_krw_unit = EXCLUDED.currency_krw_unit,
-                recorded_date = EXCLUDED.recorded_date
+            ON CONFLICT (iso2, recorded_date)
+            DO UPDATE SET
+                currency_krw_unit = EXCLUDED.currency_krw_unit;
         """, update_rows)
+
     
     conn.commit()
     conn.close()

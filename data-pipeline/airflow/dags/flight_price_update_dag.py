@@ -24,7 +24,7 @@ def update_flight_prices():
         cur.execute(
             """
             SELECT DISTINCT iso2, airport_code_iata, airport_name_ko
-            FROM airport
+            FROM target_country
             WHERE iso2 = ANY(%s)
               AND airport_code_iata IS NOT NULL
             ORDER BY iso2
@@ -59,10 +59,17 @@ def update_flight_prices():
     with conn.cursor() as cur:
         cur.executemany(
             """
-            INSERT INTO airport (iso2, airport_name_ko, airport_code_iata, flight_price, recorded_date)
+            INSERT INTO airport (
+                iso2,
+                airport_name_ko,
+                airport_code_iata,
+                flight_price,
+                recorded_date
+            )
             VALUES (%s, %s, %s, %s, %s)
-            ON CONFLICT (iso2, airport_code_iata, recorded_date) DO UPDATE
-            SET flight_price = EXCLUDED.flight_price
+            ON CONFLICT (iso2, airport_code_iata, recorded_date)
+            DO UPDATE SET
+                flight_price = EXCLUDED.flight_price
             """,
             insert_rows,
         )
