@@ -46,9 +46,6 @@ class Currency(models.Model):
     # 통화 코드 (USD, JPY ...)
     currency_code = models.CharField(max_length=50)
 
-    # 통화 한글명 (미국 달러, 일본 엔 등)
-    currency_unit_ko = models.CharField(max_length=100)
-
     # 원화 기준 환율
     currency_krw_unit = models.DecimalField(
         max_digits=15,
@@ -136,3 +133,54 @@ class TravelAlert(models.Model):
 
     class Meta:
         db_table = "travel_alert"
+
+class TargetCountry(models.Model):
+    """
+    주요 타겟 국가 테이블
+    - 환율 / 항공 데이터 수집 기준 국가
+    - Kafka / Batch / 통계 파이프라인의 시작점
+    """
+
+    # ISO 국가 코드 (PK)
+    iso2 = models.CharField(
+        max_length=2,
+        primary_key=True
+    )
+
+    # 국가명 (한글)
+    name_ko = models.CharField(
+        max_length=100
+    )
+
+    # 통화 코드 (USD, JPY ...)
+    currency_code = models.CharField(
+        max_length=3
+    )
+
+    # 대표 공항 IATA 코드 (ICN, NRT ...)
+    airport_code_iata = models.CharField(
+        max_length=3
+    )
+
+    # 대표 공항명 (한글)
+    airport_name_ko = models.CharField(
+        max_length=100
+    )
+
+    class Meta:
+        db_table = "target_country"
+        constraints = [
+            # 환율 히스토리용 UNIQUE
+            models.UniqueConstraint(
+                fields=["iso2", "currency_code"],
+                name="unique_target_country_currency"
+            ),
+            # 항공 히스토리용 UNIQUE
+            models.UniqueConstraint(
+                fields=["iso2", "airport_code_iata", "airport_name_ko"],
+                name="unique_target_country_airport"
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.name_ko} ({self.iso2})"

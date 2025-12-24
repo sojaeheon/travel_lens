@@ -10,22 +10,30 @@ from helpers.get_flight_price import get_lowest_price
 
 POSTGRES_CONN_ID = "travel_postgres"
 
+# 11개 주요 여행 국가 (get_flight_price.py와 동일하게 유지)
+TARGET_COUNTRIES = ['JP', 'VN', 'CN', 'TH', 'PH', 'US', 'TW', 'HK', 'SG', 'MY', 'AU']
+
+
 def update_flight_prices():
     hook = PostgresHook(postgres_conn_id=POSTGRES_CONN_ID)
     conn = hook.get_conn()
     conn.autocommit = False
 
-    # 1) target_country의 77개 국가에 해당하는 공항 정보 조회
+    # 1) 11개 주요 국가에 해당하는 공항 정보만 조회
     with conn.cursor() as cur:
         cur.execute(
             """
             SELECT DISTINCT iso2, airport_code_iata, airport_name_ko
             FROM airport
-            """
+            WHERE iso2 = ANY(%s)
+              AND airport_code_iata IS NOT NULL
+            ORDER BY iso2
+            """,
+            (TARGET_COUNTRIES,)
         )
         airports = cur.fetchall()
     
-    print(f"[INFO] DB에서 {len(airports)}개 공항 조회")
+    print(f"[INFO] DB에서 {len(airports)}개 공항 조회 (11개 주요 국가)")
 
     target_date = date.today().isoformat()
     insert_rows = []
@@ -34,16 +42,17 @@ def update_flight_prices():
         price = get_lowest_price(airport_code, origin_airport_code="ICN", target_date=target_date)
 
         if price is None:
-            print(f"[SKIP] {airport_code}: 가격 없음")
+            print(f"[SKIP] {iso2} ({airport_code}): 가격 없음")
             continue
 
         insert_rows.append((iso2, airport_name_ko, airport_code, price, target_date))
-        print(f"[OK] {iso2} ({airport_code}): {price} KRW")
+        print(f"[OK] {iso2} ({airport_code}): {price:,.0f} KRW")
 
-        time.sleep(0.12)
+        time.sleep(0.5)  # API Rate Limiting (0.12 → 0.5초로 증가)
 
     if not insert_rows:
         print("[INFO] No prices to insert.")
+        conn.close()
         return
 
     # 2) flight_history에 INSERT
@@ -74,6 +83,7 @@ with DAG(
     start_date=datetime(2025, 1, 1),
     schedule_interval="0 3 * * *",  # 매일 새벽 3시
     catchup=False,
+    tags=["travel", "flight-price"],
 ) as dag:
     update_prices = PythonOperator(
         task_id="update_flight_prices",
