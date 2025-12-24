@@ -517,7 +517,8 @@ services:
       - ./data-pipeline/airflow/logs:/opt/airflow/logs
       - ./data-pipeline/airflow/plugins:/opt/airflow/plugins
       - ./data-pipeline/airflow/scripts:/opt/airflow/scripts
-      - ./data-pipeline/hdfs/hadoop_conf:/opt/hadoop/etc/hadoop
+      # - ./data-pipeline/hdfs/hadoop_conf:/opt/hadoop/etc/hadoop
+      - ./data-pipeline/hdfs:/opt/airflow/hdfs        # ⭐ 이 줄 추가
     depends_on:
       db:
         condition: service_healthy

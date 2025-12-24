@@ -36,7 +36,7 @@ with DAG(
             --name archive_to_hdfs \
             --jars /opt/airflow/scripts/lib/postgresql-42.7.5.jar \
             --driver-class-path /opt/airflow/scripts/lib/postgresql-42.7.5.jar \
-            /opt/airflow/scripts/archive/archive_to_hdfs.py \
+            /opt/airflow/hdfs/archive/archive_to_hdfs.py \
             {{ params.archive_path }}
         """,
         params={'archive_path': ARCHIVE_PATH},
