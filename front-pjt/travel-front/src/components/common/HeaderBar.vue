@@ -20,7 +20,7 @@
 
     <!-- 우측 네비 -->
     <div class="right-section">
-      <button class="chat-btn" @click="$router.push('/chat')">
+      <button class="chat-btn" @click="$emit('open-chat')">
         🧑‍🤝‍🧑 실시간 채팅방
       </button>
 
@@ -53,7 +53,7 @@ import { useRouter } from "vue-router";
 import { useUserStore } from "@/store/user";
 
 /* emit 정의 */
-const emit = defineEmits(["toggle-left-panel"]);
+const emit = defineEmits(["toggle-left-panel","open-chat"]);
 
 const router = useRouter();
 const userStore = useUserStore();

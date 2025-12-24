@@ -1,3 +1,4 @@
+// src>router>index.js
 import { createRouter, createWebHistory } from 'vue-router'
 
 import LandingPage from "@/pages/LandingPage.vue";
@@ -5,7 +6,7 @@ import HomePage from "@/pages/HomePage.vue";
 import LoginPage from "@/pages/LoginPage.vue";
 import RegisterPage from "@/pages/RegisterPage.vue";
 // import CountryDetailPage from "@/pages/CountryDetailPage.vue";
-import ChatPage from "@/pages/ChatPage.vue";
+// import ChatPage from "@/pages/ChatPage.vue";
 import AiChatPage from "@/pages/AiChatPage.vue";
 import MyPage from "@/pages/MyPage.vue";
 
@@ -45,7 +46,7 @@ const router = createRouter({
     {
       path: '/chat',
       name: 'Chat',
-      component: ChatPage
+      component: HomePage
     },
     {
       path: '/ai',
