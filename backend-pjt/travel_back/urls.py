@@ -1,4 +1,4 @@
-"""
+﻿"""
 URL configuration for travel_back project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -24,7 +24,7 @@ schema_view = get_schema_view(
     openapi.Info(
         title="Travel Lens API",
         default_version="v1",
-        description="Travel Lens 백엔드 Swagger 문서",
+        description="Travel Lens 諛깆뿏??Swagger 臾몄꽌",
         contact=openapi.Contact(email="example@mail.com"),
     ),
     public=True,
@@ -34,35 +34,37 @@ schema_view = get_schema_view(
 urlpatterns = [
     
     # ================================
-    # SWAGGER 관련 URL
+    # SWAGGER 愿??URL
     # ================================
-    # 🔥 Swagger UI
+    # ?뵦 Swagger UI
     re_path(r"^swagger/$", schema_view.with_ui("swagger", cache_timeout=0), name="swagger-ui"),
 
-    # 🔥 ReDoc (옵션)
+    # ?뵦 ReDoc (?듭뀡)
     re_path(r"^redoc/$", schema_view.with_ui("redoc", cache_timeout=0), name="redoc-ui"),
 
     # ================================
-    # 서버 관련 URL
+    # ?쒕쾭 愿??URL
     # ================================
     path('admin/', admin.site.urls),
     
     # ================================
-    # 앱 관련 URL
+    # ??愿??URL
     # ================================
     path('accounts/',include('accounts.urls')),
     path("interaction/", include("interaction.urls")),
     path("analytics/", include("analytics.urls")),
 
     # ================================
-    # 검색 관련
+    # 寃??愿??
     path('search/',include('search.urls')),
 
     # ================================
-    # 채팅 관련 URL
+    # 梨꾪똿 愿??URL
     # ================================
     path('api/chat/', include('chat.urls')),
 
     path("travel/", include("travel.urls")),
 
+    path("chatbot/", include("chatbot.urls"))
 ]
+

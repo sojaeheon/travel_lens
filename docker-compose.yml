@@ -1,4 +1,4 @@
-services:
+﻿services:
   ###############################
   # FRONTEND (Vue)
   ###############################
@@ -19,6 +19,8 @@ services:
   backend:
     build: ./backend-pjt
     container_name: travel-backend
+    env_file:
+      - ./backend-pjt/.env
     volumes:
       - ./backend-pjt:/app
       - ./backend-pjt/dummy_data:/data          # ⭐ CSV seed 데이터
@@ -564,3 +566,4 @@ volumes:
 networks:
   travel-net:
     driver: bridge
+

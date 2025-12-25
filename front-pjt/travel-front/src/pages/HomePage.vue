@@ -11,7 +11,11 @@
       </div>
 
       <div class="map-and-panel">
-        <WorldMapView ref="mapView" @country-click="openPanel" />
+        <WorldMapView
+          ref="mapView"
+          @country-click="openPanel"
+          @open-ai="openAiAssistant"
+        />
 
         <CountryDetailPanel
           v-if="showCountryPanel"
@@ -21,10 +25,14 @@
           class="floating-panel"
         />
 
-        <RealtimeChat 
-          v-if="isChatOpen" 
-          @close="handleCloseChat" 
+        <RealtimeChat
+          v-if="isChatOpen"
+          @close="handleCloseChat"
         />
+
+        <div v-if="isAiOpen" class="ai-overlay">
+          <AiAssistant @close="isAiOpen = false" />
+        </div>
         
 
       </div>
@@ -39,6 +47,7 @@ import LeftPanel from "@/components/home/LeftPanel.vue";
 import WorldMapView from "@/components/home/WorldMapView.vue";
 import CountryDetailPanel from "@/components/home/CountryDetailPanel.vue";
 import RealtimeChat from "@/components/chat/RealtimeChat.vue";
+import AiAssistant from "@/components/ai/AiAssistant.vue";
 // ✅ [추가] 로그에서 로그인 상태를 확인하기 위해 userStore를 임포트합니다.
 import { useUserStore } from "@/store/user";
 
@@ -49,6 +58,7 @@ const selectedCountry = ref(null);
 
 const showLeftPanel = ref(false);
 const isChatOpen = ref(false);
+const isAiOpen = ref(false);
 const mapView = ref(null);
 
 // ✅ [추가/수정] 채팅창 제어 및 디버깅 로그 함수
@@ -67,6 +77,10 @@ const handleCloseChat = () => {
   console.log("--- 채팅창 닫기 프로세스 시작 ---");
   isChatOpen.value = false;
   console.log("결과: 채팅창이 닫혔습니다.");
+};
+
+const openAiAssistant = () => {
+  isAiOpen.value = true;
 };
 
 const toggleLeftPanel = () => {
@@ -134,6 +148,13 @@ const handlePopularSelect = (country) => {
   right: 20px;     /* ← 오른쪽 여백 → 지도 보임 */
   bottom: 20px;
   z-index: 10;
+}
+
+.ai-overlay {
+  position: absolute;
+  left: 24px;
+  bottom: 90px;
+  z-index: 12;
 }
 
 </style>
