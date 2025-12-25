@@ -11,6 +11,7 @@ class CountryPopularity(models.Model):
     """
 
     WINDOW_TYPES = (
+        ("hourly", "Hourly"),
         ("daily", "Daily"),
         ("weekly", "Weekly"),
         ("monthly", "Monthly"),
@@ -38,8 +39,8 @@ class CountryPopularity(models.Model):
         db_table = "country_popularity"
         constraints = [
             models.UniqueConstraint(
-                fields=["country", "window_type"],
-                name="uniq_country_window"
+                fields=["country", "window_type", "calculated_at"],
+                name="uniq_country_window_at"
             )
         ]
 

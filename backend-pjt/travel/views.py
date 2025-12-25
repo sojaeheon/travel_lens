@@ -169,3 +169,57 @@ class TravelAlertListView(APIView):
             })
 
         return Response({"results": data}, status=status.HTTP_200_OK)
+
+
+class ExchangeRateListView(APIView):
+    """
+    GET /api/travel/exchange?limit=10
+    """
+    def get(self, request):
+        try:
+            limit = int(request.query_params.get("limit", 10))
+        except ValueError:
+            limit = 10
+        limit = max(1, min(limit, 20))
+
+        targets = (
+            TargetCountry.objects
+            .order_by("name_ko")
+        )
+
+        results = []
+        for target in targets[:limit]:
+            latest_fx = (
+                Currency.objects
+                .filter(country_id=target.iso2, currency_krw_unit__isnull=False)
+                .order_by("-recorded_date", "-id")
+                .first()
+            )
+            if not latest_fx:
+                continue
+
+            prev_fx = (
+                Currency.objects
+                .filter(
+                    country_id=target.iso2,
+                    currency_krw_unit__isnull=False,
+                    recorded_date__lt=latest_fx.recorded_date
+                )
+                .order_by("-recorded_date", "-id")
+                .first()
+            )
+
+            rate = latest_fx.currency_krw_unit
+            prev = prev_fx.currency_krw_unit if prev_fx else None
+            change = _value_change(rate, prev)
+
+            results.append({
+                "iso2": target.iso2,
+                "name_ko": target.name_ko,
+                "currency_code": latest_fx.currency_code,
+                "rate": _to_float(rate),
+                "change": _to_float(change),
+                "recorded_date": str(latest_fx.recorded_date) if latest_fx else None,
+            })
+
+        return Response({"results": results}, status=status.HTTP_200_OK)

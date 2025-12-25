@@ -5,18 +5,29 @@
       v-model="keyword"
       @select="moveToCountry"
     />
-    <div class="risk-legend">
+    <div class="legend-panel">
       <div class="legend-nav">
-        <span class="legend-arrow">&lt;</span>
-        <span class="legend-title">위험</span>
-        <span class="legend-arrow">&gt;</span>
+        <button class="legend-arrow" @click="cycleMode(-1)">&lt;</button>
+        <span class="legend-title">{{ VIEW_LABELS[viewMode] }}</span>
+        <button class="legend-arrow" @click="cycleMode(1)">&gt;</button>
       </div>
-      <div class="legend-card">
+
+      <div v-if="viewMode === 'risk'" class="legend-card">
         <div class="legend-item" v-for="item in RISK_LEGEND" :key="item.key">
           <span class="legend-dot" :style="{ background: RISK_COLOR[item.key] }"></span>
           <span>{{ item.label }}</span>
         </div>
       </div>
+
+      <div v-else-if="viewMode === 'popular'" class="legend-card">
+        <div class="legend-spectrum"></div>
+        <div class="legend-range">
+          <span>0%</span>
+          <span>100%</span>
+        </div>
+      </div>
+
+      <div v-else class="legend-card"></div>
     </div>
   </div>
 </template>
@@ -29,6 +40,7 @@ import SearchBar from "@/components/common/SearchBar.vue";
 import { sendLog } from "@/api/log";
 import { fetchFavoriteCountries } from "@/api/favorite";
 import { fetchTravelAlerts } from "@/api/alerts";
+import { fetchPopularityMap } from "@/api/popular";
 import { useUserStore } from "@/store/user";
 
 const emit = defineEmits(["country-click"]);
@@ -62,6 +74,17 @@ const RISK_LEGEND = [
   { key: "caution", label: "주의" },
   { key: "warning", label: "경고" }
 ];
+
+const VIEW_MODES = ["base", "popular", "risk"];
+const VIEW_LABELS = {
+  base: "기본",
+  popular: "인기",
+  risk: "위험"
+};
+
+const viewMode = ref("base");
+const popularityMeta = ref({ min: 0, max: 0 });
+const popularityScores = ref({});
 
 const riskIso2 = ref({
   safe: [],
@@ -128,6 +151,7 @@ onMounted(async () => {
     });
 
     addRiskLayers();
+    addPopularityLayer();
 
     map.value.on("click", (e) => {
       const features = map.value.queryRenderedFeatures(e.point, {
@@ -159,6 +183,8 @@ onMounted(async () => {
     mapLoaded.value = true;
     await refreshFavorites();
     await fetchRiskData();
+    await fetchPopularityData();
+    applyViewMode();
   });
 });
 
@@ -317,7 +343,119 @@ function applyRiskFilters() {
       );
 }
 
-function moveToCountry(country) {
+function addPopularityLayer() {
+  if (!map.value || map.value.getLayer("country-popularity-fill")) return;
+  const beforeId = map.value.getLayer("country-labels-ko")
+    ? "country-labels-ko"
+    : undefined;
+  map.value.addLayer(
+    {
+      id: "country-popularity-fill",
+      type: "fill",
+      source: "admin1",
+      paint: {
+        "fill-color": "rgba(46, 125, 50, 0.0)",
+        "fill-opacity": 0.8,
+        "fill-outline-color": "rgba(46, 125, 50, 0.3)"
+      }
+    },
+    beforeId
+  );
+  map.value.setLayoutProperty("country-popularity-fill", "visibility", "none");
+}
+
+function buildScoreExpression(scoreMap) {
+  const expr = ["match", ["get", "iso_a2"]];
+  Object.entries(scoreMap).forEach(([iso2, score]) => {
+    expr.push(iso2, score);
+  });
+  expr.push(0);
+  return expr;
+}
+
+function applyPopularityStyle() {
+  if (!mapLoaded.value || !map.value) return;
+  const minScore = popularityMeta.value.min ?? 0;
+  const maxScore = popularityMeta.value.max ?? 0;
+  const scoreExpr = buildScoreExpression(popularityScores.value || {});
+
+  if (maxScore <= minScore) {
+    map.value.setPaintProperty(
+      "country-popularity-fill",
+      "fill-color",
+      "rgba(46, 125, 50, 0.25)"
+    );
+    return;
+  }
+
+  map.value.setPaintProperty(
+    "country-popularity-fill",
+    "fill-color",
+    [
+      "interpolate",
+      ["linear"],
+      scoreExpr,
+      minScore,
+      "rgba(46, 125, 50, 0.15)",
+      maxScore,
+      "rgba(46, 125, 50, 0.85)"
+    ]
+  );
+}
+
+async function fetchPopularityData() {
+  try {
+    const res = await fetchPopularityMap("hourly");
+    const results = res.data?.results || [];
+    const mapScores = {};
+    results.forEach((item) => {
+      const iso2 = (item.iso2 || "").toUpperCase();
+      if (!iso2) return;
+      mapScores[iso2] = Number(item.score) || 0;
+    });
+    popularityScores.value = mapScores;
+    popularityMeta.value = {
+      min: Number(res.data?.min_score ?? 0),
+      max: Number(res.data?.max_score ?? 0)
+    };
+    applyPopularityStyle();
+  } catch {
+    popularityScores.value = {};
+    popularityMeta.value = { min: 0, max: 0 };
+  }
+}
+
+function applyViewMode() {
+  if (!mapLoaded.value || !map.value) return;
+  const showPopularity = viewMode.value === "popular";
+  const showRisk = viewMode.value === "risk";
+
+  if (map.value.getLayer("country-popularity-fill")) {
+    map.value.setLayoutProperty(
+      "country-popularity-fill",
+      "visibility",
+      showPopularity ? "visible" : "none"
+    );
+  }
+  if (showPopularity) {
+    applyPopularityStyle();
+  }
+
+  ["country-risk-safe", "country-risk-caution", "country-risk-warning"].forEach((id) => {
+    if (map.value.getLayer(id)) {
+      map.value.setLayoutProperty(id, "visibility", showRisk ? "visible" : "none");
+    }
+  });
+}
+
+function cycleMode(direction) {
+  const idx = VIEW_MODES.indexOf(viewMode.value);
+  const next = (idx + direction + VIEW_MODES.length) % VIEW_MODES.length;
+  viewMode.value = VIEW_MODES[next];
+  applyViewMode();
+}
+
+function flyToCountry(country, shouldEmit) {
   const iso2 = (country?.iso2 || "").toUpperCase();
   if (!iso2) {
     alert("해당 국가를 찾을 수 없습니다.");
@@ -355,12 +493,24 @@ function moveToCountry(country) {
     });
   }
 
-  emit("country-click", {
-    name_ko: country?.name_ko || "",
-    name_en: country?.name_en || "",
-    iso: iso2
-  });
+  if (shouldEmit) {
+    emit("country-click", {
+      name_ko: country?.name_ko || "",
+      name_en: country?.name_en || "",
+      iso: iso2
+    });
+  }
 }
+
+function moveToCountry(country) {
+  flyToCountry(country, true);
+}
+
+function focusCountry(country) {
+  flyToCountry(country, false);
+}
+
+defineExpose({ focusCountry });
 
 function getFeatureBounds(feature) {
   const geom = feature?.geometry;
@@ -421,7 +571,7 @@ function getFeatureCenter(feature) {
   z-index: 5;
 }
 
-.risk-legend {
+.legend-panel {
   position: absolute;
   left: 70px;
   bottom: 20px;
@@ -448,6 +598,21 @@ function getFeatureCenter(feature) {
   font-weight: 600;
 }
 
+.legend-arrow {
+  border: none;
+  background: #ffffff;
+  color: #333;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
 .legend-card {
   background: rgba(255, 255, 255, 0.95);
   border-radius: 14px;
@@ -472,5 +637,25 @@ function getFeatureCenter(feature) {
   border-radius: 50%;
   display: inline-block;
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.75);
+}
+
+.legend-spectrum {
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(46, 125, 50, 0.15), rgba(46, 125, 50, 0.85));
+}
+
+.legend-range {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #555;
+  margin-top: 6px;
+}
+
+.legend-note {
+  font-size: 11px;
+  color: #666;
+  margin-top: 6px;
 }
 </style>

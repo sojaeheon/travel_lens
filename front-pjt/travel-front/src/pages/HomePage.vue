@@ -7,11 +7,11 @@
 
     <div class="content">
       <div class="left-column" v-if="showLeftPanel">
-        <LeftPanel />
+        <LeftPanel @country-select="handlePopularSelect" />
       </div>
 
       <div class="map-and-panel">
-        <WorldMapView @country-click="openPanel" />
+        <WorldMapView ref="mapView" @country-click="openPanel" />
 
         <CountryDetailPanel
           v-if="showCountryPanel"
@@ -49,6 +49,7 @@ const selectedCountry = ref(null);
 
 const showLeftPanel = ref(false);
 const isChatOpen = ref(false);
+const mapView = ref(null);
 
 // ✅ [추가/수정] 채팅창 제어 및 디버깅 로그 함수
 const handleOpenChat = () => {
@@ -75,6 +76,20 @@ const toggleLeftPanel = () => {
 const openPanel = (country) => {
   selectedCountry.value = country;
   showCountryPanel.value = true;
+};
+
+const handlePopularSelect = (country) => {
+  if (!country?.iso2) return;
+  mapView.value?.focusCountry({
+    iso2: country.iso2,
+    name_ko: country.name_ko,
+    name_en: country.name_en,
+  });
+  openPanel({
+    iso: country.iso2,
+    name_ko: country.name_ko,
+    name_en: country.name_en,
+  });
 };
 </script>
 
