@@ -14,9 +14,14 @@
 
     <!-- 콘텐츠 영역 -->
     <div class="tab-content">
-      <PopularList v-if="activeTab === 'popular'" />
-      <ExchangeList v-if="activeTab === 'exchange'" />
-      <RecommendCountryList v-if="activeTab === 'recommend'" />
+      <PopularList
+        v-if="activeTab === 'popular'"
+        @select-country="handleSelectCountry"
+      />
+      <ExchangeList
+        v-if="activeTab === 'exchange'"
+        @select-country="handleSelectCountry"
+      />
     </div>
   </div>
 </template>
@@ -25,15 +30,19 @@
 import { ref } from "vue";
 import PopularList from "./PopularList.vue";
 import ExchangeList from "./ExchangeList.vue";
-import RecommendCountryList from "./RecommendCountryList.vue";
+
+const emit = defineEmits(["country-select"]);
 
 const activeTab = ref("popular");
 
 const tabs = [
   { key: "popular", label: "인기 여행지" },
   { key: "exchange", label: "주요 환율" },
-  { key: "recommend", label: "추천 나라" },
 ];
+
+const handleSelectCountry = (country) => {
+  emit("country-select", country);
+};
 </script>
 
 <style scoped>

@@ -1,22 +1,26 @@
 <template>
   <section class="panel">
-    <h3 class="title">인기 여행지 리스트</h3>
+    <h3 class="title">인기 여행지 TOP 10</h3>
+
+    <div v-if="loading" class="empty">불러오는 중...</div>
+    <div v-else-if="popular.length === 0" class="empty">데이터가 없습니다</div>
 
     <div
+      v-else
       v-for="(item, idx) in popular"
-      :key="item.country"
+      :key="item.iso2"
       class="card"
+      @click="handleSelect(item)"
     >
       <div class="rank">#{{ idx + 1 }}</div>
       <div class="info">
-        <div class="country">{{ item.country }}</div>
-        <div class="city">{{ item.city }}</div>
-        <div class="price-row">
-          <span class="label">최대항공료</span>
-          <span class="price">{{ item.price.toLocaleString() }}원</span>
-          <span class="rate" :class="{ up: item.change > 0 }">
-            {{ item.change > 0 ? "+" : "" }}{{ item.change }}%
-          </span>
+        <div class="country">
+          {{ item.name_ko }}
+          <span class="iso">({{ item.iso2 }})</span>
+        </div>
+        <div class="meta">인기 점수: {{ formatScore(item.score) }}</div>
+        <div class="meta">
+          좋아요 {{ formatCount(item.favorite_count) }} · 조회 {{ formatCount(item.view_count) }}
         </div>
       </div>
     </div>
@@ -24,12 +28,45 @@
 </template>
 
 <script setup>
-const popular = [
-  { country: "대한민국", city: "서울", price: 450000, change: 5 },
-  { country: "일본", city: "도쿄", price: 380000, change: 3 },
-  { country: "프랑스", city: "파리", price: 950000, change: 2 },
-  { country: "미국", city: "뉴욕", price: 1050000, change: -1 },
-];
+import { ref, onMounted } from "vue";
+import { fetchPopularCountries } from "@/api/popular";
+
+const emit = defineEmits(["select-country"]);
+
+const popular = ref([]);
+const loading = ref(true);
+
+const formatScore = (value) => {
+  if (typeof value !== "number") return "-";
+  return new Intl.NumberFormat("ko-KR", { maximumFractionDigits: 1 }).format(value);
+};
+
+const formatCount = (value) => {
+  if (typeof value !== "number") return "-";
+  return new Intl.NumberFormat("ko-KR").format(value);
+};
+
+const loadPopular = async () => {
+  loading.value = true;
+  try {
+    const res = await fetchPopularCountries(10);
+    popular.value = res.data?.results || [];
+  } catch {
+    popular.value = [];
+  } finally {
+    loading.value = false;
+  }
+};
+
+const handleSelect = (item) => {
+  emit("select-country", {
+    iso2: item.iso2,
+    name_ko: item.name_ko,
+    name_en: item.name_en,
+  });
+};
+
+onMounted(loadPopular);
 </script>
 
 <style scoped>
@@ -51,6 +88,13 @@ const popular = [
   border-radius: 12px;
   background: #fafafa;
   margin-bottom: 6px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+.card:hover {
+  background: #f2f2f2;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
 }
 .rank {
   font-size: 14px;
@@ -62,23 +106,18 @@ const popular = [
 .country {
   font-weight: 600;
 }
-.city {
+.iso {
+  margin-left: 4px;
   font-size: 12px;
   color: #777;
 }
-.price-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+.meta {
   font-size: 12px;
+  color: #666;
 }
-.label {
-  color: #999;
-}
-.price {
-  font-weight: 600;
-}
-.rate.up {
-  color: #1bbf4b;
+.empty {
+  font-size: 12px;
+  color: #777;
+  padding: 8px 4px;
 }
 </style>

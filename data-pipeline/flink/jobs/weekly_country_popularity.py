@@ -54,7 +54,7 @@ CREATE TABLE country_popularity_sink (
     favorite_count BIGINT,
     calculated_at TIMESTAMP(3),
     country_id STRING,
-    PRIMARY KEY (country_id, window_type) NOT ENFORCED
+    PRIMARY KEY (country_id, window_type, calculated_at) NOT ENFORCED
 ) WITH (
     'connector' = 'jdbc',
     'url' = 'jdbc:postgresql://db:5432/travellens',
@@ -69,12 +69,11 @@ CREATE TABLE country_popularity_sink (
 t_env.execute_sql("""
 INSERT INTO country_popularity_sink
 SELECT
-    'weekly' AS window_type,
+    'hourly' AS window_type,
     SUM(
         CASE
             WHEN e.event_type = 'click' THEN 1.0
             WHEN e.event_type = 'view' THEN 3.0
-            WHEN e.event_type = 'favorite' THEN 10.0
             WHEN e.event_type = 'dwell'
                 THEN LEAST(COALESCE(e.event_value, 0.0) * 0.2, 20.0)
             ELSE 0.0
@@ -82,12 +81,12 @@ SELECT
     ) AS score,
     SUM(CASE WHEN e.event_type = 'view' THEN 1 ELSE 0 END) AS view_count,
     SUM(CASE WHEN e.event_type = 'favorite' THEN 1 ELSE 0 END) AS favorite_count,
-    TUMBLE_END(e.created_at, INTERVAL '1' HOUR) AS calculated_at,
+    TUMBLE_END(e.proc_time, INTERVAL '5' MINUTE) AS calculated_at,
     c.iso2 AS country_id
 FROM user_event AS e
 JOIN country_lookup FOR SYSTEM_TIME AS OF e.proc_time AS c
 ON e.country_iso2 = c.iso2
 GROUP BY
     c.iso2,
-    TUMBLE(e.created_at, INTERVAL '1' HOUR)
+    TUMBLE(e.proc_time, INTERVAL '5' MINUTE)
 """)

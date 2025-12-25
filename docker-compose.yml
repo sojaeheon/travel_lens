@@ -252,6 +252,23 @@ services:
     networks:
       - travel-net
 
+  ###############################
+  # Flink Popularity Job (auto submit)
+  ###############################
+  flink-popularity-job:
+    build: ./data-pipeline/flink
+    container_name: flink-popularity-job
+    depends_on:
+      - flink-jobmanager
+      - flink-taskmanager
+      - kafka
+    volumes:
+      - ./data-pipeline/flink/jobs:/jobs
+    entrypoint: ["/jobs/submit_popularity_job.sh"]
+    restart: "no"
+    networks:
+      - travel-net
+
   ####################################
   # Elasticsearch & Logstash & Kibana
   ####################################
