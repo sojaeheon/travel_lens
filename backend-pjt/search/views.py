@@ -128,14 +128,14 @@ class NewsSearchView(APIView):
         keyword = request.query_params.get("q", "").strip()
         iso2 = request.query_params.get("iso2")
         size = int(request.query_params.get("size", 10))
+        page = int(request.query_params.get("page", 1))
 
-        results = search_news(keyword, iso2, size)
+        data = search_news(keyword, iso2, page=page, size=size)
+
+        
 
         return Response(
-            {
-                "count": len(results),
-                "results": results
-            },
+            {"count": data["total"], "results": data["results"]},
             status=status.HTTP_200_OK
         )
     
@@ -175,14 +175,12 @@ class BlogSearchView(APIView):
         keyword = request.query_params.get("q", "").strip()
         iso2 = request.query_params.get("iso2")
         size = int(request.query_params.get("size", 10))
+        page = int(request.query_params.get("page", 1))
 
-        results = search_blogs(keyword, iso2, size)
+        data = search_blogs(keyword, iso2, page=page, size=size)
 
         return Response(
-            {
-                "count": len(results),
-                "results": results
-            },
+            {"count": data["total"], "results": data["results"]},
             status=status.HTTP_200_OK
         )
     

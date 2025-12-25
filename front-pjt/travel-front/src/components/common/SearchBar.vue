@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="search-wrap">
     <input
       v-model="keywordLocal"
@@ -6,27 +6,29 @@
       type="text"
       placeholder="어디로 떠나고 싶으신가요?"
       @input="onInput"
+      @keyup.enter="onSearch"
     />
 
-    <!-- 검색 아이콘 버튼 -->
-    <button class="search-btn"></button>
+    <!-- 검색 아이콘 -->
+    <button class="search-btn" @click="onSearch"></button>
 
-    <!-- 자동완성 영역 -->
+    <!-- 자동완성 dropdown -->
     <div v-if="showDropdown && suggestions.length" class="dropdown">
       <div
         v-for="item in suggestions"
-        :key="item"
+        :key="item.iso2"
         class="item"
         @click="select(item)"
       >
-        {{ item }}
+        {{ item.name_ko }}
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed, ref, watch } from "vue";
+import { ref, watch } from "vue";
+import { fetchCountrySuggestions, fetchCountries } from "@/api/search";
 
 const props = defineProps({
   modelValue: String,
@@ -42,30 +44,62 @@ watch(
   }
 );
 
-const all = ["가나", "가야", "가나다라", "가지와", "가라", "가구"];
 const showDropdown = ref(false);
-
-const suggestions = computed(() => {
-  if (!keywordLocal.value) return [];
-  return all.filter((it) => it.startsWith(keywordLocal.value));
-});
+const suggestions = ref([]);
+let debounceId = null;
 
 const onInput = () => {
   emit("update:modelValue", keywordLocal.value);
-  showDropdown.value = true;
+  const keyword = keywordLocal.value.trim();
+
+  if (!keyword) {
+    suggestions.value = [];
+    showDropdown.value = false;
+    return;
+  }
+
+  if (debounceId) {
+    clearTimeout(debounceId);
+  }
+
+  debounceId = setTimeout(async () => {
+    try {
+      const res = await fetchCountrySuggestions(keyword, 6);
+      suggestions.value = res.data?.results || [];
+      showDropdown.value = true;
+    } catch {
+      suggestions.value = [];
+      showDropdown.value = false;
+    }
+  }, 250);
 };
 
 const select = (val) => {
-  keywordLocal.value = val;
-  emit("update:modelValue", val);
+  keywordLocal.value = val.name_ko || "";
+  emit("update:modelValue", keywordLocal.value);
   emit("select", val);
   showDropdown.value = false;
+};
+
+const onSearch = async () => {
+  const keyword = keywordLocal.value.trim();
+  if (!keyword) return;
+
+  try {
+    const res = await fetchCountries(keyword, 1);
+    const first = res.data?.results?.[0];
+    if (first) {
+      select(first);
+    }
+  } catch {
+    // ignore
+  }
 };
 </script>
 
 <style scoped>
 /* =============================== */
-/* 🔍 검색 바 전체 */
+/* 기존 스타일 유지 */
 /* =============================== */
 .search-wrap {
   position: relative;
@@ -73,26 +107,17 @@ const select = (val) => {
   margin: 20px auto 0;
 }
 
-/* =============================== */
-/* 🔍 입력창 스타일 (불투명 + 블러) */
-/* =============================== */
 .search-input {
   width: 100%;
   border-radius: 999px;
   border: none;
   padding: 14px 52px 14px 20px;
   font-size: 14px;
-
-  /* ✔ 반투명 + blur */
   background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(10px);
-
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
 }
 
-/* =============================== */
-/* 🔍 검색 버튼 (SVG 아이콘 삽입) */
-/* =============================== */
 .search-btn {
   position: absolute;
   right: 16px;
@@ -103,27 +128,19 @@ const select = (val) => {
   border: none;
   background: none;
   cursor: pointer;
-
-  /* 🔄 PNG 아이콘 사용 */
   background-image: url("@/assets/search_btn.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
 }
 
-/* =============================== */
-/* 🔽 자동완성 Dropdown */
-/* =============================== */
 .dropdown {
   position: absolute;
   top: 110%;
   left: 0;
   right: 0;
-
-  /* ✔ 반투명 + blur */
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(12px);
-
   border-radius: 16px;
   padding: 6px 0;
 }

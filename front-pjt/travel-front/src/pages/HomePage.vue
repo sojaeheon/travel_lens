@@ -26,9 +26,7 @@
           @close="handleCloseChat" 
         />
         
-        <button v-if="!isChatOpen" class="chat-toggle-btn" @click="handleOpenChat">
-          💬 실시간 채팅방
-        </button>
+
       </div>
     </div>
   </div>
@@ -45,8 +43,10 @@ import RealtimeChat from "@/components/chat/RealtimeChat.vue";
 import { useUserStore } from "@/store/user";
 
 const userStore = useUserStore(); // ✅ [추가] store 인스턴스 생성
+
 const showCountryPanel = ref(false);
 const selectedCountry = ref(null);
+
 const showLeftPanel = ref(false);
 const isChatOpen = ref(false);
 
@@ -79,17 +79,46 @@ const openPanel = (country) => {
 </script>
 
 <style scoped>
-/* 기존 스타일은 동일하게 유지됩니다. */
-.page { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-.content { display: flex; flex: 1; overflow: hidden; }
-.left-column { width: 340px; border-right: 1px solid #eee; background: white; }
-.map-and-panel { position: relative; flex: 1; }
-.map-and-panel > :first-child { width: 100%; height: 100%; }
-.floating-panel { position: absolute; top: 20px; right: 20px; z-index: 10; }
-.chat-toggle-btn {
-  position: absolute; bottom: 30px; right: 30px; z-index: 15;
-  padding: 15px 25px; background: #007bff; color: white;
-  border: none; border-radius: 50px; cursor: pointer;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
+
+/* 전체 레이아웃 */
+.content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* 왼쪽 영역 */
+.left-column {
+  width: 340px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ⭐ 지도 + 패널을 오른쪽 열로 묶기 위한 wrapper */
+.map-and-panel {
+  position: relative;
+  flex: 1;
+}
+
+/* 지도는 전체 오른쪽 영역을 항상 차지 */
+.map-and-panel > :first-child {
+  flex: 1;
+}
+
+/* ⭐ 지도 위에 떠 있는 CountryDetailPanel */
+.floating-panel {
+  position: absolute;
+  top: 20px;
+  right: 20px;     /* ← 오른쪽 여백 → 지도 보임 */
+  bottom: 20px;
+  z-index: 10;
+}
+
 </style>

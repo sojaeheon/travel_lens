@@ -42,6 +42,16 @@ def parse_published_at(s: str):
             return None
 
 
+def parse_fetched_at(s: str | None):
+    if not s:
+        return None
+    try:
+        return datetime.fromisoformat(s.replace("Z", "+00:00"))
+    except Exception as e:
+        print(f"[WARN] Failed to parse fetched_at '{s}': {e}")
+        return None
+
+
 def create_consumer_with_retry(retries: int = 10, delay: int = 3) -> KafkaConsumer:
     """카프카 브로커 준비될 때까지 재시도하면서 KafkaConsumer 생성."""
     for i in range(retries):
@@ -104,6 +114,7 @@ def main():
             title = news.get("title")
             url = news.get("url")
             published_at_raw = news.get("published_at_raw", "")
+            fetched_at = news.get("fetched_at")
 
             stats["total"] += 1
 
@@ -120,7 +131,7 @@ def main():
                 continue
 
             # ✅ published_at을 datetime으로 변환 (psycopg2가 자동으로 timestamptz 변환)
-            published_at = parse_published_at(published_at_raw)
+            published_at = parse_published_at(published_at_raw) or parse_fetched_at(fetched_at)
 
             buffer.append((iso2, title, url, published_at))
 
@@ -133,7 +144,8 @@ def main():
                             """
                             INSERT INTO destination_news (iso2, title, url, published_at)
                             VALUES (%s, %s, %s, %s)
-                            ON CONFLICT (url) DO NOTHING
+                            ON CONFLICT (url) DO UPDATE
+                            SET published_at = EXCLUDED.published_at
                             """,
                             buffer,
                         )
@@ -168,7 +180,8 @@ def main():
                         """
                         INSERT INTO destination_news (iso2, title, url, published_at)
                         VALUES (%s, %s, %s, %s)
-                        ON CONFLICT (url) DO NOTHING
+                        ON CONFLICT (url) DO UPDATE
+                        SET published_at = EXCLUDED.published_at
                         """,
                         buffer,
                     )

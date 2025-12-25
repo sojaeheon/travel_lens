@@ -317,7 +317,7 @@ services:
         condition: service_started
     volumes:
       - ./elasticsearch/pipeline:/usr/share/logstash/pipeline
-      - ./elasticsearch/ingest_data:/usr/share/logstash/ingest_data
+      - ./elasticsearch/ingest_data/postgresql.jar:/usr/share/logstash/plugins/postgresql.jar
     ports:
       - "5044:5044"
     networks:
@@ -502,7 +502,7 @@ services:
     environment:
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ${AIRFLOW_CONN_TRAVEL_POSTGRES}
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
-      AIRFLOW_UID: ${AIRFLOW_UID}
+      user: "${AIRFLOW_UID:-50000}:0"
       AIRFLOW_CONN_TRAVEL_POSTGRES: ${AIRFLOW_CONN_TRAVEL_POSTGRES}
       AIRFLOW_CONN_SPARK_DEFAULT: 'spark://spark-master:7077'
       HADOOP_CONF_DIR: /opt/hadoop/etc/hadoop

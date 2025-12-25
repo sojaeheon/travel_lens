@@ -62,4 +62,6 @@ urlpatterns = [
     # ================================
     path('api/chat/', include('chat.urls')),
 
+    path("travel/", include("travel.urls")),
+
 ]

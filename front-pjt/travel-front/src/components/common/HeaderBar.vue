@@ -38,6 +38,14 @@
           <div class="profile-icon">👤</div>
 
           <div v-if="dropdownOpen" class="dropdown">
+            <!-- 👤 사용자 정보 -->
+            <div class="user-info">
+              <div class="nickname">{{ userNickname }}</div>
+              <div class="email">{{ userEmail }}</div>
+            </div>
+
+            <div class="divider"></div>
+
             <div class="dropdown-item" @click="goMyPage">마이페이지</div>
             <div class="dropdown-item logout" @click="logout">로그아웃</div>
           </div>
@@ -57,6 +65,22 @@ const emit = defineEmits(["toggle-left-panel","open-chat"]);
 
 const router = useRouter();
 const userStore = useUserStore();
+/* 사용자 정보 */
+const userNickname = computed(() => {
+  return (
+    userStore.profile?.nickname ||
+    localStorage.getItem("user_nickname") ||
+    "사용자"
+  );
+});
+
+const userEmail = computed(() => {
+  return (
+    userStore.profile?.email ||
+    localStorage.getItem("user_email") ||
+    ""
+  );
+});
 
 /* 로그인 여부 */
 const isLoggedIn = computed(() => userStore.isAuth);
@@ -85,6 +109,7 @@ const logout = () => {
   userStore.logout();
   dropdownOpen.value = false;
   router.push("/home");
+  window.location.reload();
 };
 </script>
 
@@ -207,7 +232,7 @@ const logout = () => {
   min-width: 120px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   overflow: hidden;
-  z-index: 10;
+  z-index: 100;
 }
 
 .dropdown-item {
@@ -222,5 +247,27 @@ const logout = () => {
 
 .logout {
   color: #d9534f;
+}
+
+/* 사용자 정보 */
+.user-info {
+  padding: 12px 14px;
+  background: #fafafa;
+}
+
+.nickname {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.email {
+  font-size: 12px;
+  color: #777;
+  margin-top: 2px;
+}
+
+.divider {
+  height: 1px;
+  background: #e5e5ea;
 }
 </style>
