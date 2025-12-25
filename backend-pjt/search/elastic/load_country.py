@@ -10,6 +10,7 @@ conn = psycopg2.connect(
     password="2049",
     port=5432
 )
+conn.set_client_encoding("UTF8")
 
 cur = conn.cursor()
 cur.execute("""

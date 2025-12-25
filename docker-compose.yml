@@ -502,7 +502,7 @@ services:
     environment:
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ${AIRFLOW_CONN_TRAVEL_POSTGRES}
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
-      AIRFLOW_UID: ${AIRFLOW_UID}
+      user: "${AIRFLOW_UID:-50000}:0"
       AIRFLOW_CONN_TRAVEL_POSTGRES: ${AIRFLOW_CONN_TRAVEL_POSTGRES}
       AIRFLOW_CONN_SPARK_DEFAULT: 'spark://spark-master:7077'
       HADOOP_CONF_DIR: /opt/hadoop/etc/hadoop

@@ -5,6 +5,7 @@ import unlikeIcon from "@/assets/unlike_btn.png";
 import { sendLog } from "@/api/log";
 import { fetchFavoriteStatus as fetchFavoriteStatusApi } from "@/api/favorite";
 import { fetchNewsByCountry, fetchBlogsByCountry } from "@/api/search";
+import { fetchCountryInsight } from "@/api/insights";
 
 /* ===============================
    props / emit
@@ -30,7 +31,7 @@ const appliedQuery = ref(""); // 실제 검색어(엔터/버튼 시에만 반영
 /* ===============================
    로그인 여부
 ================================ */
-const isAuthenticated = computed(() => !!localStorage.getItem("access"));
+const isAuthenticated = computed(() => !!localStorage.getItem("access_token"));
 
 /* ===============================
    ISO2 코드
@@ -73,7 +74,8 @@ onMounted(async () => {
   });
 
   await fetchFavoriteStatus();
-  fetchContents(); // ✅ 첫 진입 시 바로 로드
+  fetchContents(); // ✅ 첫 진입 시 뉴스/블로그 바로 로드
+  fetchInsight(); // ✅ 첫 진입 시 항공/환율 바로 로드
 });
 
 onBeforeUnmount(() => {
@@ -103,9 +105,81 @@ const toggleLike = async () => {
       country_code: iso2.value,
     });
     await fetchFavoriteStatus();
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("favorites-updated"));
+    }
   } finally {
     loadingLike.value = false;
   }
+};
+
+/* ===============================
+   🧭 항공료 / 환율 (DB)
+================================ */
+const insightLoading = ref(false);
+
+const flightPrice = ref(null); // number | null
+const flightChange = ref(null); // number | null  (delta)
+const flightAirportName = ref(null); // ✅ 공항명
+const flightAirportCode = ref(null); // ✅ IATA 코드
+
+const fxPair = ref(null); // string | null
+const fxRate = ref(null); // number | null
+const fxChange = ref(null); // number | null  (delta)
+
+const fetchInsight = async () => {
+  if (!iso2.value) return;
+
+  insightLoading.value = true;
+  try {
+    const res = await fetchCountryInsight(iso2.value);
+    const data = res.data || {};
+
+    // flight
+    flightPrice.value = data?.flight?.price ?? null;
+    flightChange.value = data?.flight?.change ?? null; // 없으면 null로 유지
+    flightAirportName.value = data?.flight?.airport_name_ko ?? null;
+    flightAirportCode.value = data?.flight?.airport_code_iata ?? null;
+
+    // fx
+    fxPair.value = data?.fx?.pair ?? null;
+    fxRate.value = data?.fx?.rate ?? null;
+    fxChange.value = data?.fx?.change ?? null; // 없으면 null로 유지
+  } catch {
+    flightPrice.value = null;
+    flightChange.value = null;
+    flightAirportName.value = null;
+    flightAirportCode.value = null;
+
+    fxPair.value = null;
+    fxRate.value = null;
+    fxChange.value = null;
+  } finally {
+    insightLoading.value = false;
+  }
+};
+
+const isUp = (v) => typeof v === "number" && v >= 0;
+const fmtDeltaKrw = (v) => {
+  if (typeof v !== "number") return "-";
+  const sign = v > 0 ? "+" : "";
+  return `${sign}${new Intl.NumberFormat("ko-KR").format(v)} 원`;
+};
+
+const fmtDeltaFx = (v) => {
+  if (typeof v !== "number") return "-";
+  const sign = v > 0 ? "+" : "";
+  return `${sign}${new Intl.NumberFormat("ko-KR", { maximumFractionDigits: 4 }).format(v)}`;
+};
+
+const fmtKrw = (v) => {
+  if (typeof v !== "number") return "-";
+  return new Intl.NumberFormat("ko-KR").format(v) + " 원";
+};
+
+const fmtFx = (v) => {
+  if (typeof v !== "number") return "-";
+  return new Intl.NumberFormat("ko-KR", { maximumFractionDigits: 4 }).format(v);
 };
 
 /* ===============================
@@ -152,8 +226,6 @@ const goNextGroup = () => {
 
 /* ===============================
    데이터 호출
-   - 검색어 없을 때: 해당 국가 최신 10개(페이지 적용)
-   - 검색어 있을 때: 엔터/검색 버튼 눌렀을 때만 적용(appliedQuery)
 ================================ */
 const fetchContents = async () => {
   if (!iso2.value) return;
@@ -195,16 +267,17 @@ watch([iso2, currentTab], () => {
   fetchContents();
 });
 
-/* 국가 변경 시 좋아요 재조회 */
+/* 나라 변경 시 좋아요/인사이트 재조회 */
 watch(
   () => iso2.value,
   async () => {
     await fetchFavoriteStatus();
+    fetchInsight(); // ✅ 나라 클릭마다 항공/환율 갱신
   }
 );
 
 /* ===============================
-   카드 클릭 시 링크 이동 + 날짜 포맷(오늘 날짜 시분초까지만)
+   카드 클릭 시 링크 이동 + 날짜 포맷
 ================================ */
 const openLink = (url) => {
   if (!url) return;
@@ -297,7 +370,12 @@ const formatKstDateTime = (value) => {
 
     <!-- 페이지네이션 -->
     <div class="pagination" v-if="totalPages > 1">
-      <span class="page" @click="goPrevGroup" :style="pageGroupStart === 1 ? 'opacity:.4;pointer-events:none;' : ''">«</span>
+      <span
+        class="page"
+        @click="goPrevGroup"
+        :style="pageGroupStart === 1 ? 'opacity:.4;pointer-events:none;' : ''"
+        >«</span
+      >
       <span class="page" @click="goPrev" :style="page === 1 ? 'opacity:.4;pointer-events:none;' : ''">‹</span>
 
       <span
@@ -310,34 +388,47 @@ const formatKstDateTime = (value) => {
         {{ p }}
       </span>
 
-      <span class="page" @click="goNext" :style="page === totalPages ? 'opacity:.4;pointer-events:none;' : ''">›</span>
+      <span
+        class="page"
+        @click="goNext"
+        :style="page === totalPages ? 'opacity:.4;pointer-events:none;' : ''"
+        >›</span
+      >
       <span
         class="page"
         @click="goNextGroup"
         :style="pageGroupEnd === totalPages ? 'opacity:.4;pointer-events:none;' : ''"
+        >»</span
       >
-        »
-      </span>
     </div>
 
     <!-- 항공료 -->
     <section class="block">
       <h4>항공료</h4>
       <div class="line-between">
-        <span>{{ props.country.name_ko }}</span>
-        <span class="price">450,000 원</span>
+        <span>
+          {{ props.country.name_ko }}
+          <span v-if="flightAirportName" class="sub">
+            · {{ flightAirportName }} ({{ flightAirportCode }})
+          </span>
+        </span>
+        <span class="price"></span>
       </div>
-      <div class="change up">+5%</div>
+      <div class="change">
+        {{ insightLoading ? "" : fmtKrw(flightPrice) }}
+      </div>
     </section>
 
     <!-- 환율 -->
     <section class="block">
       <h4>환율</h4>
       <div class="line-between">
-        <span>USD / KRW</span>
-        <span class="price">1,350</span>
+        <span>{{ fxPair || "통화 / KRW" }}</span>
+        <span class="price"></span>
       </div>
-      <div class="change up">+5%</div>
+      <div class="change">
+        {{ insightLoading ? "" : fmtFx(fxRate) }}
+      </div>
     </section>
   </aside>
 </template>
@@ -532,6 +623,18 @@ const formatKstDateTime = (value) => {
 
 .change.up {
   color: #1bbf4b;
+}
+
+/* ✅ 하락일 때 */
+.change.down {
+  color: #ff4d4f;
+}
+
+/* ✅ 공항 정보(작게) */
+.sub {
+  margin-left: 4px;
+  font-size: 11px;
+  color: #777;
 }
 
 .search-input {

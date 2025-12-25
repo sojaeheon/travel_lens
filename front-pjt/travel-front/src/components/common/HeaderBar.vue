@@ -109,6 +109,7 @@ const logout = () => {
   userStore.logout();
   dropdownOpen.value = false;
   router.push("/home");
+  window.location.reload();
 };
 </script>
 

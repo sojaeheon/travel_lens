@@ -132,6 +132,8 @@ class NewsSearchView(APIView):
 
         data = search_news(keyword, iso2, page=page, size=size)
 
+        
+
         return Response(
             {"count": data["total"], "results": data["results"]},
             status=status.HTTP_200_OK

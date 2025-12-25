@@ -18,7 +18,8 @@ def search_news(keyword: str, iso2: str | None = None, page: int = 1, size: int 
         })
 
     if iso2:
-        filters.append({"term": {"iso2": iso2}})
+        # Use keyword field to avoid analyzer lowercasing on text field.
+        filters.append({"term": {"iso2.keyword": iso2}})
 
     query = {
         "bool": {

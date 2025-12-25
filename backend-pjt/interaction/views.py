@@ -141,3 +141,31 @@ class CountryFavoriteStatusAPIView(APIView):
             {"is_favorited": is_favorited},
             status=status.HTTP_200_OK
         )
+
+
+class FavoriteCountriesAPIView(APIView):
+    """
+    로그인한 사용자의 찜한 국가 목록 조회
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        favorites = (
+            FavoriteCountry.objects
+            .filter(user=request.user)
+            .select_related("country")
+        )
+
+        results = [
+            {
+                "iso2": fav.country.iso2,
+                "name_ko": fav.country.name_ko,
+                "name_en": fav.country.name_en,
+            }
+            for fav in favorites
+        ]
+
+        return Response(
+            {"count": len(results), "results": results},
+            status=status.HTTP_200_OK
+        )

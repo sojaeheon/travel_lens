@@ -11,3 +11,15 @@ export const fetchBlogsByCountry = (iso2, q = "", page = 1, size = 10) => {
     params: { iso2, q, page, size },
   });
 };
+
+export const fetchCountrySuggestions = (q, size = 5) => {
+  return api.get("/search/autosearch/", {
+    params: { q, size },
+  });
+};
+
+export const fetchCountries = (q, size = 10) => {
+  return api.get("/search/countries/", {
+    params: { q, size },
+  });
+};
