@@ -5,6 +5,9 @@
       v-model="keyword"
       @select="moveToCountry"
     />
+    <button class="ai-fab" type="button" @click="openAiChat">
+      <img class="ai-icon" src="@/assets/travi_ai.png" alt="트레비" />
+    </button>
     <div class="legend-panel">
       <div class="legend-nav">
         <button class="legend-arrow" @click="cycleMode(-1)">&lt;</button>
@@ -43,7 +46,7 @@ import { fetchTravelAlerts } from "@/api/alerts";
 import { fetchPopularityMap } from "@/api/popular";
 import { useUserStore } from "@/store/user";
 
-const emit = defineEmits(["country-click"]);
+const emit = defineEmits(["country-click", "open-ai"]);
 const mapContainer = ref(null);
 const map = ref(null);
 const keyword = ref("");
@@ -512,6 +515,10 @@ function focusCountry(country) {
 
 defineExpose({ focusCountry });
 
+const openAiChat = () => {
+  emit("open-ai");
+};
+
 function getFeatureBounds(feature) {
   const geom = feature?.geometry;
   if (!geom) return null;
@@ -569,6 +576,38 @@ function getFeatureCenter(feature) {
   left: 20px;
   width: 300px;
   z-index: 5;
+}
+
+.ai-fab {
+  position: absolute;
+  left: 200px;
+  bottom: 20px;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2px solid #1f2937;
+  background: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 7;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ai-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid #1f2937;
+  background: #eaf2ff;
+  object-fit: cover;
+}
+
+.ai-fab:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
 }
 
 .legend-panel {
