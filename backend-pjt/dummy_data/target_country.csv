@@ -1,0 +1,78 @@
+﻿iso2,name_ko,currency_code,airport_code_iata,airport_name_ko
+US,미국,USD,JFK,존 F. 케네디 국제공항 (대표 관문)
+JP,일본,JPY,HND,도쿄 하네다 공항 (또는 나리타 NRT)
+AT,오스트리아,EUR,VIE,빈 국제공항
+BE,벨기에,EUR,BRU,브뤼셀 공항
+HR,크로아티아,EUR,ZAG,자그레브 국제공항
+CY,사이프러스,EUR,LCA,라르나카 국제공항
+EE,에스토니아,EUR,TLL,탈린 공항
+FI,핀란드,EUR,HEL,헬싱키 반타 공항
+FR,프랑스,EUR,CDG,파리 샤를 드 골 공항
+DE,독일,EUR,FRA,프랑크푸르트 암마인 공항
+GR,그리스,EUR,ATH,아테네 국제공항
+IE,아일랜드,EUR,DUB,더블린 공항
+IT,이탈리아,EUR,FCO,로마 피우미치노 공항
+LV,라트비아,EUR,RIX,리가 국제공항
+LT,리투아니아,EUR,VNO,빌뉴스 국제공항
+LU,룩셈부르크,EUR,LUX,룩셈부르크 핀델 공항
+MT,몰타,EUR,MLA,몰타 국제공항
+NL,네덜란드,EUR,AMS,암스테르담 스키폴 공항
+PT,포르투갈,EUR,LIS,리스본 공항 (움베르투 델가두)
+SK,슬로바키아,EUR,BTS,브라티슬라바 공항
+SI,슬로베니아,EUR,LJU,류블랴나 요제 푸치니크 공항
+ES,스페인,EUR,MAD,마드리드 바라하스 국제공항
+CN,중국,CNY,PEK,베이징 서우두 국제공항
+HK,홍콩,HKD,HKG,홍콩 국제공항 (첵랍콕)
+TH,태국,THB,BKK,수완나품 공항
+TW,대만,TWD,TPE,타오위안 국제공항
+PH,필리핀,PHP,MNL,니노이 아키노 국제공항
+SG,싱가포르,SGD,SIN,창이 공항
+AU,호주,AUD,SYD,시드니 킹스포드 스미스 공항
+VN,베트남,VND,SGN,떤선녓 국제공항 (호찌민)
+GB,영국,GBP,LHR,런던 히드로 공항
+CA,캐나다,CAD,YYZ,토론토 피어슨 국제공항
+MY,말레이시아,MYR,KUL,쿠알라룸푸르 국제공항
+RU,러시아,RUB,SVO,셰레메티예보 국제공항
+ZA,남아프리카공화국,ZAR,JNB,O.R. 탐보 국제공항 (요하네스버그)
+NO,노르웨이,NOK,OSL,오슬로 가르데르모엔 공항
+NZ,뉴질랜드,NZD,AKL,오클랜드 국제공항
+DK,덴마크,DKK,CPH,코펜하겐 카스트루프 공항
+MX,멕시코,MXN,MEX,멕시코시티 국제공항 (베니토 후아레스)
+MN,몽골,MNT,UBN,칭기즈 칸 국제공항 (신공항)
+BH,바레인,BHD,BAH,바레인 국제공항
+BD,방글라데시,BDT,DAC,하즈라트 샤잘랄 국제공항
+BR,브라질,BRL,GRU,상파울루 구아룰류스 국제공항
+BN,브루나이,BND,BWN,브루나이 국제공항
+SA,사우디아라비아,SAR,JED,킹 압둘아지즈 국제공항 (제다)
+LK,스리랑카,LKR,CMB,반다라나이케 국제공항
+SE,스웨덴,SEK,ARN,스톡홀름 알란다 공항
+CH,스위스,CHF,ZRH,취리히 공항
+AE,아랍에미리트,AED,DXB,두바이 국제공항
+DZ,알제리,DZD,ALG,우아리 부메디엔 공항
+OM,오만,OMR,MCT,무스카트 국제공항
+JO,요르단,JOD,AMM,퀸 알리아 국제공항
+IL,이스라엘,ILS,TLV,벤구리온 국제공항
+EG,이집트,EGP,CAI,카이로 국제공항
+IN,인도,INR,DEL,인디라 간디 국제공항 (델리)
+ID,인도네시아,IDR,CGK,수카르노 하타 국제공항 (자카르타)
+CZ,체코,CZK,PRG,프라하 바츨라프 하벨 공항
+CL,칠레,CLP,SCL,아르투로 메리노 베니테스 공항
+KZ,카자흐스탄,KZT,ALA,알마티 국제공항
+QA,카타르,QAR,DOH,하마드 국제공항
+KE,케냐,KES,NBO,조모 케냐타 국제공항
+CO,콜롬비아,COP,BOG,엘도라도 국제공항
+KW,쿠웨이트,KWD,KWI,쿠웨이트 국제공항
+TZ,탄자니아,TZS,DAR,줄리어스 니에레레 국제공항
+TR,튀르키예,TRY,IST,이스탄불 공항
+PK,파키스탄,PKR,KHI,진나 국제공항 (카라치)
+PL,폴란드,PLN,WAW,바르샤바 쇼팽 공항
+HU,헝가리,HUF,BUD,부다페스트 리스트 페렌츠 공항
+NP,네팔,NPR,KTM,트리부반 국제공항
+MO,마카오,MOP,MFM,마카오 국제공항
+KH,캄보디아,KHR,PNH,프놈펜 국제공항
+FJ,피지,FJD,NAN,나디 국제공항
+LY,리비아,LYD,MJI,미티가 국제공항 (트리폴리 대체)
+RO,루마니아,RON,OTP,헨리 코안더 국제공항
+MM,미얀마,MMK,RGN,양곤 국제공항
+ET,에티오피아,ETB,ADD,아디스아바바 볼레 국제공항
+UZ,우즈베키스탄,UZS,TAS,타슈켄트 국제공항

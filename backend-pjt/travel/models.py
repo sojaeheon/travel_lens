@@ -1,0 +1,186 @@
+from django.db import models
+from django.utils import timezone
+
+class Country(models.Model):
+    """
+    국가 기준 테이블
+    - 모든 도메인의 기준 키 (iso2)
+    """
+
+    # ISO 국가 코드 (KR, US, JP ...)
+    iso2 = models.CharField(max_length=2, primary_key=True)
+
+    # ISO3 코드 (KOR, USA ...)
+    iso3 = models.CharField(max_length=3)
+
+    # 국가명 (한글 / 영문)
+    name_ko = models.CharField(max_length=100)
+    name_en = models.CharField(max_length=100)
+
+    # 대륙 정보 (지도 / 필터링 / 통계용)
+    continent_name_en = models.CharField(max_length=50)
+    continent_name_ko = models.CharField(max_length=50)
+
+    class Meta:
+        db_table = "country"
+
+    def __str__(self):
+        return self.name_en
+
+
+class Currency(models.Model):
+    """
+    국가별 환율 스냅샷
+    - 날짜 단위로 환율 저장
+    - (국가, 날짜) 기준 upsert
+    """
+
+    # 국가 FK (iso2 기준)
+    country = models.ForeignKey(
+        Country,
+        on_delete=models.CASCADE,
+        related_name="currencies",
+        db_column="iso2"
+    )
+
+    # 통화 코드 (USD, JPY ...)
+    currency_code = models.CharField(max_length=50)
+
+    # 원화 기준 환율
+    currency_krw_unit = models.DecimalField(
+        max_digits=15,
+        decimal_places=4,
+        null=True,
+        blank=True
+    )
+
+    recorded_date = models.DateField(
+        default=timezone.now
+    )
+
+    class Meta:
+        db_table = "currency"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["country", "recorded_date"],
+                name="unique_currency_per_day"
+            )
+        ]
+
+
+class Airport(models.Model):
+    """
+    국가별 주요 공항 + 항공료 정보
+    """
+
+    # 소속 국가
+    country = models.ForeignKey(
+        Country,
+        on_delete=models.CASCADE,
+        related_name="airports",
+        db_column="iso2"
+    )
+
+    # 공항명 (한글)
+    airport_name_ko = models.CharField(max_length=150)
+
+    # IATA 공항 코드 (ICN, NRT 등)
+    airport_code_iata = models.CharField(max_length=10)
+
+    # 평균 / 최저 항공료
+    flight_price = models.DecimalField(
+        max_digits=15, decimal_places=2,
+        null=True, blank=True
+    )
+
+    # ⭐ 기록 날짜 (항공료 기준 날짜)
+    recorded_date = models.DateField(
+        default=timezone.now
+    )
+
+    class Meta:
+        db_table = "airport"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["country", "airport_code_iata", "recorded_date"],
+                name="unique_airport_price_per_day"
+            )
+        ]
+
+
+class TravelAlert(models.Model):
+    """
+    외교부 해외안전정보
+    - 국가당 1개만 존재
+    """
+
+    # 국가와 1:1 관계
+    country = models.OneToOneField(
+        Country,
+        on_delete=models.CASCADE,
+        related_name="travel_alert",
+        db_column="iso2"
+    )
+
+    # 경보 단계 (1~4단계 등)
+    alarm_level = models.CharField(max_length=10)
+
+    # 경보 지역 설명
+    region = models.CharField(max_length=100)
+
+    # 마지막 업데이트 시각
+    updated_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        db_table = "travel_alert"
+
+class TargetCountry(models.Model):
+    """
+    주요 타겟 국가 테이블
+    - 환율 / 항공 데이터 수집 기준 국가
+    - Kafka / Batch / 통계 파이프라인의 시작점
+    """
+
+    # ISO 국가 코드 (PK)
+    iso2 = models.CharField(
+        max_length=2,
+        primary_key=True
+    )
+
+    # 국가명 (한글)
+    name_ko = models.CharField(
+        max_length=100
+    )
+
+    # 통화 코드 (USD, JPY ...)
+    currency_code = models.CharField(
+        max_length=3
+    )
+
+    # 대표 공항 IATA 코드 (ICN, NRT ...)
+    airport_code_iata = models.CharField(
+        max_length=3
+    )
+
+    # 대표 공항명 (한글)
+    airport_name_ko = models.CharField(
+        max_length=100
+    )
+
+    class Meta:
+        db_table = "target_country"
+        constraints = [
+            # 환율 히스토리용 UNIQUE
+            models.UniqueConstraint(
+                fields=["iso2", "currency_code"],
+                name="unique_target_country_currency"
+            ),
+            # 항공 히스토리용 UNIQUE
+            models.UniqueConstraint(
+                fields=["iso2", "airport_code_iata", "airport_name_ko"],
+                name="unique_target_country_airport"
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.name_ko} ({self.iso2})"

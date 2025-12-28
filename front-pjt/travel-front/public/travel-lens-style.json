@@ -1,0 +1,61 @@
+{
+  "version": 8,
+  "name": "TravelLensPolished",
+  "glyphs": "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
+
+  "sources": {
+    "openmaptiles": {
+      "type": "vector",
+      "url": "https://demotiles.maplibre.org/tiles/tiles.json"
+    }
+  },
+
+  "layers": [
+
+    
+    {
+      "id": "background",
+      "type": "background",
+      "paint": {
+        "background-color": "#AEB7C1"
+      }
+    },
+
+    
+    {
+      "id": "countries-fill",
+      "type": "fill",
+      "source": "openmaptiles",
+      "source-layer": "countries",
+      "paint": {
+        "fill-color": "#EDE3D4",
+        "fill-opacity": 1.0
+      }
+    },
+
+    
+    {
+      "id": "countries-boundary",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "countries",
+      "paint": {
+        "line-color": "rgba(255, 255, 255, 0.45)",
+        "line-width": 0.4
+      }
+    },
+
+    
+    {
+      "id": "geolines",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "geolines",
+      "paint": {
+        "line-color": "rgba(255, 255, 255, 0.08)",
+        "line-width": 0.4
+      }
+    }
+
+  ]
+}
