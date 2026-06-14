@@ -1,0 +1,196 @@
+Project TravelLens {
+  database_type: 'PostgreSQL'
+  Note: 'TravelLens final ERD based on Django models'
+}
+
+Table country {
+  iso2 varchar(2) [pk]
+  iso3 varchar(3) [not null]
+  name_ko varchar(100) [not null]
+  name_en varchar(100) [not null]
+  continent_name_en varchar(50) [not null]
+  continent_name_ko varchar(50) [not null]
+}
+
+Table currency {
+  id bigint [pk, increment]
+  iso2 varchar(2) [not null]
+  currency_code varchar(50) [not null]
+  currency_krw_unit numeric(15,4)
+  recorded_date date [not null]
+
+  indexes {
+    (iso2, recorded_date) [unique, name: 'unique_currency_per_day']
+  }
+}
+
+Table airport {
+  id bigint [pk, increment]
+  iso2 varchar(2) [not null]
+  airport_name_ko varchar(150) [not null]
+  airport_code_iata varchar(10) [not null]
+  flight_price numeric(15,2)
+  recorded_date date [not null]
+
+  indexes {
+    (iso2, airport_code_iata, recorded_date) [unique, name: 'unique_airport_price_per_day']
+  }
+}
+
+Table travel_alert {
+  id bigint [pk, increment]
+  iso2 varchar(2) [not null, unique]
+  alarm_level varchar(10) [not null]
+  region varchar(100) [not null]
+  updated_at timestamptz
+}
+
+Table target_country {
+  iso2 varchar(2) [pk]
+  name_ko varchar(100) [not null]
+  currency_code varchar(3) [not null]
+  airport_code_iata varchar(3) [not null]
+  airport_name_ko varchar(100) [not null]
+
+  indexes {
+    (iso2, currency_code) [unique, name: 'unique_target_country_currency']
+    (iso2, airport_code_iata, airport_name_ko) [unique, name: 'unique_target_country_airport']
+  }
+}
+
+Table destination_blog {
+  id bigint [pk, increment]
+  iso2 varchar(2) [not null]
+  title text [not null]
+  url text [not null, unique]
+  published_at timestamptz [not null]
+
+  indexes {
+    (iso2, published_at)
+  }
+}
+
+Table destination_news {
+  id bigint [pk, increment]
+  iso2 varchar(2) [not null]
+  title text [not null]
+  url text [not null, unique]
+  published_at timestamptz [not null]
+
+  indexes {
+    (iso2, published_at)
+  }
+}
+
+Table "User" {
+  id integer [pk, increment]
+  password varchar(128) [not null]
+  last_login timestamptz
+  is_superuser boolean [not null, default: false]
+  name varchar(50) [not null, unique]
+  email varchar(254) [not null, unique]
+  created_at timestamptz [not null]
+  updated_at timestamptz [not null]
+  is_active boolean [not null, default: true]
+  is_staff boolean [not null, default: false]
+}
+
+Table favorite_country {
+  id bigint [pk, increment]
+  user_id integer [not null]
+  country_id varchar(2) [not null]
+  created_at timestamptz [not null]
+
+  indexes {
+    (user_id, country_id) [unique]
+  }
+}
+
+Table user_event {
+  id bigint [pk, increment]
+  user_id integer
+  country_id varchar(2) [not null]
+  event_type varchar(20) [not null, note: 'view, click, search, favorite, dwell']
+  event_value numeric(10,2)
+  created_at timestamptz [not null]
+
+  indexes {
+    (user_id, created_at)
+    (country_id, created_at)
+    (event_type, created_at)
+  }
+}
+
+Table country_popularity {
+  id bigint [pk, increment]
+  country_id varchar(2) [not null]
+  window_type varchar(20) [not null, note: 'hourly, daily, weekly, monthly']
+  score numeric(10,2) [not null]
+  view_count bigint [not null]
+  favorite_count bigint [not null]
+  calculated_at timestamptz [not null]
+
+  indexes {
+    (country_id, window_type, calculated_at) [unique, name: 'uniq_country_window_at']
+  }
+}
+
+Table recommendation {
+  id bigint [pk, increment]
+  user_id integer [not null]
+  country_id varchar(2) [not null]
+  score numeric(10,2) [not null]
+  reason varchar(255) [not null]
+  generated_at timestamptz [not null]
+
+  indexes {
+    (user_id, generated_at)
+  }
+}
+
+Table global_chat_message {
+  id bigint [pk, increment]
+  sender_id integer [not null]
+  content text [not null]
+  created_at timestamptz [not null]
+}
+
+Table chatbot_conversation {
+  id bigint [pk, increment]
+  user_id integer [not null]
+  started_at timestamptz [not null]
+  last_message_at timestamptz [not null]
+}
+
+Table chatbot_message {
+  id bigint [pk, increment]
+  conversation_id bigint [not null]
+  role varchar(20) [not null, note: 'user, assistant, system']
+  content text [not null]
+  context json
+  created_at timestamptz [not null]
+}
+
+Ref: currency.iso2 > country.iso2 [delete: cascade]
+Ref: airport.iso2 > country.iso2 [delete: cascade]
+Ref: travel_alert.iso2 - country.iso2 [delete: cascade]
+Ref: destination_blog.iso2 > country.iso2 [delete: cascade]
+Ref: destination_news.iso2 > country.iso2 [delete: cascade]
+
+Ref: favorite_country.user_id > "User".id [delete: cascade]
+Ref: favorite_country.country_id > country.iso2 [delete: cascade]
+
+Ref: user_event.user_id > "User".id [delete: set null]
+Ref: user_event.country_id > country.iso2 [delete: cascade]
+
+Ref: country_popularity.country_id > country.iso2 [delete: cascade]
+
+Ref: recommendation.user_id > "User".id [delete: cascade]
+Ref: recommendation.country_id > country.iso2 [delete: cascade]
+
+Ref: global_chat_message.sender_id > "User".id [delete: cascade]
+Ref: chatbot_conversation.user_id > "User".id [delete: cascade]
+Ref: chatbot_message.conversation_id > chatbot_conversation.id [delete: cascade]
+
+// target_country is an independent collection target table.
+// Django PermissionsMixin join tables are omitted for domain readability.
