@@ -1,0 +1,109 @@
+<mxfile host="app.diagrams.net" agent="Codex">
+  <diagram id="realtime-pipeline" name="Realtime Popularity Pipeline">
+    <mxGraphModel dx="2054" dy="1137" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="950" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;fontSize=28;fontStyle=1;fontColor=#172554;" value="Realtime Country Popularity Pipeline" vertex="1">
+          <mxGeometry height="45" width="700" x="50" y="25" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" parent="1" style="text;html=1;fontSize=14;fontColor=#64748B;" value="사용자 행동을 API 처리와 분리하여 Kafka·Flink로 비동기 집계" vertex="1">
+          <mxGeometry height="30" width="700" x="50" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="step1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DBEAFE;strokeColor=#2563EB;fontColor=#1E3A8A;fontStyle=1;fontSize=15;" value="1. 사용자 행동" vertex="1">
+          <mxGeometry height="95" width="190" x="60" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="step1note" parent="1" style="text;html=1;align=center;fontSize=12;fontColor=#475569;" value="click · view · search&#xa;favorite · dwell" vertex="1">
+          <mxGeometry height="45" width="190" x="60" y="285" as="geometry" />
+        </mxCell>
+        <mxCell id="step2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EDE9FE;strokeColor=#7C3AED;fontColor=#4C1D95;fontStyle=1;fontSize=15;" value="2. Django Log API" vertex="1">
+          <mxGeometry height="95" width="210" x="320" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="step2note" parent="1" style="text;html=1;align=center;fontSize=12;fontColor=#475569;" value="요청 검증 및 이벤트 정규화" vertex="1">
+          <mxGeometry height="35" width="210" x="320" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="dbEvent" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;fillColor=#FFEDD5;strokeColor=#F97316;fontColor=#9A3412;fontStyle=1;" value="PostgreSQL&#xa;user_event 원본 저장" vertex="1">
+          <mxGeometry height="95" width="210" x="1010" y="428" as="geometry" />
+        </mxCell>
+        <mxCell id="producer" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D1FAE5;strokeColor=#10B981;fontColor=#065F46;fontStyle=1;fontSize=15;" value="3. Kafka Producer&#xa;JSON 이벤트 발행" vertex="1">
+          <mxGeometry height="95" width="210" x="640" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="topic" parent="1" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#A7F3D0;strokeColor=#059669;fontColor=#064E3B;fontStyle=1;fontSize=15;" value="4. Kafka Topic&#xa;user_events" vertex="1">
+          <mxGeometry height="100" width="210" x="1010" y="175" as="geometry" />
+        </mxCell>
+        <mxCell id="flinkGroup" parent="1" style="swimlane;html=1;rounded=1;startSize=36;fillColor=#ECFDF5;strokeColor=#34D399;fontColor=#065F46;fontStyle=1;" value="5. Apache Flink Cluster" vertex="1">
+          <mxGeometry height="490" width="500" x="1270" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="jm" parent="flinkGroup" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#10B981;fontColor=#065F46;fontStyle=1;" value="JobManager&#xa;Job 제출·스케줄링" vertex="1">
+          <mxGeometry height="75" width="145" x="60" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="tm" parent="flinkGroup" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#10B981;fontColor=#065F46;fontStyle=1;" value="TaskManager&#xa;Table API 실행" vertex="1">
+          <mxGeometry height="75" width="145" x="300" y="107.5" as="geometry" />
+        </mxCell>
+        <mxCell id="score" parent="flinkGroup" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D1FAE5;strokeColor=#059669;fontColor=#064E3B;fontStyle=1;" value="가중 점수 계산&#xa;click 1 · view 3&#xa;dwell × 0.2 (최대 20)" vertex="1">
+          <mxGeometry height="100" width="145" x="300" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="lookup" parent="flinkGroup" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#F59E0B;fontColor=#92400E;fontStyle=1;" value="Country JDBC Lookup&#xa;iso2 검증·조인" vertex="1">
+          <mxGeometry height="65" width="160" x="50" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="window" parent="flinkGroup" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D1FAE5;strokeColor=#059669;fontColor=#064E3B;fontStyle=1;" value="5분 Tumble Window&#xa;처리 시간 기준" vertex="1">
+          <mxGeometry height="80" width="145" x="60" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="flinkGroup" source="tm" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#10B981;endArrow=block;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="window" value="window">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" edge="1" parent="flinkGroup" source="window" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#10B981;endArrow=block;" target="score" value="aggregate">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wl88bxMo28O46KFkx-Zt-1" edge="1" parent="flinkGroup" source="score" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#F97316;endArrow=block;" target="window" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="430" y="300" as="sourcePoint" />
+            <mxPoint x="20" y="510" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="popularity" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;fillColor=#FFEDD5;strokeColor=#F97316;fontColor=#9A3412;fontStyle=1;fontSize=14;" value="6. PostgreSQL&#xa;country_popularity&#xa;JDBC Upsert" vertex="1">
+          <mxGeometry height="105" width="220" x="1000" y="580" as="geometry" />
+        </mxCell>
+        <mxCell id="api" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EDE9FE;strokeColor=#7C3AED;fontColor=#4C1D95;fontStyle=1;fontSize=14;" value="7. Django Popular API&#xa;최신 국가별 점수 조회" vertex="1">
+          <mxGeometry height="95" width="220" x="320" y="585" as="geometry" />
+        </mxCell>
+        <mxCell id="ui" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DBEAFE;strokeColor=#2563EB;fontColor=#1E3A8A;fontStyle=1;fontSize=14;" value="8. Vue UI 반영&#xa;지도 색상 · 인기 목록" vertex="1">
+          <mxGeometry height="95" width="220" x="40" y="585" as="geometry" />
+        </mxCell>
+        <mxCell id="boundary" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#94A3B8;fontColor=#334155;fontSize=13;dashed=1;" value="API 요청과 분석 작업 분리&#xa;Kafka/Flink 장애가 사용자 로그 저장 요청 전체로 전파되지 않도록 구성" vertex="1">
+          <mxGeometry height="85" width="760" x="60" y="740" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="step1" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#2563EB;endArrow=block;" target="step2" value="REST">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="step2" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#F97316;endArrow=block;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="dbEvent" value="동기 저장">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="step2" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#10B981;endArrow=block;" target="producer" value="비동기 발행">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="producer" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#059669;endArrow=block;" target="topic" value="produce">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="topic" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#059669;endArrow=block;" target="tm" value="consume latest">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="dbEvent" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#F59E0B;endArrow=block;dashed=1;" target="lookup" value="JDBC lookup">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="window" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#F97316;endArrow=block;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" target="popularity" value="JDBC sink">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="popularity" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#7C3AED;endArrow=block;" target="api" value="조회">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="api" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#2563EB;endArrow=block;" target="ui" value="JSON 응답">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="jm" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#10B981;endArrow=block;" target="tm" value="schedule">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

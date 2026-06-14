@@ -1,0 +1,240 @@
+<mxfile host="app.diagrams.net" agent="Codex">
+  <diagram id="system-architecture" name="System Architecture">
+    <mxGraphModel dx="2568" dy="1421" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1900" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;fontSize=30;fontStyle=1;fontColor=#172554;align=left;" value="TravelLens System Architecture" vertex="1">
+          <mxGeometry height="45" width="780" x="50" y="25" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" parent="1" style="text;html=1;fontSize=14;fontColor=#64748B;align=left;" value="기능 흐름별로 분리한 애플리케이션·수집·실시간 분석·아카이브 구조" vertex="1">
+          <mxGeometry height="30" width="900" x="50" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="lane1" parent="1" style="swimlane;html=1;rounded=1;startSize=38;horizontal=1;fillColor=#EFF6FF;strokeColor=#93C5FD;fontColor=#1E3A8A;fontStyle=1;fontSize=15;" value="① 사용자 서비스" vertex="1">
+          <mxGeometry height="325" width="1930" x="50" y="125" as="geometry" />
+        </mxCell>
+        <mxCell id="userIcon" parent="lane1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#DBEAFE;strokeColor=#2563EB;fontSize=25;" value="👤" vertex="1">
+          <mxGeometry height="54" width="54" x="45" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="user" parent="lane1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#2563EB;fontColor=#1E3A8A;fontStyle=1;" value="사용자&#xa;Web Browser" vertex="1">
+          <mxGeometry height="70" width="145" x="110" y="72" as="geometry" />
+        </mxCell>
+        <mxCell id="vueIcon" parent="lane1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#42B883;strokeColor=#2F855A;fontColor=#FFFFFF;fontStyle=1;fontSize=23;" value="V" vertex="1">
+          <mxGeometry height="54" width="54" x="330" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="vue" parent="lane1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#42B883;fontColor=#065F46;fontStyle=1;" value="Vue 3 + Pinia&#xa;MapLibre GL · D3" vertex="1">
+          <mxGeometry height="70" width="175" x="395" y="72" as="geometry" />
+        </mxCell>
+        <mxCell id="djangoIcon" parent="lane1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#0C4B33;strokeColor=#063B29;fontColor=#FFFFFF;fontStyle=1;fontSize=23;" value="D" vertex="1">
+          <mxGeometry height="54" width="54" x="723" y="78" as="geometry" />
+        </mxCell>
+        <mxCell id="django" parent="lane1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0C4B33;fontColor=#064E3B;fontStyle=1;" value="Django REST API&#xa;JWT · 여행 · 검색 · 로그" vertex="1">
+          <mxGeometry height="70" width="200" x="788" y="72" as="geometry" />
+        </mxCell>
+        <mxCell id="postgresIcon" parent="lane1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#336791;strokeColor=#1E4E73;fontColor=#FFFFFF;fontStyle=1;fontSize=23;" value="P" vertex="1">
+          <mxGeometry height="51.5" width="51.5" x="1453" y="238" as="geometry" />
+        </mxCell>
+        <mxCell id="postgresService" parent="lane1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;fillColor=#DBEAFE;strokeColor=#336791;fontColor=#1E3A8A;fontStyle=1;" value="PostgreSQL 16&#xa;서비스 원본 데이터" vertex="1">
+          <mxGeometry height="90" width="175" x="1513" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="esIcon" parent="lane1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#00BFB3;strokeColor=#008F86;fontColor=#FFFFFF;fontStyle=1;fontSize=16;" value="ES" vertex="1">
+          <mxGeometry height="50" width="50" x="1454.5" y="82" as="geometry" />
+        </mxCell>
+        <mxCell id="es" parent="lane1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;fillColor=#CFFAFE;strokeColor=#0891B2;fontColor=#164E63;fontStyle=1;" value="Elasticsearch&#xa;국가 · 뉴스 · 블로그 검색" vertex="1">
+          <mxGeometry height="80" width="185" x="1513" y="67" as="geometry" />
+        </mxCell>
+        <mxCell id="aiIcon" parent="lane1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#111827;strokeColor=#000000;fontColor=#FFFFFF;fontStyle=1;fontSize=17;" value="AI" vertex="1">
+          <mxGeometry height="50" width="50" x="983" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="openai" parent="lane1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#475569;fontColor=#1E293B;fontStyle=1;" value="OpenAI Responses API&#xa;검색·DB 기반 답변" vertex="1">
+          <mxGeometry height="65" width="185" x="1043" y="235" as="geometry" />
+        </mxCell>
+        <mxCell id="redisIcon" parent="lane1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#D82C20;strokeColor=#A61F17;fontColor=#FFFFFF;fontStyle=1;fontSize=21;" value="R" vertex="1">
+          <mxGeometry height="50" width="50" x="777" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="redis" parent="lane1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;fillColor=#FEE2E2;strokeColor=#EF4444;fontColor=#991B1B;fontStyle=1;" value="Redis 7&#xa;Channels Message Broker" vertex="1">
+          <mxGeometry height="85" width="105" x="835.5" y="225" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="lane1" source="user" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#2563EB;endArrow=block;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="vue" value="접속">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="lane1" source="vue" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#0C4B33;endArrow=block;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="django" value="REST / WS">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="lane1" source="django" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#336791;endArrow=block;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="postgresService" value="CRUD">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="lane1" source="django" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#0891B2;endArrow=block;exitX=1;exitY=0.15;" target="es" value="검색">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="988" y="50" />
+              <mxPoint x="1606" y="50" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="lane1" source="django" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#475569;endArrow=block;exitX=1;exitY=0.75;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="openai" value="AI 요청">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="988" y="175" />
+              <mxPoint x="1136" y="175" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="lane1" source="django" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#EF4444;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitDx=0;exitDy=0;entryDx=0;entryDy=0;entryPerimeter=0;" target="redis" value="Channels">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="888" y="225" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lane2" parent="1" style="swimlane;html=1;rounded=1;startSize=38;horizontal=1;fillColor=#ECFDF5;strokeColor=#6EE7B7;fontColor=#065F46;fontStyle=1;fontSize=15;" value="② 외부 데이터 수집 · 검색 색인" vertex="1">
+          <mxGeometry height="265" width="1930" x="50" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="apiIcon" parent="lane2" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#E2E8F0;strokeColor=#64748B;fontColor=#334155;fontSize=24;" value="☁" vertex="1">
+          <mxGeometry height="54" width="54" x="80" y="103" as="geometry" />
+        </mxCell>
+        <mxCell id="external" parent="lane2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#64748B;fontColor=#334155;fontStyle=1;" value="외부 API&#xa;Naver · Amadeus · 외교부" vertex="1">
+          <mxGeometry height="70" width="190" x="145" y="95" as="geometry" />
+        </mxCell>
+        <mxCell id="airflowIcon" parent="lane2" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#017CEE;strokeColor=#0369A1;fontColor=#FFFFFF;fontStyle=1;fontSize=23;" value="A" vertex="1">
+          <mxGeometry height="54" width="54" x="740" y="73" as="geometry" />
+        </mxCell>
+        <mxCell id="airflow" parent="lane2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#017CEE;fontColor=#075985;fontStyle=1;" value="Airflow&#xa;환율 · 항공료 · 여행경보" vertex="1">
+          <mxGeometry height="70" width="190" x="805" y="65" as="geometry" />
+        </mxCell>
+        <mxCell id="producerIcon" parent="lane2" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#3776AB;strokeColor=#255F8C;fontColor=#FFFFFF;fontStyle=1;fontSize=16;" value="Py" vertex="1">
+          <mxGeometry height="54" width="54" x="360" y="179" as="geometry" />
+        </mxCell>
+        <mxCell id="producer" parent="lane2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#3776AB;fontColor=#1E3A8A;fontStyle=1;" value="Python Producers&#xa;뉴스 · 블로그 수집" vertex="1">
+          <mxGeometry height="65" width="190" x="430" y="175" as="geometry" />
+        </mxCell>
+        <mxCell id="kafkaIcon2" parent="lane2" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#231F20;strokeColor=#000000;fontColor=#FFFFFF;fontStyle=1;fontSize=23;" value="K" vertex="1">
+          <mxGeometry height="54" width="54" x="740" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="kafkaContent" parent="lane2" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#F1F5F9;strokeColor=#334155;fontColor=#0F172A;fontStyle=1;" value="Kafka 7.5&#xa;news · blog topics" vertex="1">
+          <mxGeometry height="75" width="175" x="805" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="consumerIcon" parent="lane2" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#059669;strokeColor=#047857;fontColor=#FFFFFF;fontStyle=1;fontSize=22;" value="C" vertex="1">
+          <mxGeometry height="54" width="54" x="1060" y="182" as="geometry" />
+        </mxCell>
+        <mxCell id="consumer" parent="lane2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#059669;fontColor=#065F46;fontStyle=1;" value="Consumers&#xa;PostgreSQL 저장" vertex="1">
+          <mxGeometry height="65" width="160" x="1125" y="175" as="geometry" />
+        </mxCell>
+        <mxCell id="postgresContent" parent="lane2" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;fillColor=#DBEAFE;strokeColor=#336791;fontColor=#1E3A8A;fontStyle=1;" value="PostgreSQL&#xa;country · currency · airport&#xa;alert · news · blog" vertex="1">
+          <mxGeometry height="100" width="190" x="1340" y="79" as="geometry" />
+        </mxCell>
+        <mxCell id="logstashIcon" parent="lane2" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#F3BD19;strokeColor=#C89300;fontColor=#111827;fontStyle=1;fontSize=22;" value="L" vertex="1">
+          <mxGeometry height="54" width="54" x="1660" y="103" as="geometry" />
+        </mxCell>
+        <mxCell id="logstash" parent="lane2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#F59E0B;fontColor=#92400E;fontStyle=1;" value="Logstash JDBC → Elasticsearch&#xa;1분 / 5분 주기 색인" vertex="1">
+          <mxGeometry height="70" width="170" x="1725" y="95" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="lane2" source="external" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#017CEE;endArrow=block;exitX=1;exitY=0.3;entryX=0;entryY=0.5;" target="airflow" value="배치 API">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="lane2" source="external" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#3776AB;endArrow=block;exitX=1;exitY=0.7;entryX=0;entryY=0.5;" target="producer" value="Naver 콘텐츠">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="lane2" source="producer" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#334155;endArrow=block;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="kafkaContent" value="produce">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="lane2" source="kafkaContent" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#059669;endArrow=block;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="consumer" value="consume">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="lane2" source="consumer" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#336791;endArrow=block;exitX=1;exitY=0.65;entryX=0;entryY=0.7;" target="postgresContent" value="insert">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" edge="1" parent="lane2" source="airflow" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#017CEE;endArrow=block;exitX=1;exitY=0.5;entryX=0;entryY=0.25;" target="postgresContent" value="upsert">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e13" edge="1" parent="lane2" source="postgresContent" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#F59E0B;endArrow=block;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="logstash" value="JDBC read">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lane3" parent="1" style="swimlane;html=1;rounded=1;startSize=38;horizontal=1;fillColor=#F5F3FF;strokeColor=#C4B5FD;fontColor=#4C1D95;fontStyle=1;fontSize=15;" value="③ 실시간 인기도 분석" vertex="1">
+          <mxGeometry height="190" width="1930" x="50" y="785" as="geometry" />
+        </mxCell>
+        <mxCell id="eventIcon" parent="lane3" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#EDE9FE;strokeColor=#7C3AED;fontColor=#5B21B6;fontSize=24;" value="⚡" vertex="1">
+          <mxGeometry height="54" width="54" x="80" y="75" as="geometry" />
+        </mxCell>
+        <mxCell id="eventApi" parent="lane3" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#7C3AED;fontColor=#4C1D95;fontStyle=1;" value="Django Event API&#xa;원본 로그 저장 + 발행" vertex="1">
+          <mxGeometry height="70" width="205" x="145" y="67" as="geometry" />
+        </mxCell>
+        <mxCell id="kafkaIcon3" parent="lane3" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#231F20;strokeColor=#000000;fontColor=#FFFFFF;fontStyle=1;fontSize=23;" value="K" vertex="1">
+          <mxGeometry height="54" width="54" x="500" y="75" as="geometry" />
+        </mxCell>
+        <mxCell id="kafkaEvent" parent="lane3" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#F1F5F9;strokeColor=#334155;fontColor=#0F172A;fontStyle=1;" value="Kafka&#xa;user_events" vertex="1">
+          <mxGeometry height="75" width="165" x="565" y="65" as="geometry" />
+        </mxCell>
+        <mxCell id="flinkIcon" parent="lane3" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#E6526F;strokeColor=#BE3652;fontColor=#FFFFFF;fontStyle=1;fontSize=23;" value="F" vertex="1">
+          <mxGeometry height="54" width="54" x="880" y="75" as="geometry" />
+        </mxCell>
+        <mxCell id="flink" parent="lane3" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FCE7F3;strokeColor=#E6526F;fontColor=#9D174D;fontStyle=1;" value="Apache Flink&#xa;5분 Window · 가중 점수" vertex="1">
+          <mxGeometry height="70" width="210" x="945" y="67" as="geometry" />
+        </mxCell>
+        <mxCell id="popularity" parent="lane3" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;fillColor=#DBEAFE;strokeColor=#336791;fontColor=#1E3A8A;fontStyle=1;" value="PostgreSQL&#xa;country_popularity" vertex="1">
+          <mxGeometry height="90" width="195" x="1330" y="57" as="geometry" />
+        </mxCell>
+        <mxCell id="popularApi" parent="lane3" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#2563EB;fontColor=#1E3A8A;fontStyle=1;" value="Popular API → Vue&#xa;지도 색상 · 인기 목록" vertex="1">
+          <mxGeometry height="70" width="210" x="1680" y="67" as="geometry" />
+        </mxCell>
+        <mxCell id="e14" edge="1" parent="lane3" source="eventApi" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#7C3AED;endArrow=block;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="kafkaEvent" value="발행">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e15" edge="1" parent="lane3" source="kafkaEvent" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#E6526F;endArrow=block;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="flink" value="consume">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e16" edge="1" parent="lane3" source="flink" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#336791;endArrow=block;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="popularity" value="JDBC sink">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e17" edge="1" parent="lane3" source="popularity" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#2563EB;endArrow=block;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="popularApi" value="조회">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lane4" parent="1" style="swimlane;html=1;rounded=1;startSize=38;horizontal=1;fillColor=#FFFBEB;strokeColor=#FCD34D;fontColor=#92400E;fontStyle=1;fontSize=15;dashed=1;" value="④ 장기 데이터 아카이브 PoC" vertex="1">
+          <mxGeometry height="190" width="1930" x="50" y="995" as="geometry" />
+        </mxCell>
+        <mxCell id="scheduleIcon" parent="lane4" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#FEF3C7;strokeColor=#F59E0B;fontColor=#92400E;fontSize=25;" value="◷" vertex="1">
+          <mxGeometry height="54" width="54" x="90" y="75" as="geometry" />
+        </mxCell>
+        <mxCell id="archiveAirflow" parent="lane4" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#F59E0B;fontColor=#92400E;fontStyle=1;dashed=1;" value="Airflow Weekly DAG&#xa;일요일 03:00" vertex="1">
+          <mxGeometry height="70" width="190" x="155" y="67" as="geometry" />
+        </mxCell>
+        <mxCell id="sparkIcon" parent="lane4" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#E25A1C;strokeColor=#B84314;fontColor=#FFFFFF;fontStyle=1;fontSize=23;" value="S" vertex="1">
+          <mxGeometry height="54" width="54" x="490" y="75" as="geometry" />
+        </mxCell>
+        <mxCell id="spark" parent="lane4" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF7ED;strokeColor=#E25A1C;fontColor=#9A3412;fontStyle=1;dashed=1;" value="PySpark local[*]&#xa;1년 이상 콘텐츠 조회" vertex="1">
+          <mxGeometry height="70" width="210" x="555" y="67" as="geometry" />
+        </mxCell>
+        <mxCell id="parquetIcon" parent="lane4" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#8B5CF6;strokeColor=#6D28D9;fontColor=#FFFFFF;fontSize=22;" value="▤" vertex="1">
+          <mxGeometry height="54" width="54" x="890" y="75" as="geometry" />
+        </mxCell>
+        <mxCell id="parquet" parent="lane4" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F3FF;strokeColor=#8B5CF6;fontColor=#5B21B6;fontStyle=1;dashed=1;" value="Parquet 변환&#xa;iso2 파티셔닝" vertex="1">
+          <mxGeometry height="70" width="185" x="955" y="67" as="geometry" />
+        </mxCell>
+        <mxCell id="hdfsIcon" parent="lane4" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#F6B900;strokeColor=#C58E00;fontColor=#111827;fontStyle=1;fontSize=23;" value="H" vertex="1">
+          <mxGeometry height="54" width="54" x="1265" y="75" as="geometry" />
+        </mxCell>
+        <mxCell id="hdfs" parent="lane4" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;fillColor=#FEF3C7;strokeColor=#F59E0B;fontColor=#92400E;fontStyle=1;dashed=1;" value="HDFS&#xa;NameNode · DataNode" vertex="1">
+          <mxGeometry height="90" width="190" x="1330" y="57" as="geometry" />
+        </mxCell>
+        <mxCell id="cleanup" parent="lane4" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEE2E2;strokeColor=#EF4444;fontColor=#991B1B;fontStyle=1;dashed=1;" value="전송 성공 후&#xa;PostgreSQL 원본 정리" vertex="1">
+          <mxGeometry height="70" width="160" x="1710" y="67" as="geometry" />
+        </mxCell>
+        <mxCell id="e18" edge="1" parent="lane4" source="archiveAirflow" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#E25A1C;endArrow=block;dashed=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="spark" value="spark-submit">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e19" edge="1" parent="lane4" source="spark" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#8B5CF6;endArrow=block;dashed=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="parquet" value="변환">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e20" edge="1" parent="lane4" source="parquet" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#F59E0B;endArrow=block;dashed=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="hdfs" value="append">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e21" edge="1" parent="lane4" source="hdfs" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#EF4444;endArrow=block;dashed=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="cleanup" value="성공 후 삭제">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontColor=#475569;fontSize=12;align=center;container=1;" value="아이콘 배지 = 기술/역할 · 실선 = 운영 경로 · 점선 = PoC 경로" vertex="1">
+          <mxGeometry height="40" width="640" x="1340" y="1210" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

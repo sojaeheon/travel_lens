@@ -1,0 +1,100 @@
+<mxfile host="app.diagrams.net" agent="Codex">
+  <diagram id="archive-poc" name="Data Archive PoC">
+    <mxGraphModel dx="2054" dy="1137" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="950" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;fontSize=28;fontStyle=1;fontColor=#172554;" value="Travel Content Archive PoC" vertex="1">
+          <mxGeometry height="45" width="650" x="50" y="25" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" parent="1" style="text;html=1;fontSize=14;fontColor=#64748B;" value="1년 이상 지난 뉴스·블로그를 Parquet로 변환해 HDFS에 보관하는 주간 실험 구조" vertex="1">
+          <mxGeometry height="30" width="850" x="50" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="airflowGroup" parent="1" style="swimlane;html=1;rounded=1;startSize=36;fillColor=#EFF6FF;strokeColor=#93C5FD;fontColor=#1E3A8A;fontStyle=1;" value="Orchestration" vertex="1">
+          <mxGeometry height="740" width="340" x="50" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="scheduler" parent="airflowGroup" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DBEAFE;strokeColor=#2563EB;fontColor=#1E3A8A;fontStyle=1;" value="Airflow Scheduler&#xa;매주 일요일 03:00" vertex="1">
+          <mxGeometry height="80" width="230" x="55" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="dag" parent="airflowGroup" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DBEAFE;strokeColor=#2563EB;fontColor=#1E3A8A;fontStyle=1;" value="weekly_archive_to_hdfs DAG" vertex="1">
+          <mxGeometry height="70" width="230" x="55" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="bash" parent="airflowGroup" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EDE9FE;strokeColor=#7C3AED;fontColor=#4C1D95;fontStyle=1;" value="BashOperator&#xa;spark-submit --master local[*]" vertex="1">
+          <mxGeometry height="85" width="230" x="55" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="cleanup" parent="airflowGroup" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEE2E2;strokeColor=#EF4444;fontColor=#991B1B;fontStyle=1;" value="PostgresOperator&#xa;전송 성공 후 원본 삭제" vertex="1">
+          <mxGeometry height="85" width="230" x="55" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="sourceGroup" parent="1" style="swimlane;html=1;rounded=1;startSize=36;fillColor=#FFF7ED;strokeColor=#FDBA74;fontColor=#9A3412;fontStyle=1;" value="Source Database" vertex="1">
+          <mxGeometry height="740" width="300" x="450" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="postgres" parent="sourceGroup" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;fillColor=#FFEDD5;strokeColor=#F97316;fontColor=#9A3412;fontStyle=1;fontSize=15;" value="PostgreSQL 16" vertex="1">
+          <mxGeometry height="90" width="190" x="55" y="595" as="geometry" />
+        </mxCell>
+        <mxCell id="blog" parent="sourceGroup" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#F97316;fontColor=#9A3412;" value="destination_blog&#xa;published_at &lt; 현재 - 1년" vertex="1">
+          <mxGeometry height="65" width="210" x="45" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="news" parent="sourceGroup" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#F97316;fontColor=#9A3412;" value="destination_news&#xa;published_at &lt; 현재 - 1년" vertex="1">
+          <mxGeometry height="65" width="210" x="45" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="sparkGroup" parent="1" style="swimlane;html=1;rounded=1;startSize=36;fillColor=#F5F3FF;strokeColor=#C4B5FD;fontColor=#4C1D95;fontStyle=1;" value="Transform" vertex="1">
+          <mxGeometry height="740" width="330" x="830" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="pyspark" parent="sparkGroup" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EDE9FE;strokeColor=#7C3AED;fontColor=#4C1D95;fontStyle=1;fontSize=15;" value="PySpark local mode&#xa;archive_to_hdfs.py" vertex="1">
+          <mxGeometry height="85" width="220" x="55" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="jdbc" parent="sparkGroup" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#7C3AED;fontColor=#4C1D95;" value="JDBC Read&#xa;PostgreSQL Driver 42.7.5" vertex="1">
+          <mxGeometry height="65" width="220" x="70" y="607.5" as="geometry" />
+        </mxCell>
+        <mxCell id="parquet" parent="sparkGroup" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#7C3AED;fontColor=#4C1D95;" value="Parquet 변환&#xa;iso2 기준 파티셔닝&#xa;append mode" vertex="1">
+          <mxGeometry height="80" width="220" x="70" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="hdfsGroup" parent="1" style="swimlane;html=1;rounded=1;startSize=36;fillColor=#ECFDF5;strokeColor=#6EE7B7;fontColor=#065F46;fontStyle=1;" value="Archive Storage" vertex="1">
+          <mxGeometry height="740" width="340" x="1230" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="namenode" parent="hdfsGroup" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D1FAE5;strokeColor=#10B981;fontColor=#065F46;fontStyle=1;" value="HDFS NameNode&#xa;메타데이터 관리" vertex="1">
+          <mxGeometry height="75" width="230" x="50" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="datanode" parent="hdfsGroup" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;fillColor=#D1FAE5;strokeColor=#10B981;fontColor=#065F46;fontStyle=1;" value="HDFS DataNode&#xa;Parquet 블록 저장" vertex="1">
+          <mxGeometry height="85" width="230" x="50" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="paths" parent="hdfsGroup" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#10B981;fontColor=#065F46;fontSize=12;" value="/archive/destination_blog/iso2=...&#xa;/archive/destination_news/iso2=..." vertex="1">
+          <mxGeometry height="65" width="270" x="35" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="pocNote" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#F59E0B;fontColor=#92400E;fontSize=13;fontStyle=1;dashed=1;" value="PoC 범위&#xa;Spark Master·Worker 컨테이너는 Compose에 정의되어 있지만 현재 아카이브 Job은 클러스터가 아닌 Airflow 컨테이너의 local[*] 모드로 실행됩니다." vertex="1">
+          <mxGeometry height="110" width="740" x="830" y="940" as="geometry" />
+        </mxCell>
+        <mxCell id="safety" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#94A3B8;fontColor=#334155;fontSize=13;" value="처리 순서 보장&#xa;Spark 전송 작업이 성공한 경우에만 PostgresOperator가 1년 이상 원본을 삭제합니다." vertex="1">
+          <mxGeometry height="110" width="300" x="460" y="940" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="scheduler" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#2563EB;endArrow=block;" target="dag" value="trigger">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="dag" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#7C3AED;endArrow=block;" target="bash" value="task 1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="bash" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#7C3AED;endArrow=block;" target="pyspark" value="submit">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="postgres" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#F97316;endArrow=block;" target="jdbc" value="JDBC SELECT">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="jdbc" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#7C3AED;endArrow=block;" target="parquet" value="old rows">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="parquet" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#10B981;endArrow=block;" target="namenode" value="write append">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="namenode" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#10B981;endArrow=block;" target="datanode" value="block storage">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="bash" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#EF4444;endArrow=block;" target="cleanup" value="task 1 성공 후 task 2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="cleanup" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#EF4444;endArrow=block;" target="postgres" value="DELETE old rows">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
